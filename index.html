@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cockpit — pilotage d'entraînement</title>
+<meta name="theme-color" content="#0A1113">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cockpit">
+<meta name="description" content="Pilotage d'entraînement à partir de tes données de récupération.">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link id="manifest" rel="manifest">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#0A1113; --panel:#121C1F; --panel2:#182428; --line:#243438;
+  --ink:#E8F1F2; --dim:#8AA3A8; --dim2:#5F787D;
+  --amber:#E8B84B; --jade:#5FBF8F; --caution:#E8A33D; --clay:#D66A5A; --steel:#7C9BD1;
+  --r:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+body{font-family:'Archivo',-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.5;
+  padding:0 0 96px;max-width:520px;margin:0 auto;overflow-x:hidden}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+header{padding:calc(20px + env(safe-area-inset-top)) 18px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+h1{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0}
+.date{font-size:11px;color:var(--dim2);text-transform:uppercase;letter-spacing:.1em}
+
+/* ---------- tabs ---------- */
+nav{display:flex;gap:2px;padding:10px 12px 0;position:sticky;top:0;background:var(--bg);z-index:19;
+  border-bottom:1px solid var(--line)}
+nav button{flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--dim2);
+  font-family:inherit;font-size:12px;font-weight:600;padding:9px 2px 10px;cursor:pointer;letter-spacing:.01em}
+nav button.on{color:var(--ink);border-bottom-color:var(--amber)}
+
+main{padding:16px 14px 0}
+.tab{display:none}.tab.on{display:block}
+
+/* ---------- cards ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.11em;color:var(--dim);margin:0 0 12px}
+.sub{font-size:12.5px;color:var(--dim);margin:0}
+
+/* ---------- verdict (signature) ---------- */
+.verdict{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);
+  border-radius:var(--r);padding:18px;margin-bottom:12px;position:relative;overflow:hidden}
+.verdict::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--vc,var(--amber))}
+.vhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+.vscore{font-size:46px;font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--vc,var(--amber))}
+.vscore small{font-size:14px;color:var(--dim2);font-weight:500;letter-spacing:0}
+.vlabel{text-align:right}
+.vlabel b{display:block;font-size:16px;font-weight:700;color:var(--vc,var(--amber));letter-spacing:-.01em}
+.vlabel span{font-size:11px;color:var(--dim2);text-transform:uppercase;letter-spacing:.09em}
+.vtext{font-size:14px;color:var(--ink);margin:12px 0 0;line-height:1.55}
+.vwhy{font-size:12.5px;color:var(--dim);margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line)}
+
+/* strip gauge */
+.strip{display:flex;gap:2px;margin:14px 0 0}
+.strip i{flex:1;height:7px;border-radius:2px;background:#1F2E33}
+.strip i.f{background:var(--vc,var(--amber))}
+
+/* ---------- prescription ---------- */
+.rx{margin-top:12px;padding:13px 14px;background:var(--panel2);border-radius:10px;border:1px solid var(--line)}
+.rx h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim2);margin:0 0 8px;font-weight:700}
+.rx ul{margin:0;padding-left:17px}
+.rx li{font-size:13.5px;margin-bottom:5px;color:var(--ink)}
+.rx li b{color:var(--amber)}
+
+/* ---------- form ---------- */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:11px;color:var(--dim);font-weight:600;letter-spacing:.03em}
+.f label u{text-decoration:none;color:var(--dim2);font-weight:400}
+.f input,.f select{background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--ink);
+  padding:11px 11px;font-family:'IBM Plex Mono',monospace;font-size:16px;width:100%;font-variant-numeric:tabular-nums}
+.f input:focus,.f select:focus{outline:2px solid var(--amber);outline-offset:-1px;border-color:transparent}
+.f select{font-family:'Archivo',sans-serif;font-size:14px}
+.full{grid-column:1/-1}
+
+/* segmented */
+.seg{display:flex;gap:4px}
+.seg button{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--dim);
+  font-family:inherit;font-size:15px;font-weight:600;padding:10px 0;cursor:pointer}
+.seg button.on{background:var(--amber);color:#0A1113;border-color:var(--amber)}
+
+button.go{width:100%;background:var(--amber);color:#0A1113;border:none;border-radius:11px;
+  font-family:inherit;font-size:15px;font-weight:700;padding:14px;cursor:pointer;margin-top:14px;letter-spacing:.01em}
+button.go:active{transform:translateY(1px)}
+button.ghost{background:none;border:1px solid var(--line);color:var(--dim);width:100%;border-radius:10px;
+  font-family:inherit;font-size:13px;font-weight:600;padding:11px;cursor:pointer;margin-top:8px}
+
+/* ---------- metric rows ---------- */
+.rows{display:flex;flex-direction:column;gap:1px;background:var(--line);border-radius:10px;overflow:hidden}
+.row{display:flex;align-items:center;gap:10px;background:var(--panel);padding:11px 13px}
+.row .n{flex:1;font-size:13.5px}
+.row .n small{display:block;color:var(--dim2);font-size:11px}
+.row .v{font-size:15px;font-weight:600}
+.row .z{font-size:11px;padding:3px 7px;border-radius:20px;font-weight:700;min-width:52px;text-align:center}
+.z.ok{background:rgba(95,191,143,.15);color:var(--jade)}
+.z.mid{background:rgba(232,163,61,.15);color:var(--caution)}
+.z.bad{background:rgba(214,106,90,.16);color:var(--clay)}
+.z.na{background:#1F2E33;color:var(--dim2)}
+
+/* ---------- alerts ---------- */
+.alert{display:flex;gap:11px;padding:13px;border-radius:11px;margin-bottom:9px;background:var(--panel);
+  border:1px solid var(--line);border-left:3px solid var(--ac,var(--caution))}
+.alert .ai{font-size:17px;line-height:1.2}
+.alert b{display:block;font-size:13.5px;margin-bottom:3px;color:var(--ac,var(--caution))}
+.alert p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.5}
+
+/* ---------- charts ---------- */
+svg{display:block;width:100%;overflow:visible}
+.lg{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:11px;color:var(--dim2)}
+.lg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* ---------- session log ---------- */
+.slist{display:flex;flex-direction:column;gap:8px}
+.sess{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 13px}
+.sess .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sess .t{font-size:14px;font-weight:700}
+.sess .d{font-size:11px;color:var(--dim2)}
+.sess .meta{font-size:12px;color:var(--dim);margin-top:5px}
+.cost{font-size:12px;margin-top:7px;padding-top:7px;border-top:1px solid var(--line)}
+
+.empty{text-align:center;padding:34px 18px;color:var(--dim2);font-size:13.5px}
+.note{font-size:11.5px;color:var(--dim2);line-height:1.5;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim2);font-weight:700}
+td.num{text-align:right}
+.zg{display:flex;gap:5px}
+.zg span{flex:1;display:flex;flex-direction:column;gap:3px;align-items:center}
+.zg i{font-style:normal;font-size:10px;color:var(--dim2);font-weight:700;letter-spacing:.05em}
+.zg input{padding:9px 4px;text-align:center;font-size:15px}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:var(--amber);color:#0A1113;
+  padding:12px 20px;border-radius:10px;font-weight:700;font-size:14px;z-index:99;opacity:0;pointer-events:none;
+  transition:opacity .25s}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>Cockpit</h1>
+    <span class="date mono" id="today"></span>
+  </div>
+</header>
+
+<nav>
+  <button class="on" data-t="now">Aujourd'hui</button>
+  <button data-t="trend">Tendances</button>
+  <button data-t="sess">Séances</button>
+  <button data-t="eff">Effets</button>
+  <button data-t="ref">Repères</button>
+</nav>
+
+<main>
+
+<!-- ============ AUJOURD'HUI ============ -->
+<section class="tab on" id="t-now">
+  <div id="verdictBox"></div>
+
+  <div class="card">
+    <h2>Importer depuis Garmin</h2>
+    <p class="sub" style="margin:-4px 0 12px">Dépose un fichier exporté de Connect (.fit, .zip ou .csv). L'app reconnaît le type toute seule et remplit ce qu'elle peut. Tu peux toujours corriger ou compléter à la main juste en dessous.</p>
+    <input type="file" id="impFile" accept=".fit,.zip,.csv" multiple class="vh">
+    <label class="go" for="impFile" style="margin-top:0;display:block;text-align:center">Choisir un ou plusieurs fichiers</label>
+    <div id="impResult"></div>
+  </div>
+
+  <div class="card">
+    <h2>Relevé du matin</h2>
+    <div class="grid">
+      <div class="f"><label>VFC / HRV <u>ms</u></label><input type="number" id="i-hrv" inputmode="decimal" placeholder="47"></div>
+      <div class="f"><label>FC nocturne <u>bpm</u></label><input type="number" id="i-hrn" inputmode="decimal" placeholder="55"></div>
+      <div class="f"><label>Score sommeil</label><input type="number" id="i-ss" inputmode="numeric" placeholder="84"></div>
+      <div class="f"><label>Durée sommeil <u>h:mm</u></label><input type="text" id="i-sd" inputmode="text" placeholder="8:00"></div>
+      <div class="f"><label>Body Battery <u>réveil</u></label><input type="number" id="i-bb" inputmode="numeric" placeholder="85"></div>
+      <div class="f"><label>FC repos <u>bpm</u></label><input type="number" id="i-rhr" inputmode="numeric" placeholder="49"></div>
+      <div class="f"><label>Respiration nuit <u>/min</u></label><input type="number" id="i-rr" inputmode="decimal" step="0.1" placeholder="11.3"></div>
+      <div class="f"><label>Stress moyen <u>veille</u></label><input type="number" id="i-st" inputmode="numeric" placeholder="28"></div>
+    </div>
+
+    <div class="f full" style="margin-top:14px">
+      <label>Énergie ressentie</label>
+      <div class="seg" id="s-energy"></div>
+    </div>
+    <div class="f full" style="margin-top:10px">
+      <label>Courbatures / douleurs</label>
+      <div class="seg" id="s-sore"></div>
+    </div>
+    <div class="f full" style="margin-top:10px">
+      <label>Motivation</label>
+      <div class="seg" id="s-motiv"></div>
+    </div>
+
+    <div class="f full" style="margin-top:14px">
+      <label>Séance prévue aujourd'hui</label>
+      <select id="i-plan">
+        <option value="free">À décider — dis-moi quoi faire</option>
+        <option value="push">PPL — Push (pecs / épaules / triceps)</option>
+        <option value="pull">PPL — Pull (dos / biceps)</option>
+        <option value="legs">PPL — Legs (jambes)</option>
+        <option value="strength">Musculation (générique)</option>
+        <option value="vo2">VO2max / fractionné</option>
+        <option value="z2">Cardio zone 2</option>
+        <option value="crossfit">CrossFit / HIIT</option>
+        <option value="row">Rameur</option>
+        <option value="walk">Marche</option>
+        <option value="rest">Repos prévu</option>
+      </select>
+    </div>
+
+    <button class="go" id="save">Calculer ma readiness</button>
+    <p class="note" id="savedNote"></p>
+  </div>
+
+  <div class="card">
+    <h2>Hier soir</h2>
+    <p class="sub" style="margin:-4px 0 13px">Ces quatre lignes expliqueront la plupart de tes mauvaises nuits. Laisse vide si rien à signaler.</p>
+
+    <div class="f full"><label>Alcool <u>nombre de verres</u></label>
+      <div class="seg" id="s-alc"></div></div>
+
+    <div class="grid" style="margin-top:11px">
+      <div class="f"><label>Heure du dernier verre</label><input type="text" id="i-alch" inputmode="text" placeholder="21:30"></div>
+      <div class="f"><label>Fin du dîner</label><input type="text" id="i-dinh" inputmode="text" placeholder="20:15"></div>
+    </div>
+
+    <div class="f full" style="margin-top:11px"><label>Type de dîner</label>
+      <div class="seg" id="s-din"></div></div>
+
+    <div class="f full" style="margin-top:11px"><label>Charge mentale de la journée</label>
+      <div class="seg" id="s-load"></div></div>
+
+    <div class="grid" style="margin-top:13px">
+      <div class="f"><label>Heure de coucher</label><input type="text" id="i-bed" inputmode="text" placeholder="23:15"></div>
+      <div class="f"><label>Heure de lever</label><input type="text" id="i-wake" inputmode="text" placeholder="07:00"></div>
+      <div class="f"><label>Temp. chambre <u>au coucher</u></label><input type="number" id="i-tmp" inputmode="decimal" step="0.5" placeholder="21"></div>
+      <div class="f"><label>Temp. chambre <u>au lever</u></label><input type="number" id="i-tmpw" inputmode="decimal" step="0.5" placeholder="23"></div>
+      <p class="note full" id="tibNote" style="margin:0"></p>
+      <div class="f full"><label>Symptômes</label>
+        <select id="i-sym">
+          <option value="">Aucun</option>
+          <option value="gorge">Gorge / ORL</option>
+          <option value="nez">Nez qui coule</option>
+          <option value="fievre">Fièvre / courbatures</option>
+          <option value="digestif">Digestif</option>
+          <option value="autre">Autre</option>
+        </select></div>
+      <div class="f"><label>Poids <u>1×/semaine</u></label>
+        <input type="number" id="i-wt" inputmode="decimal" step="0.1" placeholder="71.7"></div>
+      <div class="f"><label>VO2max <u>quand il change</u></label>
+        <input type="number" id="i-vo2" inputmode="decimal" step="0.1" placeholder="52"></div>
+    </div>
+
+    <button class="go" id="saveEve">Enregistrer</button>
+  </div>
+
+  <div class="card">
+    <h2>Écarts à ta baseline 28 jours</h2>
+    <div class="rows" id="devRows"></div>
+    <p class="note">La baseline se recalcule en continu sur tes 28 derniers jours. Elle est initialisée avec tes 120 derniers jours Garmin, donc elle est déjà fiable.<br><br>
+    Le score combine ta valeur du jour et ta moyenne 7 jours, pour éviter qu'une nuit atypique déclenche une fausse alerte. C'est un résumé d'état, pas une prédiction validée : ce qui est solidement établi sur tes données, c'est la dose-réponse Z4+Z5 et le retour à la normale en 1 jour. Le score, lui, reste un indicateur à croiser avec ton ressenti.</p>
+  </div>
+</section>
+
+<!-- ============ TENDANCES ============ -->
+<section class="tab" id="t-trend">
+  <div id="alerts"></div>
+
+  <div class="card">
+    <h2>VFC et corridor de baseline · 45 jours</h2>
+    <div id="c-hrv"></div>
+    <div class="lg"><span><i style="background:var(--amber)"></i>VFC quotidienne</span>
+      <span><i style="background:#2E4046"></i>Corridor ±1σ</span>
+      <span><i style="background:var(--jade)"></i>Moyenne 7j</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Charge d'entraînement · aiguë vs chronique</h2>
+    <div id="c-load"></div>
+    <div class="lg"><span><i style="background:var(--clay)"></i>Charge aiguë 7j</span>
+      <span><i style="background:var(--steel)"></i>Charge chronique 28j</span></div>
+    <div id="acwrBox"></div>
+  </div>
+
+  <div class="card">
+    <h2>FC nocturne · 45 jours</h2>
+    <div id="c-hrn"></div>
+    <p class="note">Une FC nocturne qui monte plusieurs jours d'affilée est ton signal d'alerte le plus précoce, souvent avant que la fatigue se ressente.</p>
+  </div>
+
+  <div class="card">
+    <h2>Sommeil · 45 jours</h2>
+    <div id="c-sleep"></div>
+  </div>
+</section>
+
+<!-- ============ SÉANCES ============ -->
+<section class="tab" id="t-sess">
+  <div class="card">
+    <h2>Importer depuis Garmin</h2>
+    <p class="sub" style="margin-bottom:11px">Sur Garmin Connect, ouvre une activité → menu ⋮ → <b>Exporter l'original</b>. Dépose ici le .zip ou le .fit : le type, la durée, les FC et surtout le <b>temps en Z4+Z5</b> sont lus automatiquement. Tu peux en déposer plusieurs d'un coup.</p>
+    <label class="go" for="impFile" style="margin-top:0;display:block;text-align:center">Choisir un ou plusieurs fichiers</label>
+    <div id="impResult2"></div>
+  </div>
+
+  <div class="card">
+    <h2>Ou saisir à la main</h2>
+    <div class="grid">
+      <div class="f full"><label>Type</label>
+        <select id="l-type">
+          <option value="push">PPL — Push</option>
+          <option value="pull">PPL — Pull</option>
+          <option value="legs">PPL — Legs</option>
+          <option value="strength">Musculation (générique)</option>
+          <option value="vo2">VO2max / fractionné</option>
+          <option value="crossfit">CrossFit / HIIT</option>
+          <option value="row">Rameur</option>
+          <option value="z2">Cardio zone 2</option>
+          <option value="walk">Marche</option>
+          <option value="other">Autre</option>
+        </select></div>
+      <div class="f"><label>Durée <u>min</u></label><input type="number" id="l-dur" inputmode="numeric" placeholder="45"></div>
+      <div class="f"><label>Min. en Z4+Z5 <u>&gt;154 bpm</u></label><input type="number" id="l-z45" inputmode="numeric" placeholder="0"></div>
+      <div class="f full" style="margin-top:2px"><label>Détail par zone <u>optionnel — affine la charge et l'analyse VO2max</u></label>
+        <div class="zg">
+          <span><i>Z1</i><input type="number" id="l-zn1" inputmode="numeric" placeholder="0"></span>
+          <span><i>Z2</i><input type="number" id="l-zn2" inputmode="numeric" placeholder="0"></span>
+          <span><i>Z3</i><input type="number" id="l-zn3" inputmode="numeric" placeholder="0"></span>
+          <span><i>Z4</i><input type="number" id="l-zn4" inputmode="numeric" placeholder="0"></span>
+          <span><i>Z5</i><input type="number" id="l-zn5" inputmode="numeric" placeholder="0"></span>
+        </div></div>
+      <div class="f"><label>FC moyenne</label><input type="number" id="l-hr" inputmode="numeric" placeholder="130"></div>
+      <div class="f"><label>RPE <u>1–10</u></label><input type="number" id="l-rpe" inputmode="numeric" min="1" max="10" placeholder="7"></div>
+      <div class="f"><label>Heure de fin</label><input type="text" id="l-end" inputmode="text" placeholder="18:30"></div>
+    </div>
+    <p class="note" id="endWarn" style="margin-top:4px"></p>
+    <button class="go" id="logSess">Enregistrer la séance</button>
+  </div>
+
+  <div class="card">
+    <h2>Coût réel par type de séance</h2>
+    <p class="sub" style="margin-bottom:11px">Variation de ta VFC le lendemain, mesurée sur ton historique. Se précise à chaque séance enregistrée.</p>
+    <div id="costTable"></div>
+  </div>
+
+  <div class="card">
+    <h2>Séances enregistrées</h2>
+    <div class="slist" id="sessList"></div>
+  </div>
+</section>
+
+<!-- ============ EFFETS ============ -->
+<section class="tab" id="t-eff">
+  <div class="card">
+    <h2>Ce qui agit sur toi</h2>
+    <p class="sub">Chaque facteur compare tes nuits <b>avec</b> et <b>sans</b>, sur tes données à toi. Tant qu'il n'y a pas assez de jours dans les deux groupes, l'outil affiche ce qu'il manque plutôt qu'un chiffre trompeur.</p>
+  </div>
+  <div id="effects"></div>
+  <div class="card">
+    <h2>Température de la chambre</h2>
+    <div id="tempCard"></div>
+  </div>
+  <div class="card">
+    <h2>Temps en zone et VO2max</h2>
+    <div id="zoneVo2"></div>
+  </div>
+  <div class="card">
+    <p class="note">Ces comparaisons sont observationnelles : elles montrent des associations, pas des causes. Un soir d'alcool est souvent aussi un soir de coucher tardif et de repas copieux — l'outil ne sait pas démêler les trois. Traite-les comme des pistes à tester, pas comme des verdicts.</p>
+  </div>
+</section>
+
+<!-- ============ REPÈRES ============ -->
+<section class="tab" id="t-ref">
+  <div class="card">
+    <h2>Tes zones de fréquence cardiaque</h2>
+    <div class="rows" id="zoneRows"></div>
+    <p class="note">Basées sur FC max 193 et FC repos 49 relevées dans ton export Garmin.</p>
+  </div>
+
+  <div class="card">
+    <h2>Règles issues de tes données</h2>
+    <div class="rows" id="ruleRows"></div>
+  </div>
+
+  <div class="card">
+    <h2>Tes données</h2>
+    <p class="sub" id="histInfo"></p>
+    <div class="rows" style="margin-top:11px" id="storeRows"></div>
+    <button class="ghost" id="export">Exporter une sauvegarde</button>
+    <label class="ghost" for="importFile" style="display:block;text-align:center">Importer une sauvegarde</label>
+    <input type="file" id="importFile" accept=".json" class="vh">
+    <button class="ghost" id="reset">Effacer mes saisies</button>
+    <p class="note">Tes saisies sont stockées dans ce téléphone, pas sur un serveur. Elles survivent à la fermeture de l'app, mais seraient perdues si tu vides les données du navigateur ou changes d'appareil — d'où l'export. Une sauvegarde par mois suffit largement.<br><br>
+    L'effacement ne touche que tes saisies. Les 120 jours d'historique Garmin sont intégrés au fichier et restent toujours là.</p>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   INSTALLATION — manifeste généré à la volée (fichier unique)
+   ========================================================= */
+(function(){
+  try{
+    const m = {
+      name:"Cockpit — pilotage d'entraînement", short_name:"Cockpit",
+      start_url:".", scope:".", display:"standalone",
+      background_color:"#0A1113", theme_color:"#0A1113", orientation:"portrait",
+      icons:[{src:"data:image/png;base64,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nMCGDlAb3SiAflYFuvTnNFYFuvTvSQF0tTDWpT8nszDWpX9nLgMd4MWFoaKfE3t9baj0788EMMCzlJf+nNuLiJf+QyiAMe6zXvqT4GHQS/9RFMAUpD85xP08FMAw19CX/qS57QB9MJBDYIBQJgCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABCKQCAUAoAIJQCAAilAABC/R8BmCDC9RyoMQAAAABJRU5ErkJggg==", sizes:"512x512", type:"image/png", purpose:"any maskable"}]
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
+    document.getElementById('manifest').href = url;
+  }catch(e){}
+})();
+
+
+/* =========================================================
+   DONNÉES DE DÉPART — 120 derniers jours de l'export Garmin
+   ========================================================= */
+const SEED = [{"d":"2026-04-12","hrv":55.0,"hrn":55.0,"rhr":50,"ss":98,"sd":480.0,"bb":97,"rr":11.0,"z45":5.2,"ld":98.3,"ty":"hiit|walking","dur":85.4,"eh":15.5,"z":[44.1,17.1,4.8,14.0,5.2,0],"vo":51.0},{"d":"2026-04-13","hrv":48.0,"hrn":53.0,"rhr":50,"ss":94,"sd":507.0,"bb":100,"st":23,"rr":10.6,"z45":0,"ld":2.7,"ty":"walking","dur":13.5,"dlt":6.8,"eh":12.8,"z":[13.5,0,0,0,0,0]},{"d":"2026-04-14","hrv":43.0,"hrn":53.0,"rhr":50,"ss":90,"sd":445.0,"bb":94,"st":23,"rr":11.1,"z45":0,"ld":5.0,"ty":"walking","dur":11.3,"dlt":10.7,"eh":13.1,"z":[8.5,2.5,0.4,0,0,0]},{"d":"2026-04-15","hrv":44.0,"hrn":57.0,"rhr":50,"ss":89,"sd":531.0,"bb":96,"st":25,"rr":11.9,"z45":21.4,"ld":184.6,"ty":"strength_training|walking","dur":87.4,"dlt":9.4,"eh":19.4,"z":[45.8,9.1,2.6,8.7,19.8,1.6],"vo":51.0},{"d":"2026-04-16","hrv":35.0,"hrn":60.0,"rhr":51,"ss":82,"sd":490.0,"bb":69,"st":27,"rr":11.2,"z45":0,"ld":18.6,"ty":"walking","dur":31.5,"dlt":3.9,"eh":15.2,"z":[16.2,15.4,0,0,0,0],"vo":51.0},{"d":"2026-04-17","hrv":45.0,"hrn":55.0,"rhr":51,"ss":81,"sd":435.0,"bb":94,"st":27,"rr":11.2,"z45":0,"ld":96.3,"ty":"indoor_rowing|walking","dur":80.0,"dlt":7.8,"eh":17.2,"z":[30.6,9.2,39.9,0.4,0,0],"vo":51.0},{"d":"2026-04-18","hrv":46.0,"hrn":59.0,"rhr":50,"ss":71,"sd":538.0,"bb":88,"st":25,"rr":11.0,"z45":12.1,"ld":123.3,"ty":"hiit","dur":57.0,"dlt":5.6,"eh":11.8,"z":[9.4,10.8,14.3,10.5,10.0,2.1]},{"d":"2026-04-19","hrv":50.0,"hrn":54.0,"rhr":50,"ss":90,"sd":513.0,"bb":100,"st":25,"rr":10.3,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":11.3},{"d":"2026-04-20","hrv":53.0,"hrn":53.0,"rhr":50,"ss":93,"sd":480.0,"bb":100,"st":22,"rr":10.0,"z45":6.6,"ld":84.0,"ty":"hiit|walking","dur":76.6,"eh":19.4,"z":[40.1,16.1,8.4,5.5,6.4,0.2],"vo":51.0},{"d":"2026-04-21","hrv":41.0,"hrn":56.0,"rhr":50,"ss":89,"sd":447.0,"bb":89,"st":20,"rr":10.9,"z45":0,"ld":5.9,"ty":"walking","dur":22.9,"dlt":3.3,"eh":13.2,"z":[21.3,1.6,0,0,0,0],"vo":51.0},{"d":"2026-04-22","hrv":51.0,"hrn":55.0,"rhr":50,"ss":88,"sd":519.0,"bb":100,"st":24,"rr":10.7,"z45":4.6,"ld":160.0,"ty":"strength_training|walking","dur":82.9,"dlt":9.3,"eh":19.6,"z":[32.1,13.3,18.3,14.6,4.6,0],"vo":51.0},{"d":"2026-04-23","hrv":48.0,"hrn":57.0,"rhr":50,"ss":93,"sd":466.0,"bb":94,"st":20,"rr":10.8,"z45":0,"ld":42.7,"ty":"walking","dur":65.1,"dlt":3.0,"eh":15.1,"z":[28.0,37.1,0,0,0,0],"vo":51.0},{"d":"2026-04-24","hrv":50.0,"hrn":55.0,"rhr":50,"ss":84,"sd":495.0,"bb":95,"st":28,"rr":10.4,"z45":0,"ld":82.3,"ty":"indoor_rowing|walking","dur":68.7,"dlt":7.4,"eh":17.8,"z":[23.6,12.8,32.4,0,0,0],"vo":51.0},{"d":"2026-04-25","hrv":55.0,"hrn":51.0,"rhr":49,"ss":95,"sd":476.0,"bb":100,"st":20,"rr":10.2,"z45":0,"ld":8.1,"ty":"walking","dur":40.4,"dlt":6.0,"eh":15.1,"z":[40.4,0,0,0,0,0],"vo":51.0},{"d":"2026-04-26","hrv":49.0,"hrn":58.0,"rhr":50,"ss":83,"sd":514.0,"bb":87,"st":21,"rr":10.9,"z45":13.3,"ld":128.2,"ty":"hiit|walking","dur":80.1,"dlt":8.5,"eh":15.8,"z":[31.1,16.7,6.1,12.8,11.8,1.5],"vo":51.0},{"d":"2026-04-27","hrv":53.0,"hrn":53.0,"rhr":49,"ss":86,"sd":510.0,"bb":99,"st":30,"rr":10.4,"z45":0,"ld":2.5,"ty":"walking","dur":12.4,"dlt":6.3,"eh":12.7,"z":[12.4,0,0,0,0,0],"vo":51.0},{"d":"2026-04-28","hrv":47.0,"hrn":56.0,"rhr":49,"ss":89,"sd":490.0,"bb":92,"st":18,"rr":10.7,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":10.1},{"d":"2026-04-29","hrv":48.0,"hrn":54.0,"rhr":49,"ss":92,"sd":502.0,"bb":94,"st":24,"rr":10.5,"z45":0,"ld":13.6,"ty":"walking","dur":41.1,"eh":17.1,"z":[34.3,6.7,0,0,0,0],"vo":51.0},{"d":"2026-04-30","hrv":37.0,"hrn":59.0,"rhr":49,"ss":80,"sd":457.0,"bb":62,"st":29,"rr":11.2,"z45":0,"ld":103.5,"ty":"indoor_rowing|walking","dur":79.0,"dlt":5.9,"eh":16.5,"z":[17.1,24.4,36.8,0.7,0,0],"vo":51.0},{"d":"2026-05-01","hrv":49.0,"hrn":56.0,"rhr":49,"ss":88,"sd":519.0,"bb":85,"st":32,"rr":10.3,"z45":0,"ld":2.4,"ty":"walking","dur":12.0,"dlt":6.4,"eh":10.8,"z":[12.0,0,0,0,0,0],"vo":51.0},{"d":"2026-05-02","hrv":50.0,"hrn":55.0,"rhr":49,"ss":84,"sd":503.0,"bb":99,"st":25,"rr":10.7,"z45":4.6,"ld":85.4,"ty":"hiit","dur":49.6,"dlt":11.8,"eh":11.9,"z":[6.3,19.1,11.9,7.6,4.6,0]},{"d":"2026-05-03","hrv":37.0,"hrn":62.0,"rhr":50,"ss":65,"sd":344.0,"bb":47,"st":30,"rr":12.7,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":14.5},{"d":"2026-05-04","hrv":48.0,"hrn":55.0,"rhr":50,"ss":85,"sd":503.0,"bb":92,"st":30,"rr":10.7,"z45":0,"ld":96.0,"ty":"indoor_rowing|walking","dur":63.3,"eh":18.2,"z":[15.2,11.3,28.4,8.3,0,0],"vo":51.0},{"d":"2026-05-05","hrv":46.0,"hrn":57.0,"rhr":50,"ss":82,"sd":465.0,"bb":84,"st":24,"rr":10.7,"z45":0,"ld":16.6,"ty":"walking","dur":25.2,"dlt":5.0,"eh":19.1,"z":[13.8,8.8,2.5,0,0,0],"vo":51.0},{"d":"2026-05-06","hrv":47.0,"hrn":55.0,"rhr":50,"ss":91,"sd":507.0,"bb":84,"st":31,"rr":11.5,"z45":0,"ld":5.0,"ty":"walking","dur":24.2,"dlt":3.2,"eh":17.9,"z":[24.0,0.2,0,0,0,0],"vo":51.0},{"d":"2026-05-07","hrv":45.0,"hrn":55.0,"rhr":50,"ss":87,"sd":491.0,"bb":91,"st":23,"rr":10.9,"z45":6.4,"ld":82.4,"ty":"hiit|walking","dur":58.3,"dlt":5.0,"eh":18.9,"z":[20.4,17.7,11.8,2.0,1.0,5.4],"vo":51.0},{"d":"2026-05-08","hrv":39.0,"hrn":57.0,"rhr":51,"ss":83,"sd":465.0,"bb":68,"st":28,"rr":11.4,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":5.7},{"d":"2026-05-09","hrv":44.0,"hrn":54.0,"rhr":51,"ss":94,"sd":498.0,"bb":89,"st":29,"rr":10.7,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-05-10","hrv":48.0,"hrn":55.0,"rhr":50,"ss":84,"sd":504.0,"bb":97,"st":24,"rr":10.5,"z45":28.2,"ld":159.5,"ty":"hiit","dur":52.6,"eh":12.3,"z":[5.5,6.5,2.9,9.5,23.4,4.8]},{"d":"2026-05-11","hrv":42.0,"hrn":55.0,"rhr":50,"ss":88,"sd":495.0,"bb":82,"st":30,"rr":10.7,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":10.3},{"d":"2026-05-12","hrv":41.0,"hrn":57.0,"rhr":50,"ss":74,"sd":417.0,"bb":70,"st":31,"rr":11.7,"z45":0,"ld":29.2,"ty":"walking","dur":73.4,"eh":18.5,"z":[56.0,16.8,0.6,0,0,0],"vo":51.0},{"d":"2026-05-13","hrv":51.0,"hrn":55.0,"rhr":50,"ss":92,"sd":538.0,"bb":90,"st":39,"rr":10.9,"z45":0,"ld":78.9,"ty":"indoor_rowing","dur":43.7,"dlt":3.9,"eh":10.3,"z":[1.6,6.6,34.2,1.2,0,0]},{"d":"2026-05-14","hrv":44.0,"hrn":59.0,"rhr":51,"ss":77,"sd":449.0,"bb":77,"st":24,"rr":10.9,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":13.1},{"d":"2026-05-15","hrv":51.0,"hrn":56.0,"rhr":50,"ss":90,"sd":498.0,"bb":92,"st":25,"rr":11.0,"z45":0,"ld":21.7,"ty":"walking","dur":101.1,"eh":17.6,"z":[99.3,1.8,0,0,0,0],"vo":51.0},{"d":"2026-05-16","hrv":44.0,"hrn":56.0,"rhr":51,"ss":86,"sd":528.0,"bb":81,"st":25,"rr":10.9,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":5.6},{"d":"2026-05-17","hrv":35.0,"hrn":61.0,"rhr":52,"ss":76,"sd":478.0,"bb":63,"st":27,"rr":11.8,"z45":14.9,"ld":108.1,"ty":"hiit","dur":32.8,"eh":12.3,"z":[0.3,0.6,5.1,12.0,13.3,1.6]},{"d":"2026-05-18","hrv":44.0,"hrn":54.0,"rhr":52,"ss":91,"sd":526.0,"bb":91,"st":33,"rr":11.2,"z45":14.3,"ld":112.0,"ty":"hiit","dur":53.0,"dlt":10.5,"eh":19.1,"z":[8.3,17.9,5.8,6.8,11.1,3.2]},{"d":"2026-05-19","hrv":36.0,"hrn":59.0,"rhr":52,"ss":80,"sd":460.0,"bb":65,"st":29,"rr":12.1,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":3.9},{"d":"2026-05-20","hrv":40.0,"hrn":59.0,"rhr":52,"ss":82,"sd":493.0,"bb":80,"st":25,"rr":12.1,"z45":0,"ld":81.8,"ty":"indoor_cardio|walking","dur":60.7,"eh":19.1,"z":[13.7,16.3,29.3,1.4,0,0],"vo":51.0},{"d":"2026-05-21","hrv":42.0,"hrn":58.0,"rhr":52,"ss":81,"sd":479.0,"bb":68,"st":33,"rr":11.1,"z45":0,"ld":2.7,"ty":"walking","dur":13.6,"dlt":3.9,"eh":12.9,"z":[13.6,0,0,0,0,0],"vo":51.0},{"d":"2026-05-22","hrv":36.0,"hrn":60.0,"rhr":52,"ss":82,"sd":472.0,"bb":71,"st":29,"rr":12.1,"z45":0,"ld":7.5,"ty":"walking","dur":17.3,"dlt":10.2,"eh":17.5,"z":[12.3,5.0,0,0,0,0],"vo":51.0},{"d":"2026-05-23","hrv":46.0,"hrn":56.0,"rhr":52,"ss":89,"sd":553.0,"bb":89,"st":31,"rr":11.4,"z45":0,"ld":1.3,"ty":"lap_swimming","dur":3.1,"dlt":6.0,"eh":17.6,"z":[2.3,0.8,0,0,0,0]},{"d":"2026-05-24","hrv":53.0,"hrn":54.0,"rhr":52,"ss":79,"sd":449.0,"bb":89,"st":31,"rr":10.9,"z45":13.4,"ld":114.4,"ty":"hiit","dur":37.8,"dlt":6.2,"eh":12.3,"z":[0.3,2.6,7.3,14.3,12.8,0.6]},{"d":"2026-05-25","hrv":43.0,"hrn":56.0,"rhr":51,"ss":86,"sd":478.0,"bb":79,"st":30,"rr":11.2,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":11.8},{"d":"2026-05-26","hrv":46.0,"hrn":56.0,"rhr":51,"ss":85,"sd":485.0,"bb":91,"st":32,"rr":11.0,"z45":0,"ld":7.1,"ty":"walking","dur":29.6,"eh":12.1,"z":[28.3,1.4,0,0,0,0],"vo":51.0},{"d":"2026-05-27","hrv":55.0,"hrn":55.0,"rhr":50,"ss":81,"sd":469.0,"bb":100,"st":25,"rr":11.1,"z45":20.8,"ld":230.4,"ty":"strength_training|walking","dur":92.8,"dlt":10.8,"eh":19.6,"z":[26.0,21.6,12.4,11.9,20.6,0.2],"vo":50.0},{"d":"2026-05-28","hrv":40.0,"hrn":59.0,"rhr":50,"ss":83,"sd":486.0,"bb":74,"st":27,"rr":12.3,"z45":0,"ld":2.2,"ty":"walking","dur":11.1,"dlt":3.1,"eh":19.9,"z":[11.1,0,0,0,0,0],"vo":50.0},{"d":"2026-05-29","hrv":44.0,"hrn":59.0,"rhr":50,"ss":81,"sd":476.0,"bb":79,"st":33,"rr":12.7,"z45":38.6,"ld":212.3,"ty":"hiit","dur":60.9,"dlt":4.2,"eh":19.7,"z":[0.6,2.8,4.6,14.3,35.7,2.9]},{"d":"2026-05-30","hrv":37.0,"hrn":61.0,"rhr":51,"ss":78,"sd":548.0,"bb":62,"st":33,"rr":11.9,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":3.9},{"d":"2026-05-31","hrv":50.0,"hrn":56.0,"rhr":51,"ss":85,"sd":437.0,"bb":94,"st":29,"rr":11.0,"z45":17.8,"ld":113.0,"ty":"hiit","dur":36.3,"eh":12.3,"z":[0.9,1.9,7.9,7.8,17.3,0.5]},{"d":"2026-06-01","hrv":39.0,"hrn":60.0,"rhr":51,"ss":78,"sd":447.0,"bb":75,"st":28,"rr":11.6,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":10.9},{"d":"2026-06-02","hrv":46.0,"hrn":57.0,"rhr":51,"ss":83,"sd":500.0,"bb":84,"st":39,"rr":11.7,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-06-03","hrv":52.0,"hrn":55.0,"rhr":51,"ss":87,"sd":484.0,"bb":98,"st":26,"rr":11.3,"z45":7.8,"ld":145.1,"ty":"strength_training","dur":41.5,"eh":19.5,"z":[1.0,6.9,7.9,17.8,7.8,0]},{"d":"2026-06-04","hrv":50.0,"hrn":55.0,"rhr":51,"ss":81,"sd":383.0,"bb":78,"st":27,"rr":10.7,"z45":0,"ld":64.7,"ty":"indoor_rowing|walking","dur":44.5,"dlt":5.1,"eh":19.2,"z":[12.3,3.1,28.5,0.7,0,0]},{"d":"2026-06-05","hrv":55.0,"hrn":55.0,"rhr":51,"ss":92,"sd":463.0,"bb":97,"st":27,"rr":11.4,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":5.1},{"d":"2026-06-06","hrv":42.0,"hrn":56.0,"rhr":50,"ss":83,"sd":459.0,"bb":88,"st":22,"rr":11.2,"z45":37.1,"ld":173.5,"ty":"hiit","dur":39.2,"eh":11.8,"z":[0.3,0.7,0,1.1,16.1,21.0]},{"d":"2026-06-07","hrv":48.0,"hrn":54.0,"rhr":50,"ss":90,"sd":489.0,"bb":92,"st":31,"rr":11.2,"z45":0,"ld":17.0,"ty":"walking","dur":44.4,"dlt":11.3,"eh":14.8,"z":[34.3,10.1,0,0,0,0],"vo":50.0},{"d":"2026-06-08","hrv":54.0,"hrn":53.0,"rhr":49,"ss":93,"sd":504.0,"bb":100,"st":21,"rr":10.7,"z45":13.0,"ld":147.3,"ty":"hiit|walking","dur":79.4,"dlt":8.2,"eh":11.3,"z":[8.2,32.3,18.5,7.5,11.1,1.9],"vo":50.0},{"d":"2026-06-09","hrv":51.0,"hrn":54.0,"rhr":49,"ss":86,"sd":447.0,"bb":89,"st":29,"rr":10.5,"z45":0,"ld":2.8,"ty":"walking","dur":13.8,"dlt":12.3,"eh":18.1,"z":[13.8,0,0,0,0,0],"vo":50.0},{"d":"2026-06-10","hrv":51.0,"hrn":56.0,"rhr":49,"ss":85,"sd":492.0,"bb":99,"st":22,"rr":10.8,"z45":13.8,"ld":179.0,"ty":"strength_training|walking","dur":80.7,"dlt":5.2,"eh":19.5,"z":[38.1,3.9,9.7,15.3,13.2,0.6],"vo":51.0},{"d":"2026-06-11","hrv":44.0,"hrn":57.0,"rhr":49,"ss":84,"sd":469.0,"bb":79,"st":21,"rr":11.3,"z45":0,"ld":4.0,"ty":"walking","dur":17.4,"dlt":3.8,"eh":16.5,"z":[16.6,0.7,0,0,0,0],"vo":51.0},{"d":"2026-06-12","hrv":53.0,"hrn":53.0,"rhr":49,"ss":89,"sd":453.0,"bb":100,"st":22,"rr":10.4,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":6.3},{"d":"2026-06-13","hrv":54.0,"hrn":57.0,"rhr":49,"ss":84,"sd":506.0,"bb":79,"st":41,"rr":11.9,"z45":0,"ld":7.7,"ty":"walking","dur":38.3,"eh":10.3,"z":[38.3,0,0,0,0,0],"vo":52.0},{"d":"2026-06-14","hrv":59.0,"hrn":55.0,"rhr":49,"ss":90,"sd":472.0,"bb":100,"st":24,"rr":11.4,"z45":16.5,"ld":79.1,"ty":"hiit","dur":21.2,"dlt":14.2,"eh":12.1,"z":[0,0.4,0.6,3.8,16.4,0.1]},{"d":"2026-06-15","hrv":47.0,"hrn":55.0,"rhr":49,"ss":85,"sd":433.0,"bb":89,"st":26,"rr":10.8,"z45":0,"ld":3.1,"ty":"walking","dur":15.4,"dlt":10.9,"eh":12.8,"z":[15.4,0,0,0,0,0]},{"d":"2026-06-16","hrv":42.0,"hrn":56.0,"rhr":50,"ss":87,"sd":473.0,"bb":89,"st":22,"rr":11.4,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":10.0},{"d":"2026-06-17","hrv":41.0,"hrn":59.0,"rhr":50,"ss":79,"sd":447.0,"bb":72,"st":33,"rr":11.4,"z45":0,"ld":59.5,"ty":"indoor_rowing","dur":30.9,"eh":18.5,"z":[0.8,0.9,29.2,0,0,0]},{"d":"2026-06-18","hrv":46.0,"hrn":56.0,"rhr":50,"ss":88,"sd":469.0,"bb":88,"st":27,"rr":10.8,"z45":30.0,"ld":182.2,"ty":"hiit","dur":51.5,"dlt":4.6,"eh":19.8,"z":[0.4,1.4,5.0,14.2,23.9,6.1]},{"d":"2026-06-19","hrv":45.0,"hrn":58.0,"rhr":50,"ss":77,"sd":436.0,"bb":75,"st":31,"rr":11.9,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":3.6},{"d":"2026-06-20","hrv":48.0,"hrn":58.0,"rhr":51,"ss":70,"sd":428.0,"bb":84,"st":27,"rr":11.2,"z45":4.7,"ld":78.5,"ty":"hiit","dur":38.2,"eh":11.6,"z":[3.6,11.2,8.3,10.4,4.7,0]},{"d":"2026-06-21","hrv":42.0,"hrn":59.0,"rhr":51,"ss":84,"sd":508.0,"bb":63,"st":32,"rr":11.4,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":12.2},{"d":"2026-06-22","hrv":52.0,"hrn":55.0,"rhr":51,"ss":78,"sd":424.0,"bb":88,"st":30,"rr":11.2,"z45":0,"ld":32.0,"ty":"walking","dur":47.6,"eh":17.9,"z":[21.0,25.4,1.2,0,0,0],"vo":52.0},{"d":"2026-06-23","hrv":49.0,"hrn":54.0,"rhr":51,"ss":81,"sd":454.0,"bb":92,"st":26,"rr":10.8,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":5.3},{"d":"2026-06-24","hrv":48.0,"hrn":57.0,"rhr":50,"ss":82,"sd":465.0,"bb":87,"st":27,"rr":12.7,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-06-25","hrv":41.0,"hrn":62.0,"rhr":50,"ss":69,"sd":409.0,"bb":62,"st":32,"rr":14.3,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-06-26","hrv":49.0,"hrn":57.0,"rhr":50,"ss":85,"sd":480.0,"bb":79,"st":35,"rr":12.2,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-06-27","hrv":47.0,"hrn":54.0,"rhr":50,"ss":85,"sd":499.0,"bb":92,"st":24,"rr":11.3,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-06-28","hrv":56.0,"hrn":52.0,"rhr":49,"ss":82,"sd":468.0,"bb":89,"st":34,"rr":11.9,"z45":10.5,"ld":54.3,"ty":"hiit","dur":14.4,"eh":12.0,"z":[0,0,1.4,2.4,8.2,2.3]},{"d":"2026-06-29","hrv":46.0,"hrn":51.0,"rhr":49,"ss":93,"sd":506.0,"bb":96,"st":26,"rr":11.2,"z45":0,"ld":10.5,"ty":"walking","dur":52.3,"dlt":10.7,"eh":13.8,"z":[52.1,0.1,0,0,0,0],"vo":52.0},{"d":"2026-06-30","hrv":40.0,"hrn":58.0,"rhr":50,"ss":81,"sd":435.0,"bb":67,"st":24,"rr":11.0,"z45":0,"ld":8.2,"ty":"walking","dur":40.2,"dlt":10.2,"eh":10.0,"z":[39.9,0.2,0,0,0,0],"vo":52.0},{"d":"2026-07-01","hrv":54.0,"hrn":53.0,"rhr":50,"ss":86,"sd":437.0,"bb":96,"st":27,"rr":10.9,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":13.8},{"d":"2026-07-02","hrv":62.0,"hrn":51.0,"rhr":49,"ss":90,"sd":574.0,"bb":100,"st":17,"rr":10.8,"z45":13.2,"ld":95.5,"ty":"hiit|walking","dur":55.7,"eh":18.7,"z":[25.6,5.5,4.2,7.3,11.4,1.8],"vo":52.0},{"d":"2026-07-03","hrv":49.0,"hrn":54.0,"rhr":49,"ss":81,"sd":452.0,"bb":73,"st":31,"rr":11.2,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":5.7},{"d":"2026-07-04","hrv":50.0,"hrn":54.0,"rhr":49,"ss":82,"sd":478.0,"bb":90,"st":25,"rr":11.2,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-05","hrv":56.0,"hrn":55.0,"rhr":49,"ss":83,"sd":450.0,"bb":95,"st":24,"rr":10.9,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-06","hrv":49.0,"hrn":51.0,"rhr":49,"ss":87,"sd":503.0,"bb":94,"st":23,"rr":11.7,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-07","hrv":46.0,"hrn":55.0,"rhr":48,"ss":76,"sd":384.0,"bb":77,"st":27,"rr":13.2,"z45":0,"ld":100.4,"ty":"walking","dur":145.0,"eh":8.1,"z":[102.7,11.3,24.4,6.6,0,0],"vo":50.0},{"d":"2026-07-08","hrv":51.0,"hrn":54.0,"rhr":48,"ss":90,"sd":521.0,"bb":85,"st":39,"rr":11.0,"z45":0,"ld":36.2,"ty":"walking","dur":81.7,"dlt":14.2,"eh":11.1,"z":[61.9,16.3,3.0,0.5,0,0]},{"d":"2026-07-09","hrv":48.0,"hrn":53.0,"rhr":48,"ss":88,"sd":526.0,"bb":100,"st":27,"rr":11.0,"z45":13.9,"ld":122.1,"ty":"hiit","dur":46.2,"dlt":11.8,"eh":18.8,"z":[2.4,7.5,9.8,12.6,12.8,1.1]},{"d":"2026-07-10","hrv":40.0,"hrn":58.0,"rhr":48,"ss":76,"sd":518.0,"bb":69,"st":29,"rr":11.5,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":4.4},{"d":"2026-07-11","hrv":55.0,"hrn":54.0,"rhr":48,"ss":61,"sd":453.0,"bb":93,"st":31,"rr":12.2,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-12","hrv":50.0,"hrn":56.0,"rhr":48,"ss":83,"sd":461.0,"bb":83,"st":28,"rr":11.8,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-13","hrv":40.0,"hrn":53.0,"rhr":49,"ss":84,"sd":534.0,"bb":84,"st":27,"rr":12.4,"z45":0,"ld":6.1,"ty":"walking","dur":30.5,"eh":8.8,"z":[30.5,0,0,0,0,0],"vo":51.0},{"d":"2026-07-14","hrv":68.0,"hrn":48.0,"rhr":48,"ss":91,"sd":479.0,"bb":100,"st":24,"rr":10.6,"z45":0,"ld":4.8,"ty":"walking","dur":23.9,"dlt":14.8,"eh":10.4,"z":[23.9,0,0,0,0,0],"vo":52.0},{"d":"2026-07-15","hrv":56.0,"hrn":53.0,"rhr":48,"ss":87,"sd":432.0,"bb":84,"st":25,"rr":12.2,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":12.8},{"d":"2026-07-16","hrv":43.0,"hrn":58.0,"rhr":49,"ss":75,"sd":408.0,"bb":51,"st":32,"rr":13.4,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-17","hrv":47.0,"hrn":54.0,"rhr":49,"ss":87,"sd":481.0,"bb":76,"st":38,"rr":10.8,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-18","hrv":55.0,"hrn":52.0,"rhr":49,"ss":92,"sd":436.0,"bb":89,"st":30,"rr":11.4,"z45":15.7,"ld":130.1,"ty":"hiit","dur":46.3,"eh":11.7,"z":[1.2,5.9,10.6,12.9,14.9,0.8]},{"d":"2026-07-19","hrv":51.0,"hrn":53.0,"rhr":49,"ss":80,"sd":456.0,"bb":80,"st":31,"rr":10.6,"z45":0,"ld":6.9,"ty":"walking","dur":32.8,"dlt":12.5,"eh":10.1,"z":[32.5,0.4,0,0,0,0],"vo":52.0},{"d":"2026-07-20","hrv":48.0,"hrn":55.0,"rhr":49,"ss":81,"sd":480.0,"bb":81,"st":26,"rr":10.4,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":12.5},{"d":"2026-07-21","hrv":48.0,"hrn":54.0,"rhr":49,"ss":87,"sd":474.0,"bb":84,"st":28,"rr":10.9,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-22","hrv":45.0,"hrn":55.0,"rhr":50,"ss":84,"sd":485.0,"bb":73,"st":30,"rr":12.0,"z45":7.2,"ld":94.3,"ty":"hiit","dur":50.0,"eh":20.5,"z":[11.0,11.2,12.7,7.9,4.2,3.0]},{"d":"2026-07-23","hrv":39.0,"hrn":60.0,"rhr":49,"ss":76,"sd":468.0,"bb":61,"st":32,"rr":11.4,"z45":0,"ld":61.4,"ty":"indoor_rowing","dur":34.0,"dlt":3.3,"eh":17.2,"z":[0.8,5.9,26.6,0.7,0,0]},{"d":"2026-07-24","hrv":52.0,"hrn":54.0,"rhr":49,"ss":88,"sd":514.0,"bb":94,"st":29,"rr":10.7,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":5.7},{"d":"2026-07-25","hrv":48.0,"hrn":54.0,"rhr":50,"ss":85,"sd":524.0,"bb":75,"st":32,"rr":10.8,"z45":5.4,"ld":86.8,"ty":"hiit","dur":41.5,"eh":11.7,"z":[1.4,11.3,16.6,6.8,5.4,0]},{"d":"2026-07-26","hrv":55.0,"hrn":54.0,"rhr":50,"ss":86,"sd":538.0,"bb":82,"st":33,"rr":11.3,"z45":0,"ld":5.8,"ty":"walking","dur":29.2,"dlt":11.6,"eh":20.9,"z":[29.2,0,0,0,0,0]},{"d":"2026-07-27","hrv":48.0,"hrn":52.0,"rhr":49,"ss":95,"sd":483.0,"bb":93,"st":23,"rr":10.8,"z45":14.8,"ld":121.8,"ty":"indoor_rowing","dur":35.0,"dlt":2.6,"eh":18.5,"z":[0,0.8,5.1,14.3,6.1,8.7]},{"d":"2026-07-28","hrv":41.0,"hrn":54.0,"rhr":49,"ss":87,"sd":467.0,"bb":73,"st":36,"rr":11.1,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":4.5},{"d":"2026-07-29","hrv":48.0,"hrn":53.0,"rhr":49,"ss":83,"sd":454.0,"bb":88,"st":28,"rr":10.9,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-30","hrv":44.0,"hrn":55.0,"rhr":49,"ss":83,"sd":529.0,"bb":80,"st":28,"rr":11.2,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-07-31","hrv":45.0,"hrn":58.0,"rhr":49,"ss":68,"sd":460.0,"bb":64,"st":36,"rr":12.0,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-08-01","hrv":45.0,"hrn":57.0,"rhr":49,"ss":86,"sd":526.0,"bb":93,"st":25,"rr":11.9,"z45":0,"ld":0.0,"ty":"","dur":0},{"d":"2026-08-02","hrv":58.0,"hrn":53.0,"rhr":48,"ss":87,"sd":510.0,"bb":100,"st":27,"rr":11.1,"z45":16.7,"ld":119.8,"ty":"hiit|walking","dur":51.5,"eh":17.9,"z":[16.7,0.9,3.8,13.3,15.4,1.3]},{"d":"2026-08-03","hrv":35.0,"hrn":61.0,"rhr":49,"ss":63,"sd":493.0,"bb":46,"st":35,"rr":13.5,"z45":0,"ld":11.3,"ty":"walking","dur":56.7,"dlt":5.6,"eh":17.6,"z":[56.7,0,0,0,0,0],"vo":52.0},{"d":"2026-08-04","hrv":47.0,"hrn":57.0,"rhr":49,"ss":86,"sd":450.0,"bb":69,"st":36,"rr":11.8,"z45":10.5,"ld":82.3,"ty":"indoor_rowing","dur":28.3,"dlt":6.0,"eh":10.2,"z":[0.4,1.1,11.3,5.0,9.0,1.5]},{"d":"2026-08-05","hrv":43.0,"hrn":58.0,"rhr":49,"ss":77,"sd":443.0,"bb":73,"st":33,"rr":12.1,"z45":0,"ld":14.8,"ty":"walking","dur":36.5,"dlt":12.5,"eh":15.2,"z":[27.1,9.4,0,0,0,0],"vo":51.0},{"d":"2026-08-06","hrv":46.0,"hrn":54.0,"rhr":49,"ss":87,"sd":494.0,"bb":90,"st":26,"rr":11.4,"z45":11.8,"ld":112.7,"ty":"indoor_rowing|walking","dur":39.5,"dlt":7.3,"eh":20.5,"z":[0.3,3.5,16.3,7.8,5.9,5.9],"vo":51.0},{"d":"2026-08-07","hrv":44.0,"hrn":56.0,"rhr":49,"ss":80,"sd":452.0,"bb":62,"st":30,"rr":11.0,"z45":0,"ld":9.4,"ty":"walking","dur":46.9,"dlt":3.7,"eh":18.2,"z":[46.9,0,0,0,0,0],"vo":52.0},{"d":"2026-08-08","hrv":41.0,"hrn":52.0,"rhr":50,"ss":92,"sd":513.0,"bb":85,"st":29,"rr":11.2,"z45":10.2,"ld":135.6,"ty":"hiit|walking","dur":91.2,"dlt":5.1,"eh":18.7,"z":[41.1,12.6,7.9,19.3,9.9,0.3],"vo":52.0},{"d":"2026-08-09","hrv":45.0,"hrn":55.0,"rhr":50,"ss":69,"sd":484.0,"bb":76,"st":31,"rr":11.0,"z45":0,"ld":0.0,"ty":"","dur":0,"dlt":4.0}];
+
+/* ---------- état ---------- */
+let entries = [];   // saisies manuelles
+let ready = false;
+const KEY = 'cockpit:entries:v1';
+
+const iso = d => d.toISOString().slice(0,10);
+const TODAY = iso(new Date());
+
+/* ---------- stockage : navigateur d'abord, artefact Claude en secours ---------- */
+const STORE = {
+  mode: 'inconnu',
+  async get(k){
+    try{ const v = localStorage.getItem(k); if(v!==null){ this.mode='local'; return v; } this.mode='local'; return null; }
+    catch(e){}
+    if(window.storage && window.storage.get){
+      try{ const r = await window.storage.get(k); this.mode='claude'; return r ? r.value : null; }catch(e){}
+    }
+    this.mode='aucun'; return null;
+  },
+  async set(k,v){
+    try{ localStorage.setItem(k,v); this.mode='local'; return true; }catch(e){}
+    if(window.storage && window.storage.set){
+      try{ await window.storage.set(k,v); this.mode='claude'; return true; }catch(e){}
+    }
+    this.mode='aucun'; return false;
+  }
+};
+
+async function load(){
+  try{
+    const v = await STORE.get(KEY);
+    entries = v ? JSON.parse(v) : [];
+  }catch(e){ entries = []; }
+  ready = true;
+}
+async function persist(){
+  const ok = await STORE.set(KEY, JSON.stringify(entries));
+  if(!ok) toast('Sauvegarde impossible — exporte tes données');
+  try{ localStorage.setItem(KEY+':ts', new Date().toISOString()); }catch(e){}
+}
+
+/* =========================================================
+   SÉRIES COMBINÉES  (seed + saisies)
+   ========================================================= */
+/* Coucher habituel (médiane sur 168 nuits Garmin) — sert à estimer le délai
+   entre la fin de séance et l'endormissement pour les saisies manuelles. */
+const BEDTIME = 23.25;
+
+function series(){
+  const m = new Map();
+  SEED.forEach(s => m.set(s.d, {...s}));
+  entries.forEach(e => {
+    const p = m.get(e.d) || {d:e.d};
+    m.set(e.d, {...p, hrv:e.hrv??p.hrv, hrn:e.hrn??p.hrn, rhr:e.rhr??p.rhr,
+      ss:e.ss??p.ss, sd:e.sd??p.sd, bb:e.bb??p.bb, st:e.st??p.st, rr:e.rr??p.rr,
+      z45:e.z45??p.z45, ld:e.ld??p.ld, ty:e.ty??p.ty, dur:e.dur??p.dur,
+      alc:e.alc??p.alc, alch:e.alch??p.alch, dind:e.dind??p.dind, dint:e.dint??p.dint,
+      mload:e.mload??p.mload, sym:e.sym??p.sym, wt:e.wt??p.wt,
+      dlt:e.dlt??p.dlt, eh:e.eh??p.eh, z:e.z??p.z, vo:e.vo??p.vo, bed:e.bed??p.bed, wake:e.wake??p.wake,
+      tib:e.tib??p.tib, eff:e.eff??p.eff, tmp:e.tmp??p.tmp, tmpw:e.tmpw??p.tmpw});
+  });
+  const arr = [...m.values()].sort((a,b)=>a.d<b.d?-1:1);
+  // le délai séance→coucher concerne la nuit SUIVANTE, donc le jour du réveil
+  for(let i=1;i<arr.length;i++){
+    if(arr[i].dlt==null && arr[i-1].eh!=null){
+      const ref = arr[i].bed!=null ? arr[i].bed : BEDTIME;   // coucher de cette nuit-là
+      const d = ref - arr[i-1].eh;
+      if(d>=0 && d<=16) arr[i].dlt = Math.round(d*10)/10;
+    }
+  }
+  return arr;
+}
+
+/* baseline glissante sur `w` jours strictement AVANT `date` */
+function baseline(S, key, date, w=28){
+  const v = S.filter(s=>s.d<date && s[key]!=null).slice(-w).map(s=>+s[key]);
+  if(v.length<7) return null;
+  const m = v.reduce((a,b)=>a+b,0)/v.length;
+  const sd = Math.sqrt(v.reduce((a,b)=>a+(b-m)**2,0)/v.length) || 1;
+  return {m, sd, n:v.length};
+}
+const z = (val, b) => (val==null||!b) ? null : (val-b.m)/b.sd;
+
+/* Charge d'entraînement — calibrée sur tes séances Garmin réelles.
+   Intensité de fond par type (marche ≈ 0,4/min car elle reste sous ta Z1 à 86 bpm),
+   plus une surcharge pour chaque minute au-dessus de 154 bpm.
+   La musculation porte un facteur 1,35 : c'est ta séance la plus coûteuse en VFC. */
+const BASE_INT = {walk:0.4, walking:0.4, z2:2.0, row:2.4, crossfit:2.6, vo2:2.6,
+                  push:2.4, pull:2.4, legs:2.4, strength:2.4, other:2.0};
+const STRENGTH = new Set(['push','pull','legs','strength','strength_training']);
+const ZW = [0.2, 1, 2, 3, 4, 5];        // poids TRIMP par zone, calé sur ton historique
+function loadOf(type, dur, z45, zones){
+  let L;
+  if(zones && zones.some(v=>v>0)){        // zones détaillées connues : calcul exact
+    L = zones.reduce((a,m,i)=>a + (+m||0)*ZW[i], 0);
+  } else {                                // sinon estimation depuis durée + Z4/Z5
+    dur=+dur||0; z45=Math.min(+z45||0, dur);
+    const b = BASE_INT[type] ?? 2.0;
+    L = (dur-z45)*b + z45*4.5;
+  }
+  if(STRENGTH.has(type)) L *= 1.35;
+  return Math.round(L);
+}
+function acwr(S, date){
+  const upto = S.filter(s=>s.d<=date);
+  const val = n => { const a=upto.slice(-n).map(s=>+s.ld||0); return a.length? a.reduce((x,y)=>x+y,0)/a.length : 0; };
+  const a=val(7), c=val(28);
+  return {a, c, r: c>0 ? a/c : 0};
+}
+
+/* =========================================================
+   MOTEUR DE READINESS
+   ========================================================= */
+/* moyenne 7j incluant le jour courant — amortit le bruit quotidien de la VFC */
+function roll7(S, key, date){
+  const v = S.filter(s=>s.d<=date && s[key]!=null).slice(-7).map(s=>+s[key]);
+  return v.length>=3 ? v.reduce((a,b)=>a+b,0)/v.length : null;
+}
+
+function readiness(day, S){
+  const D = day.d;
+  const parts = [];
+  const CENTER = 58, BLEND = 0.5, CLAMP = 2.0;
+  let score = CENTER;
+
+  const add = (key, val, weight, invert, label) => {
+    const bb = baseline(S, key, D); if(!bb || val==null) return;
+    const zToday = (val-bb.m)/bb.sd;
+    const r = roll7(S, key, D);
+    const zTrend = r!=null ? (r-bb.m)/bb.sd : zToday;
+    let zz = BLEND*zToday + (1-BLEND)*zTrend;
+    if(invert) zz = -zz;
+    zz = Math.max(-CLAMP, Math.min(CLAMP, zz));
+    score += weight*zz;
+    parts.push({label, z:zz, val, base:bb.m});
+  };
+  add('hrv', day.hrv, 9, false, 'VFC');
+  add('hrn', day.hrn, 5, true,  'FC nocturne');
+  add('ss',  day.ss,  5, false, 'Score sommeil');
+  add('bb',  day.bb,  4, false, 'Body Battery');
+  add('rr',  day.rr,  2, true,  'Respiration');
+  add('st',  day.st,  2, true,  'Stress veille');
+
+  // ressenti subjectif : ±4 points, garde-fou contre un chiffre trompeur
+  if(day.energy){
+    const sub = (day.energy-3) + (day.motiv-3) - (day.sore-1);
+    score += Math.max(-4, Math.min(4, sub*0.9));
+  }
+
+  score = Math.max(0, Math.min(100, Math.round(score)));
+
+  // contexte de charge
+  const idx = S.findIndex(s=>s.d===D);
+  const prev = idx>0 ? S[idx-1] : null;
+  const prev2 = idx>1 ? S[idx-2] : null;
+  const hardYest = prev && ((+prev.z45||0)>=10 || (+prev.ld||0)>=120);
+  const hard2 = prev2 && ((+prev2.z45||0)>=10 || (+prev2.ld||0)>=120);
+  const aw = acwr(S, D);
+
+  return {score, parts, hardYest, hard2, acwr:aw};
+}
+
+/* =========================================================
+   PRESCRIPTION
+   ========================================================= */
+const PLAN_LABEL = {push:'Push',pull:'Pull',legs:'Legs',strength:'Musculation',vo2:'VO2max',z2:'Zone 2',
+  crossfit:'CrossFit / HIIT',row:'Rameur',walk:'Marche',rest:'Repos',free:'libre'};
+
+function prescribe(R, plan, day){
+  const s = R.score, hy = R.hardYest, ar = R.acwr.r;
+  let band, color, title, text, rx = [], why = [];
+
+  if(s>=63)      { band='vert';  color='var(--jade)';    title='Feu vert'; }
+  else if(s>=48) { band='jaune'; color='var(--amber)';   title='Modéré'; }
+  else if(s>=36) { band='orange';color='var(--caution)'; title='Allégé'; }
+  else           { band='rouge'; color='var(--clay)';    title='Récupération'; }
+
+  // dégradations contextuelles
+  if(hy && (band==='vert')) { band='jaune'; color='var(--amber)'; title='Modéré';
+    why.push("Séance dure hier : ta VFC met exactement 1 jour à revenir, d'après tes 34 séances intenses."); }
+  if(R.hard2 && hy) { band='orange'; color='var(--caution)'; title='Allégé';
+    why.push("Deux jours durs consécutifs — tu ne l'as jamais fait sur 170 jours."); }
+  if(ar>1.5 && band==='vert') { band='jaune'; color='var(--amber)'; title='Modéré';
+    why.push('Charge aiguë 7j très au-dessus de ta charge de fond (ratio '+ar.toFixed(2)+').'); }
+
+  const isStrength = ['push','pull','legs','strength'].includes(plan);
+  const P = PLAN_LABEL[plan] || 'libre';
+
+  if(band==='vert'){
+    text = "Tu es au-dessus de ta ligne de base. C'est la fenêtre pour la séance qui coûte cher.";
+    if(isStrength) rx = [
+      `<b>PPL ${P} complet</b> — séries de travail à RPE 8, la progression prévue par le coach`,
+      'Tu peux ajouter 10–15 min de rameur en zone 2 après (FC 116–135) sans coût mesurable',
+      'Bois : tes jours de muscu montrent une perte hydrique marquée'];
+    else if(plan==='vo2'||plan==='crossfit') rx = [
+      '<b>Séance intense validée</b> — 4×4 min à 174–183 bpm, récup 3 min entre blocs',
+      'Vise 15–20 min cumulées en Z4+Z5, pas plus : au-delà, ta VFC chute de 13 % le lendemain',
+      'Demain sera un jour facile, planifie-le maintenant'];
+    else rx = [
+      "<b>Séance dure recommandée</b> — c'est le moment d'aller chercher du VO2max ou une grosse séance de force",
+      'Si tu préfères garder ça pour demain : rameur en zone 2, 30–40 min, coût quasi nul chez toi',
+      'Cible 15–20 min en Z4+Z5 maximum'];
+  }
+  else if(band==='jaune'){
+    text = 'Tu es dans ta normale. Séance de qualité possible, mais sans chercher le maximum.';
+    if(isStrength) rx = [
+      `<b>PPL ${P} à volume normal</b> — garde 1–2 répétitions en réserve (RPE 7–8)`,
+      "Coupe la dernière série d'isolation si la barre te semble lourde à l'échauffement",
+      'Pas de fractionné en plus aujourd\'hui : cumuler force et Z4+ est ton combo le plus coûteux'];
+    else if(plan==='vo2'||plan==='crossfit') rx = [
+      '<b>Version raccourcie</b> — 8–12 min cumulées en Z4+Z5 plutôt que 20',
+      'Ou bascule sur du seuil : 2×10 min à 140–150 bpm, bien plus digeste',
+      'Arrête si la FC ne monte pas normalement à l\'effort'];
+    else rx = [
+      '<b>Zone 2 longue</b> — 45–60 min à 116–135 bpm, rameur ou marche rapide',
+      'Ou musculation à volume normal, sans recherche de record',
+      'Garde le fractionné pour un jour où tu es au-dessus de ta baseline'];
+  }
+  else if(band==='orange'){
+    text = 'Ta récupération est en retrait. Bouger reste bénéfique, mais sans intensité.';
+    if(isStrength) rx = [
+      `<b>PPL ${P} allégé</b> — retire 1 série par exercice, plafonne à RPE 6–7`,
+      'Ou décale la séance à demain : le programme absorbe très bien un jour de décalage',
+      'Pas de série à l\'échec aujourd\'hui'];
+    else rx = [
+      "<b>Marche 30–45 min</b> — chez toi c'est régénératif, meilleure VFC le lendemain qu'un repos complet",
+      'Ou rameur très souple, 20–30 min sous 130 bpm',
+      'Mobilité, respiration, étirements — tes 4 séances de breathwork n\'ont aucun coût mesuré'];
+  }
+  else{
+    text = 'Signal net de fatigue. Aujourd\'hui, la meilleure séance est celle que tu ne fais pas.';
+    rx = [
+      '<b>Repos ou marche facile</b> — 20–30 min dehors, sans montre si ça t\'aide',
+      'Sieste de 20–30 min si possible : tu les utilises déjà bien, ta VFC remonte le lendemain',
+      'Couche-toi tôt — le sommeil est ton levier n°1 sur la VFC',
+      'Si ça dure plus de 3 jours, regarde ailleurs que l\'entraînement : stress, sommeil, infection'];
+  }
+
+  if(plan==='rest') { rx.unshift('<b>Repos prévu</b> — bon choix, rien à ajouter'); }
+
+  // --- surcharges contextuelles ---
+  const d = day || {};
+
+  if(d.sym){
+    const grave = d.sym==='fievre';
+    band='rouge'; color='var(--clay)'; title = grave ? 'Ne t\'entraîne pas' : 'Prudence';
+    text = grave
+      ? "Fièvre ou courbatures diffuses : l'entraînement est contre-indiqué tant que ça dure, quelle que soit ta VFC."
+      : "Tu as des symptômes. Ta VFC chute souvent 1 à 3 jours avant qu'une infection se déclare — ce que tu vois ce matin peut en être le début.";
+    rx = grave
+      ? ['<b>Repos complet</b> tant que la fièvre persiste, puis reprise progressive',
+         'Reprends par de la marche, pas par une séance',
+         "S'il y a essoufflement inhabituel, douleur thoracique ou palpitations, consulte un médecin plutôt que d'attendre"]
+      : ['<b>Marche facile ou repos</b> — pas d\'intensité aujourd\'hui',
+         'Rien au-dessus de 135 bpm tant que les symptômes durent',
+         'Perdre deux séances ne coûte rien à ta forme ; s\'entraîner dur en couvant quelque chose rallonge la récupération'];
+    why.unshift('Symptômes signalés ce matin.');
+  }
+  else if((d.alc||0)>=1){
+    const n=d.alc;
+    why.unshift(`${n} verre${n>1?'s':''} hier soir — c'est probablement une partie de ce que tu vois sur tes chiffres ce matin.`);
+    if(n>=3 && band==='vert'){ band='jaune'; color='var(--amber)'; title='Modéré'; }
+    rx.push(n>=3
+      ? "<b>Après 3 verres ou plus</b>, l'effet sur la récupération est comparable à celui d'une grosse séance. Bois de l'eau et garde l'intensité pour demain."
+      : "L'alcool d'hier pèse sur ta VFC et ta FC nocturne même en petite quantité — normal si les chiffres sont un peu bas.");
+  }
+
+  return {band, color, title, text, rx, why};
+}
+
+/* =========================================================
+   IMPORT GARMIN — décodeur FIT + lecteur ZIP
+   ========================================================= */
+let importedDate = null;   // date d'une séance importée, pour la journaliser au bon jour
+const FIT_EPOCH = Date.UTC(1989,11,31,0,0,0);
+const fitDate = s => new Date(FIT_EPOCH + s*1000);
+const localISO = d => new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+const localHour = d => d.getHours() + d.getMinutes()/60;
+
+const _BASE={0:[1],1:[1],2:[1],3:[2],4:[2],5:[4],6:[4],7:[1],8:[4],9:[8],10:[1],11:[2],12:[4],13:[1],14:[8],15:[8],16:[8]};
+const _INV={0:0xFF,1:0x7F,2:0xFF,3:0x7FFF,4:0xFFFF,5:0x7FFFFFFF,6:0xFFFFFFFF,10:0,11:0,12:0,13:0xFF};
+
+function parseFit(buf){
+  const dv=new DataView(buf), u8=new Uint8Array(buf);
+  if(buf.byteLength<14) throw new Error('fichier trop court');
+  if(String.fromCharCode(u8[8],u8[9],u8[10],u8[11])!=='.FIT') throw new Error('pas un fichier FIT');
+  const hdr=dv.getUint8(0), dataSize=dv.getUint32(4,true);
+  let pos=hdr; const end=Math.min(hdr+dataSize, buf.byteLength);
+  const defs={}, msgs={}; let lastStamp=null;
+  const rd=(d,p)=>{
+    const out={};
+    for(const f of d.fields){
+      const b=_BASE[f.type];
+      if(!b){ p+=f.size; continue; }
+      const sz=b[0];
+      if(f.type===7){ let s=''; for(let i=0;i<f.size;i++){const c=dv.getUint8(p+i); if(c)s+=String.fromCharCode(c);} out[f.num]=s; p+=f.size; continue; }
+      const n=Math.max(1,Math.floor(f.size/sz)), vals=[];
+      for(let i=0;i<n;i++){
+        const q=p+i*sz; let v;
+        switch(f.type){
+          case 1: v=dv.getInt8(q); break;
+          case 0: case 2: case 10: case 13: v=dv.getUint8(q); break;
+          case 3: v=dv.getInt16(q,d.little); break;
+          case 4: case 11: v=dv.getUint16(q,d.little); break;
+          case 5: v=dv.getInt32(q,d.little); break;
+          case 6: case 12: v=dv.getUint32(q,d.little); break;
+          case 8: v=dv.getFloat32(q,d.little); break;
+          case 9: v=dv.getFloat64(q,d.little); break;
+          case 14: case 15: case 16: v=Number(dv.getBigInt64(q,d.little)); break;
+          default: v=null;
+        }
+        if(_INV[f.type]!==undefined && v===_INV[f.type]) v=null;
+        vals.push(v);
+      }
+      out[f.num]= n===1?vals[0]:vals;
+      p+=f.size;
+    }
+    for(const df of d.dev) p+=df.size;
+    return {out,p};
+  };
+  while(pos<end){
+    const h=dv.getUint8(pos++);
+    if(h&0x80){
+      const d=defs[(h>>5)&0x03]; if(!d) break;
+      const r=rd(d,pos); pos=r.p;
+      if(lastStamp!==null){ const base=lastStamp & ~0x1F; let full=base+(h&0x1F); if(full<lastStamp) full+=0x20; r.out[253]=full; }
+      (msgs[d.global]=msgs[d.global]||[]).push(r.out);
+      continue;
+    }
+    const local=h&0x0F;
+    if(h&0x40){
+      pos++; const little=dv.getUint8(pos++)===0;
+      const global=dv.getUint16(pos,little); pos+=2;
+      const nf=dv.getUint8(pos++), fields=[];
+      for(let i=0;i<nf;i++){ fields.push({num:dv.getUint8(pos),size:dv.getUint8(pos+1),type:dv.getUint8(pos+2)&0x1F}); pos+=3; }
+      const dev=[];
+      if(h&0x20){ const nd=dv.getUint8(pos++); for(let i=0;i<nd;i++){ dev.push({size:dv.getUint8(pos+1)}); pos+=3; } }
+      defs[local]={global,little,fields,dev};
+    } else {
+      const d=defs[local]; if(!d) break;
+      const r=rd(d,pos); pos=r.p;
+      if(r.out[253]!=null && r.out[253]>0) lastStamp=r.out[253];
+      (msgs[d.global]=msgs[d.global]||[]).push(r.out);
+    }
+  }
+  return msgs;
+}
+
+async function readZip(buf){
+  const dv=new DataView(buf), u8=new Uint8Array(buf);
+  let eocd=-1;
+  for(let i=buf.byteLength-22;i>=0 && i>buf.byteLength-65558;i--){ if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;} }
+  if(eocd<0) throw new Error('archive illisible');
+  const n=dv.getUint16(eocd+10,true); let p=dv.getUint32(eocd+16,true);
+  const ents=[];
+  for(let i=0;i<n;i++){
+    if(dv.getUint32(p,true)!==0x02014b50) break;
+    const method=dv.getUint16(p+10,true), comp=dv.getUint32(p+20,true);
+    const nl=dv.getUint16(p+28,true), el=dv.getUint16(p+30,true), cl=dv.getUint16(p+32,true);
+    const lho=dv.getUint32(p+42,true);
+    let name=''; for(let k=0;k<nl;k++) name+=String.fromCharCode(u8[p+46+k]);
+    const ds=lho+30+dv.getUint16(lho+26,true)+dv.getUint16(lho+28,true);
+    ents.push({name,method,raw:buf.slice(ds,ds+comp)});
+    p+=46+nl+el+cl;
+  }
+  const out=[];
+  for(const e of ents){
+    if(!/\.fit$/i.test(e.name)) continue;
+    if(e.method===0){ out.push({name:e.name,buf:e.raw}); continue; }
+    if(e.method===8){
+      if(typeof DecompressionStream==='undefined') throw new Error('ton navigateur ne sait pas décompresser ce ZIP — dézippe-le d\'abord');
+      const st=new Blob([e.raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+      out.push({name:e.name, buf: await new Response(st).arrayBuffer()});
+    }
+  }
+  return out;
+}
+
+/* =========================================================
+   IMPORT CSV — export "Score de sommeil" de Garmin Connect
+   ========================================================= */
+const csvNum = v => { const m=(''+v).replace(',','.').match(/-?\d+(\.\d+)?/); return m? parseFloat(m[0]) : null; };
+const csvDur = v => {                       // "8h 3m", "1h 28m", "24m" -> minutes
+  const s=''+v; const h=s.match(/(\d+)\s*h/), m=s.match(/(\d+)\s*m/);
+  if(!h && !m) return null;
+  return (h?+h[1]:0)*60 + (m?+m[1]:0);
+};
+
+/* Libellés Garmin -> champs internes.
+   « Stress Moy » est volontairement absent : dans cet export il s'agit du stress
+   PENDANT le sommeil, pas du stress de la journée écoulée qu'attend le champ `st`. */
+const CSV_MAP = [
+  [/^score de sommeil$/i,                        'ss',  csvNum],
+  [/^dur[ée]e du sommeil$/i,                     'sd',  csvDur],
+  [/^vfc nocturne moyenne$/i,                    'hrv', csvNum],
+  [/nocturnal hrv|average overnight hrv/i,       'hrv', csvNum],
+  [/^fr[ée]quence cardiaque moyenne pendant la nuit$/i,'hrn', csvNum],
+  [/average overnight heart rate/i,              'hrn', csvNum],
+  [/^fr[ée]quence cardiaque au repos$/i,         'rhr', csvNum],
+  [/^resting heart rate$/i,                      'rhr', csvNum],
+  [/^respiration moyenne$/i,                     'rr',  csvNum],
+  [/^average respiration$/i,                     'rr',  csvNum],
+  [/^spo2 moyenne$/i,                            'spo2',csvNum],
+  [/^dur[ée]e du sommeil profond$/i,             'deep',csvDur],
+  [/^dur[ée]e du sommeil paradoxal$/i,           'rem', csvDur],
+  [/^p[ée]riodes de sommeil agit[ée]$/i,         'rest',csvNum],
+  [/^modification de body battery$/i,            'bbg', csvNum]
+];
+
+const normLabel = s => (''+s).replace(/[\u2080-\u2089]/g, c=>String.fromCharCode(48 + c.charCodeAt(0)-0x2080))
+                            .replace(/\s+/g,' ').trim();
+
+function splitCsvLine(line){
+  const out=[]; let cur='', q=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){ q=!q; continue; }
+    if(c===',' && !q){ out.push(cur); cur=''; continue; }
+    cur+=c;
+  }
+  out.push(cur);
+  return out.map(x=>x.trim());
+}
+
+function parseSleepCsv(text){
+  text = text.replace(/^\uFEFF/,'');
+  const lines = text.split(/\r?\n/).filter(l=>l.trim() && l.trim()!==',');
+  const rows = lines.map(splitCsvLine);
+  const days = [];
+
+  // --- format tabulaire : une ligne d'en-tête contenant "Date" ---
+  const hi = rows.findIndex(r => r.length>3 && r.some(c=>/^date$/i.test(c)));
+  if(hi >= 0){
+    const hdr = rows[hi];
+    const di = hdr.findIndex(c=>/^date$/i.test(c));
+    for(let i=hi+1;i<rows.length;i++){
+      const r=rows[i]; if(r.length<2) continue;
+      const d=normDate(r[di]); if(!d) continue;
+      const rec={d};
+      hdr.forEach((h0,ci)=>{
+        const h=normLabel(h0);
+        for(const [re,key,fn] of CSV_MAP){
+          if(re.test(h)){ const v=fn(r[ci]); if(v!=null) rec[key]=v; break; }
+        }
+      });
+      if(Object.keys(rec).length>1) days.push(rec);
+    }
+    return days;
+  }
+
+  // --- format clé/valeur : un seul jour ---
+  const rec={};
+  for(const r of rows){
+    if(r.length<2) continue;
+    const [k,v]=[normLabel(r[0]),r[1]];
+    if(/^date$/i.test(k)){ const d=normDate(v); if(d) rec.d=d; continue; }
+    for(const [re,key,fn] of CSV_MAP){
+      if(re.test(k)){ const val=fn(v); if(val!=null && rec[key]==null) rec[key]=val; break; }
+    }
+  }
+  if(rec.d && Object.keys(rec).length>1) days.push(rec);
+  return days;
+}
+
+function normDate(s){
+  s=(''+s).trim();
+  let m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m=s.match(/^(\d{1,2})[/.](\d{1,2})[/.](\d{4})/);          // jj/mm/aaaa
+  if(m) return `${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`;
+  return null;
+}
+
+const SPORT_MAP = [
+  [/hiit|interval/i,'crossfit'], [/muscu|strength|force|poids/i,'strength'],
+  [/marche|walk/i,'walking'],    [/rameur|row/i,'row'],
+  [/course|running|run/i,'vo2'], [/v[ée]lo|cycl|bike/i,'z2'],
+  [/cardio/i,'z2'],              [/respir|breath/i,'other'],
+  [/natation|swim/i,'other'],    [/yoga|mobilit/i,'other']
+];
+const SPORT_ENUM = {1:'vo2',2:'z2',5:'other',10:'strength',11:'walking',15:'row',62:'crossfit'};
+
+async function importFiles(fileList){
+  const parsed=[], errs=[], csvDays=[];
+  for(const f of fileList){
+    try{
+      if(/\.csv$/i.test(f.name)){
+        const d=parseSleepCsv(await f.text());
+        if(!d.length) errs.push(f.name+' : aucun jour reconnu dans ce CSV');
+        csvDays.push(...d);
+        continue;
+      }
+      const buf=await f.arrayBuffer();
+      if(/\.zip$/i.test(f.name)){
+        for(const e of await readZip(buf)){
+          try{ parsed.push({name:e.name, m:parseFit(e.buf)}); }catch(x){ errs.push(e.name+' : '+x.message); }
+        }
+      } else if(/\.fit$/i.test(f.name)){
+        parsed.push({name:f.name, m:parseFit(buf)});
+      } else errs.push(f.name+' : format non reconnu (attendu .fit, .zip ou .csv)');
+    }catch(x){ errs.push(f.name+' : '+x.message); }
+  }
+
+  const patch={};                          // date -> champs
+  const put=(d,k,v)=>{ if(v==null||isNaN(v)) return; (patch[d]=patch[d]||{})[k]=v; };
+  const sleepWin={};                       // date -> [début, fin] en secondes FIT
+  const sess=[], hrPts=[];
+  let nAct=0, nWell=0;
+
+  for(const {m} of parsed){
+    const type = m[0] && m[0][0] ? m[0][0][0] : null;
+
+    if(type===4 && m[18]){                                     // ACTIVITÉ
+      const s=m[18][0];
+      const start=fitDate(s[2]!=null?s[2]:s[253]);
+      const durMin=(s[7]||0)/1000/60;
+      const endD=new Date(start.getTime()+durMin*60000);
+      const recs=m[20]||[];
+      const ZF=[97,116,135,154,174];
+      const zs=[0,0,0,0,0,0];
+      // Garmin échantillonne à intervalle variable ("smart recording") : chaque point
+      // compte pour la durée qui le sépare du suivant, pas pour une seconde fixe.
+      const pts=recs.filter(r=>r[3]!=null && r[253]!=null).sort((a,b)=>a[253]-b[253]);
+      for(let i=0;i<pts.length;i++){
+        const dt = i+1<pts.length ? Math.min(pts[i+1][253]-pts[i][253], 30) : 1;
+        const hr = pts[i][3];
+        let z=0; for(let k=0;k<ZF.length;k++) if(hr>=ZF[k]) z=k+1;
+        zs[z]+=dt;
+      }
+      const zmin=zs.map(v=>Math.round(v/60*10)/10);
+      const z45=Math.round((zmin[4]+zmin[5])*10)/10;
+      const nm = m[12] && m[12][0] ? (m[12][0][3]||'') : '';
+      let ty=null;
+      for(const [re,t] of SPORT_MAP) if(re.test(nm)){ ty=t; break; }
+      if(!ty) ty=SPORT_ENUM[s[5]]||'other';
+      sess.push({d:localISO(start), ty, dur:Math.round(durMin*10)/10, z45, z:zmin,
+                 hr:s[16]||null, mx:s[17]||null, eh:Math.round(localHour(endD)*10)/10,
+                 kcal:s[11]?Math.round(s[11]):null, name:nm||ty});
+      nAct++;
+    }
+    else if(type===68 && m[370]){                              // STATUT VFC
+      const h=m[370][0];
+      const d=localISO(fitDate(h[253]));
+      if(h[1]!=null) put(d,'hrv', Math.round(h[1]/128*10)/10);
+      nWell++;
+    }
+    else if(type===49){                                        // SOMMEIL
+      const fid=m[0][0], endT=fid[4];
+      const d=localISO(fitDate(endT));
+      if(m[346] && m[346][0] && m[346][0][6]!=null) put(d,'ss', m[346][0][6]);
+      const st=(m[275]||[]).map(x=>({t:x[253],s:x[0]})).filter(x=>x.t!=null).sort((a,b)=>a.t-b.t);
+      if(st.length){
+        const dur={};
+        for(let i=0;i<st.length;i++){
+          const e=(i+1<st.length)?st[i+1].t:endT;
+          dur[st[i].s]=(dur[st[i].s]||0)+(e-st[i].t);
+        }
+        const tot=((dur[2]||0)+(dur[3]||0)+(dur[4]||0))/60;
+        if(tot>60) put(d,'sd', Math.round(tot));
+        sleepWin[d]=[st[0].t, endT];
+      }
+      nWell++;
+    }
+    else if(type===32){                                        // BIEN-ÊTRE (stress, FC)
+      const sv=(m[227]||[]).map(x=>({t:x[1]!=null?x[1]:x[253], v:x[0]})).filter(x=>x.v!=null && x.v>=0);
+      if(sv.length){
+        const byDay={};
+        sv.forEach(x=>{ if(x.t==null) return; const d=localISO(fitDate(x.t)); (byDay[d]=byDay[d]||[]).push(x.v); });
+        Object.entries(byDay).forEach(([d,arr])=>{
+          if(arr.length>=60) put(d,'_st', Math.round(arr.reduce((a,b)=>a+b,0)/arr.length));
+        });
+      }
+      let last=null;
+      (m[55]||[]).forEach(r=>{
+        if(r[253]!=null && r[253]>0) last=r[253];
+        if(r[27]==null) return;
+        let t=r[253];
+        if(t==null && r[26]!=null && last!=null){
+          const base=last-(last%65536); t=base+r[26];
+          if(t<last-32768) t+=65536;
+        }
+        if(t!=null) hrPts.push({t, hr:r[27]});
+      });
+      nWell++;
+    }
+  }
+
+  // FC nocturne : moyenne des points tombant dans la fenêtre de sommeil
+  Object.entries(sleepWin).forEach(([d,[t0,t1]])=>{
+    const g=hrPts.filter(p=>p.t>=t0 && p.t<=t1).map(p=>p.hr);
+    if(g.length>=30) put(d,'hrn', Math.round(g.reduce((a,b)=>a+b,0)/g.length*10)/10);
+  });
+
+  // stress : appartient à la journée écoulée, donc rattaché au matin SUIVANT
+  Object.keys(patch).forEach(d=>{
+    if(patch[d]._st!=null){
+      const nx=localISO(new Date(new Date(d+'T12:00:00').getTime()+86400000));
+      (patch[nx]=patch[nx]||{}).st=patch[d]._st;
+      delete patch[d]._st;
+    }
+  });
+
+  // jours issus des CSV sommeil
+  let nCsv=0;
+  csvDays.forEach(r=>{
+    const d=r.d; if(!d) return;
+    ['ss','sd','hrv','hrn','rhr','rr','spo2','deep','rem','rest','bbg'].forEach(k=>{
+      if(r[k]!=null) put(d,k,r[k]);
+    });
+    nCsv++;
+  });
+
+  // écriture
+  const touched=new Set();
+  Object.entries(patch).forEach(([d,fields])=>{
+    if(!Object.keys(fields).length) return;
+    let e=entries.find(x=>x.d===d);
+    if(!e){ e={d}; entries.push(e); }
+    Object.assign(e, fields, {src:'garmin'});
+    touched.add(d);
+  });
+  sess.forEach(s=>{
+    let e=entries.find(x=>x.d===s.d);
+    if(!e){ e={d:s.d}; entries.push(e); }
+    e.ty=s.ty; e.dur=s.dur; e.z45=s.z45; e.hr=s.hr; e.eh=s.eh; e.z=s.z;
+    e.ld=loadOf(s.ty, s.dur, s.z45, s.z);
+    touched.add(s.d);
+  });
+  entries.sort((a,b)=>a.d<b.d?-1:1);
+  await persist();
+  return {nAct, nWell, nCsv, days:[...touched].sort(), sess, errs};
+}
+function todayEntry(){
+  return entries.find(e=>e.d===TODAY) || null;
+}
+
+function renderVerdict(){
+  const S = series();
+  const e = todayEntry();
+  const box = document.getElementById('verdictBox');
+
+  if(!e){
+    box.innerHTML = `<div class="verdict" style="--vc:var(--dim2)">
+      <div class="vhead"><div class="vscore">—<small> /100</small></div>
+      <div class="vlabel"><b>En attente</b><span>relevé du matin</span></div></div>
+      <p class="vtext">Saisis tes chiffres du matin ci-dessous. La VFC seule suffit pour un premier verdict, le reste affine.</p></div>`;
+    renderDev(null, S); return;
+  }
+
+  const R = readiness(e, S);
+  const P = prescribe(R, e.plan||'free', e);
+  const filled = Math.round(R.score/5);
+
+  let why = P.why.slice();
+  const top = R.parts.slice().sort((a,b)=>Math.abs(b.z)-Math.abs(a.z))[0];
+  if(top) why.unshift(`${top.label} ${top.z>0?'au-dessus':'en dessous'} de ta baseline (${top.val} vs ${top.base.toFixed(1)} attendu).`);
+  if(R.acwr.r>0) why.push(`Charge 7j/28j : ${R.acwr.r.toFixed(2)}.`);
+
+  box.innerHTML = `<div class="verdict" style="--vc:${P.color}">
+    <div class="vhead">
+      <div class="vscore">${R.score}<small> /100</small></div>
+      <div class="vlabel"><b>${P.title}</b><span>readiness</span></div>
+    </div>
+    <div class="strip">${Array.from({length:20},(_,i)=>`<i class="${i<filled?'f':''}"></i>`).join('')}</div>
+    <p class="vtext">${P.text}</p>
+    <div class="rx"><h3>Aujourd'hui</h3><ul>${P.rx.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <p class="vwhy">${why.join(' ')}</p>
+  </div>`;
+  renderDev(e, S);
+}
+
+function renderDev(e, S){
+  const defs = [['hrv','VFC','ms',false],['hrn','FC nocturne','bpm',true],['ss','Score sommeil','',false],
+    ['sd','Durée sommeil','min',false],['bb','Body Battery','',false],['rr','Respiration','/min',true],
+    ['st','Stress veille','',true],['rhr','FC repos','bpm',true]];
+  const el = document.getElementById('devRows');
+  el.innerHTML = defs.map(([k,lab,u,inv])=>{
+    const b = baseline(S,k,TODAY);
+    const v = e ? e[k] : null;
+    let cls='na', txt='—';
+    if(v!=null && b){
+      let zz=(v-b.m)/b.sd; if(inv) zz=-zz;
+      txt = (zz>0?'+':'')+zz.toFixed(1)+'σ';
+      cls = zz>=-0.5 ? 'ok' : zz>=-1.2 ? 'mid' : 'bad';
+      if(zz>1.0) cls='ok';
+    }
+    const disp = v!=null ? (k==='sd'? fmtMin(v) : v) : '—';
+    return `<div class="row"><div class="n">${lab}<small>base ${b? (k==='sd'?fmtMin(b.m):b.m.toFixed(1)) : '—'} ${u}</small></div>
+      <div class="v mono">${disp}</div><div class="z ${cls} mono">${txt}</div></div>`;
+  }).join('');
+}
+const fmtMin = m => Math.floor(m/60)+'h'+String(Math.round(m%60)).padStart(2,'0');
+
+/* =========================================================
+   RENDU — TENDANCES
+   ========================================================= */
+function lineChart(el, data, opts){
+  const W=460,H=opts.h||130,PL=34,PR=8,PT=10,PB=18;
+  const vals = data.filter(d=>d.v!=null).map(d=>d.v);
+  if(!vals.length){ el.innerHTML='<p class="empty">Pas encore de données</p>'; return; }
+  let lo = opts.lo!=null?opts.lo:Math.min(...vals), hi = opts.hi!=null?opts.hi:Math.max(...vals);
+  if(opts.band){ data.forEach(d=>{ if(d.bl!=null){lo=Math.min(lo,d.bl);hi=Math.max(hi,d.bh);} }); }
+  const pad=(hi-lo)*0.14||1; lo-=pad; hi+=pad;
+  const X = i => PL + i*(W-PL-PR)/Math.max(1,data.length-1);
+  const Y = v => PT + (1-(v-lo)/(hi-lo))*(H-PT-PB);
+
+  let s='';
+  // corridor
+  if(opts.band){
+    const up=[],dn=[];
+    data.forEach((d,i)=>{ if(d.bl!=null){ up.push(`${X(i)},${Y(d.bh)}`); dn.unshift(`${X(i)},${Y(d.bl)}`);} });
+    if(up.length) s+=`<polygon points="${up.concat(dn).join(' ')}" fill="#2E4046" opacity=".55"/>`;
+  }
+  // grille
+  [0,.5,1].forEach(f=>{ const y=PT+f*(H-PT-PB);
+    s+=`<line x1="${PL}" x2="${W-PR}" y1="${y}" y2="${y}" stroke="#243438" stroke-width="1"/>`;
+    s+=`<text x="${PL-6}" y="${y+3.5}" fill="#5F787D" font-size="9" text-anchor="end" font-family="IBM Plex Mono,monospace">${(hi-f*(hi-lo)).toFixed(opts.dec||0)}</text>`;});
+  // barres
+  if(opts.bars){
+    data.forEach((d,i)=>{ if(d.v==null) return;
+      const y=Y(d.v), bw=Math.max(2,(W-PL-PR)/data.length-1.5);
+      s+=`<rect x="${X(i)-bw/2}" y="${y}" width="${bw}" height="${H-PB-y}" fill="${d.c||opts.color}" opacity=".75" rx="1"/>`;});
+  } else {
+    // points + ligne
+    let path='',started=false;
+    data.forEach((d,i)=>{ if(d.v==null) return;
+      path += (started?'L':'M')+X(i)+' '+Y(d.v)+' '; started=true; });
+    if(opts.dots) data.forEach((d,i)=>{ if(d.v!=null) s+=`<circle cx="${X(i)}" cy="${Y(d.v)}" r="1.7" fill="${opts.color}" opacity=".55"/>`;});
+    s+=`<path d="${path}" fill="none" stroke="${opts.color}" stroke-width="${opts.lw||1.2}" opacity="${opts.dots?.45:1}" stroke-linejoin="round"/>`;
+  }
+  // moyenne mobile
+  if(opts.ma){
+    let path='',st=false;
+    data.forEach((d,i)=>{ if(d.ma==null) return; path+=(st?'L':'M')+X(i)+' '+Y(d.ma)+' '; st=true; });
+    s+=`<path d="${path}" fill="none" stroke="${opts.maColor||'var(--jade)'}" stroke-width="2" stroke-linejoin="round"/>`;
+  }
+  // 2e série
+  if(opts.v2){
+    let path='',st=false;
+    data.forEach((d,i)=>{ if(d.v2==null) return; path+=(st?'L':'M')+X(i)+' '+Y(d.v2)+' '; st=true; });
+    s+=`<path d="${path}" fill="none" stroke="${opts.c2}" stroke-width="2" stroke-linejoin="round"/>`;
+  }
+  // labels x
+  const lab=[0,Math.floor(data.length/2),data.length-1];
+  lab.forEach(i=>{ if(!data[i])return;
+    s+=`<text x="${X(i)}" y="${H-4}" fill="#5F787D" font-size="9" text-anchor="middle" font-family="IBM Plex Mono,monospace">${data[i].d.slice(8,10)}/${data[i].d.slice(5,7)}</text>`;});
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="height:${H}px">${s}</svg>`;
+}
+
+function movAvg(arr, key, w){
+  return arr.map((_,i)=>{
+    const s=arr.slice(Math.max(0,i-w+1),i+1).map(x=>x[key]).filter(v=>v!=null);
+    return s.length>=3 ? s.reduce((a,b)=>a+b,0)/s.length : null;
+  });
+}
+
+function renderTrends(){
+  const S = series();
+  const last = S.slice(-45);
+
+  // VFC + corridor
+  const ma = movAvg(last,'hrv',7);
+  const dHrv = last.map((s,i)=>{
+    const b = baseline(S,'hrv',s.d);
+    return {d:s.d, v:s.hrv??null, ma:ma[i], bl:b?b.m-b.sd:null, bh:b?b.m+b.sd:null};
+  });
+  lineChart(document.getElementById('c-hrv'), dHrv,
+    {color:'var(--amber)', dots:true, ma:true, band:true, h:150, dec:0});
+
+  // charge
+  const acu=[],chr=[];
+  last.forEach(s=>{
+    const a=acwr(S,s.d); acu.push(a.a); chr.push(a.c);
+  });
+  lineChart(document.getElementById('c-load'), last.map((s,i)=>({d:s.d,v:acu[i],v2:chr[i]})),
+    {color:'var(--clay)', c2:'var(--steel)', v2:true, lw:2, h:130, dec:0});
+
+  const aw = acwr(S,TODAY);
+  let ac='ok', msg='Charge maîtrisée.';
+  if(aw.r>1.5){ ac='bad'; msg='Ta charge des 7 derniers jours dépasse largement ta charge de fond. C\'est la zone où le risque de blessure et de stagnation grimpe. Une semaine plus calme serait rentable.'; }
+  else if(aw.r>1.3){ ac='mid'; msg='Charge en montée rapide. Surveille ta VFC les prochains jours et évite d\'empiler une semaine de plus au même rythme.'; }
+  else if(aw.r<0.8){ ac='mid'; msg='Charge en baisse. Si c\'est voulu (affûtage, repos), parfait. Sinon tu peux repousser un peu.'; }
+  document.getElementById('acwrBox').innerHTML =
+    `<div class="rows" style="margin-top:12px"><div class="row">
+      <div class="n">Ratio aigu / chronique<small>${Math.round(aw.a)} sur 7j · ${Math.round(aw.c)} sur 28j</small></div>
+      <div class="z ${ac} mono" style="min-width:60px;font-size:14px">${aw.r.toFixed(2)}</div></div></div>
+     <p class="note">${msg}</p>`;
+
+  // FC nocturne
+  const maH = movAvg(last,'hrn',7);
+  lineChart(document.getElementById('c-hrn'), last.map((s,i)=>({d:s.d,v:s.hrn??null,ma:maH[i]})),
+    {color:'var(--steel)', dots:true, ma:true, maColor:'var(--clay)', h:120, dec:0});
+
+  // sommeil
+  lineChart(document.getElementById('c-sleep'), last.map(s=>({d:s.d,v:s.ss??null,
+    c: s.ss>=85?'var(--jade)': s.ss>=75?'var(--amber)':'var(--clay)'})),
+    {color:'var(--amber)', bars:true, h:120, lo:40, hi:100});
+
+  renderAlerts(S, aw);
+}
+
+function renderAlerts(S, aw){
+  const A=[];
+  const rec = n => S.slice(-n);
+  const mean = (a,k)=>{ const v=a.map(x=>x[k]).filter(x=>x!=null); return v.length? v.reduce((p,c)=>p+c,0)/v.length : null; };
+
+  const h7 = mean(rec(7),'hrv'), h28 = mean(S.slice(-35,-7),'hrv');
+  if(h7 && h28 && h7 < h28-2.5)
+    A.push(['bad','▼','VFC en baisse',`Moyenne 7 jours à ${h7.toFixed(1)} ms contre ${h28.toFixed(1)} ms sur le mois précédent. Deux semaines de ce profil justifient une semaine allégée.`]);
+
+  const n7 = mean(rec(7),'hrn'), n28 = mean(S.slice(-35,-7),'hrn');
+  if(n7 && n28 && n7 > n28+1.5)
+    A.push(['mid','▲','FC nocturne en hausse',`${n7.toFixed(1)} bpm sur 7 jours contre ${n28.toFixed(1)} avant. C'est ton signal le plus précoce — souvent visible avant la fatigue ressentie.`]);
+
+  const r7 = mean(rec(7),'rr'), r28 = mean(S.slice(-35,-7),'rr');
+  if(r7 && r28 && r7 > r28+0.5)
+    A.push(['mid','◈','Respiration nocturne élevée',`${r7.toFixed(1)}/min contre ${r28.toFixed(1)} habituellement. Chez toi elle est liée à la VFC (r = −0,45) et monte souvent avant une baisse de forme.`]);
+
+  if(aw.r>1.5) A.push(['bad','⚑','Charge aiguë trop haute',`Ratio ${aw.r.toFixed(2)}. Au-dessus de 1,5, le rapport bénéfice/risque se dégrade. Deux jours faciles feraient redescendre ça vite.`]);
+
+  const s7 = mean(rec(7),'ss'), s28 = mean(S.slice(-35,-7),'ss');
+  if(s7 && s28 && s7 < s28-5)
+    A.push(['mid','☾','Sommeil dégradé',`Score moyen ${s7.toFixed(0)} sur 7 jours contre ${s28.toFixed(0)} avant. Le sommeil est ton premier levier sur la VFC.`]);
+
+  // streak dur
+  const last3 = rec(3).filter(s=>(+s.z45||0)>=10);
+  if(last3.length>=2) A.push(['bad','⚡','Jours durs rapprochés','Deux séances intenses ou plus sur les 3 derniers jours. Ton historique montre un retour à la normale en 1 jour — mais seulement si ce jour existe.']);
+
+  const el=document.getElementById('alerts');
+  if(!A.length){ el.innerHTML=`<div class="alert" style="--ac:var(--jade)"><div class="ai">✓</div>
+    <div><b>Rien à signaler</b><p>Tes tendances sur 7 jours sont dans tes normes. Continue.</p></div></div>`; return; }
+  el.innerHTML = A.map(([lvl,ic,t,p])=>`<div class="alert" style="--ac:${lvl==='bad'?'var(--clay)':'var(--caution)'}">
+    <div class="ai">${ic}</div><div><b>${t}</b><p>${p}</p></div></div>`).join('');
+}
+
+/* =========================================================
+   RENDU — SÉANCES
+   ========================================================= */
+const TYPE_LABEL = {push:'PPL Push',pull:'PPL Pull',legs:'PPL Legs',strength:'Musculation',vo2:'VO2max',crossfit:'CrossFit / HIIT',
+  row:'Rameur',z2:'Zone 2',walk:'Marche',walking:'Marche',other:'Autre',
+  hiit:'HIIT',indoor_rowing:'Rameur',strength_training:'Musculation',walking:'Marche',
+  cycling:'Vélo',breathwork:'Respiration',indoor_cardio:'Cardio',lap_swimming:'Natation'};
+
+function renderSessions(){
+  const S = series();
+
+  // coût réel par type : delta VFC J+1 vs baseline
+  const agg = {};
+  S.forEach((s,i)=>{
+    if(!s.ty || i+1>=S.length) return;
+    const nxt = S[i+1]; if(nxt.hrv==null) return;
+    const b = baseline(S,'hrv',nxt.d); if(!b) return;
+    const dev = nxt.hrv - b.m;
+    s.ty.split('|').forEach(t=>{
+      if(!t) return;
+      (agg[t] = agg[t] || []).push(dev);
+    });
+  });
+  const rowsA = Object.entries(agg).filter(([,v])=>v.length>=4)
+    .map(([t,v])=>({t, n:v.length, d:v.reduce((a,b)=>a+b,0)/v.length}))
+    .sort((a,b)=>b.d-a.d);
+  document.getElementById('costTable').innerHTML = rowsA.length ?
+    `<table><tr><th>Type</th><th class="num">n</th><th class="num">VFC J+1</th></tr>` +
+    rowsA.map(r=>`<tr><td>${TYPE_LABEL[r.t]||r.t}</td><td class="num mono">${r.n}</td>
+      <td class="num mono" style="color:${r.d>=0.5?'var(--jade)':r.d>-1.5?'var(--dim)':'var(--clay)'}">
+      ${r.d>0?'+':''}${r.d.toFixed(1)} ms</td></tr>`).join('') + '</table>'
+    : '<p class="empty">Pas assez de séances</p>';
+
+  // liste des séances saisies
+  const logs = entries.filter(e=>e.ty).sort((a,b)=>a.d<b.d?1:-1).slice(0,25);
+  const el = document.getElementById('sessList');
+  if(!logs.length){ el.innerHTML='<p class="empty">Aucune séance enregistrée pour l\'instant.<br>Elles apparaîtront ici avec leur coût mesuré le lendemain.</p>'; return; }
+  el.innerHTML = logs.map(e=>{
+    const i = S.findIndex(s=>s.d===e.d);
+    const nxt = i>=0 && i+1<S.length ? S[i+1] : null;
+    let cost = '<span style="color:var(--dim2)">Coût mesuré demain matin</span>';
+    if(nxt && nxt.hrv!=null){
+      const b = baseline(S,'hrv',nxt.d);
+      if(b){ const dv = nxt.hrv-b.m;
+        cost = `VFC lendemain <b class="mono" style="color:${dv>=0?'var(--jade)':dv>-3?'var(--caution)':'var(--clay)'}">${dv>0?'+':''}${dv.toFixed(1)} ms</b> vs ta baseline`; }
+    }
+    return `<div class="sess"><div class="top"><span class="t">${TYPE_LABEL[e.ty]||e.ty}</span>
+      <span class="d mono">${e.d.slice(8,10)}/${e.d.slice(5,7)}</span></div>
+      <div class="meta mono">${e.dur||0} min · ${e.z45||0} min Z4+5 · charge ${e.ld||0}${e.rpe?' · RPE '+e.rpe:''}</div>
+      <div class="cost">${cost}</div></div>`;
+  }).join('');
+}
+
+/* =========================================================
+   EFFETS — comparaisons intra-individuelles avec / sans
+   ========================================================= */
+const MIN_N = 6;   // seuil minimum par groupe avant d'afficher un chiffre
+
+function compare(S, testFn, ctrlFn, metrics){
+  const A=[], B=[];
+  S.forEach(s=>{ if(testFn(s)) A.push(s); else if(ctrlFn(s)) B.push(s); });
+  const out={nA:A.length, nB:B.length, m:{}};
+  metrics.forEach(k=>{
+    const va=A.map(s=>s[k]).filter(v=>v!=null);
+    const vb=B.map(s=>s[k]).filter(v=>v!=null);
+    if(va.length>=MIN_N && vb.length>=MIN_N){
+      const ma=va.reduce((x,y)=>x+y,0)/va.length, mb=vb.reduce((x,y)=>x+y,0)/vb.length;
+      out.m[k]={a:ma, b:mb, d:ma-mb, na:va.length, nb:vb.length};
+    }
+  });
+  return out;
+}
+
+const EFFECTS = [
+  {id:'alc', title:"Alcool la veille",
+   test:s=>(s.alc||0)>=1, ctrl:s=>s.alc===0,
+   need:"Note tes soirées, y compris celles sans alcool — l'outil a besoin des deux pour comparer.",
+   lit:"Sur ~21 000 porteurs de capteurs, l'alcool fait baisser la VFC et monter la FC nocturne de façon dose-dépendante. Attends-toi à un effet net."},
+  {id:'alc3', title:"Alcool ≥ 3 verres",
+   test:s=>(s.alc||0)>=3, ctrl:s=>s.alc===0,
+   need:"Il faut des soirées à 3 verres ou plus pour isoler l'effet de dose.",
+   lit:"L'effet est dose-dépendant : la différence entre 1 et 3 verres est généralement plus grande que celle entre 0 et 1."},
+  {id:'late', title:"Séance finie moins de 4 h avant le coucher",
+   test:s=>s.dlt!=null && s.dlt<4, ctrl:s=>s.dlt!=null && s.dlt>=4,
+   need:"Renseigne l'heure de fin de tes séances dans l'onglet Séances.",
+   lit:"Sur 4 millions de nuits, les séances terminées au moins 4 h avant l'endormissement n'ont aucun effet mesurable, quelle que soit l'intensité."},
+  {id:'din', title:"Dîner fini moins de 3 h avant le coucher",
+   test:s=>s.dind!=null && s.dind<3, ctrl:s=>s.dind!=null && s.dind>=3,
+   need:"Note l'heure de fin de tes dîners pendant quelques semaines.",
+   lit:"Les repas tardifs dégradent la qualité du sommeil ; l'effet sur la VFC est en revanche moins établi que pour l'alcool."},
+  {id:'dinh', title:"Dîner copieux ou gras",
+   test:s=>s.dint>=3, ctrl:s=>s.dint===1,
+   need:"Renseigne le type de dîner (léger / normal / copieux).",
+   lit:"Un repas lent à digérer perturbe le sommeil davantage qu'un repas léger, sans effet clair sur la VFC."},
+  {id:'mind', title:"Journée mentalement chargée",
+   test:s=>s.mload>=4, ctrl:s=>s.mload<=2,
+   need:"Note ta charge mentale quotidienne.",
+   lit:"Tes propres données Garmin montrent déjà un lien fort entre stress diurne et Body Battery du lendemain (r = −0,54)."},
+];
+
+function renderEffects(){
+  const S = series();
+  const M = [['hrv','VFC','ms',1],['hrn','FC nocturne','bpm',-1],['ss','Score sommeil','',1],['sd','Durée sommeil','min',1]];
+  const el = document.getElementById('effects');
+
+  el.innerHTML = EFFECTS.map(E=>{
+    const r = compare(S, E.test, E.ctrl, M.map(m=>m[0]));
+    const done = Object.keys(r.m).length>0;
+    let body;
+    if(done){
+      body = `<div class="rows">` + M.map(([k,lab,u,dir])=>{
+        const v=r.m[k]; if(!v) return '';
+        const good = (v.d*dir)>=0;
+        const cls = Math.abs(v.d) < (k==='hrv'?1.5: k==='hrn'?0.8: k==='ss'?2:10) ? 'na' : good ? 'ok' : 'bad';
+        return `<div class="row"><div class="n">${lab}<small>${v.a.toFixed(1)} avec · ${v.b.toFixed(1)} sans</small></div>
+          <div class="z ${cls} mono">${v.d>0?'+':''}${v.d.toFixed(1)}${u?' '+u:''}</div></div>`;
+      }).join('') + `</div><p class="note">Comparaison sur ${r.nA} jour${r.nA>1?'s':''} avec et ${r.nB} sans.</p>`;
+    } else {
+      const miss = Math.max(0, MIN_N-r.nA), miss2 = Math.max(0, MIN_N-r.nB);
+      body = `<p class="sub" style="margin-bottom:8px">${E.need}</p>
+        <div class="rows"><div class="row"><div class="n">Jours enregistrés<small>il en faut ${MIN_N} de chaque côté</small></div>
+        <div class="v mono" style="font-size:13px">${r.nA} avec · ${r.nB} sans</div></div></div>
+        ${(miss||miss2)? `<p class="note">Encore ${miss? miss+' jour'+(miss>1?'s':'')+' avec':''}${miss&&miss2?' et ':''}${miss2? miss2+' jour'+(miss2>1?'s':'')+' sans':''} avant un premier résultat.</p>`:''}`;
+    }
+    return `<div class="card"><h2>${E.title}</h2>${body}
+      <p class="note" style="border-top:1px solid var(--line);padding-top:9px;margin-top:11px">
+      <b style="color:var(--dim)">Ce que dit la littérature —</b> ${E.lit}</p></div>`;
+  }).join('');
+}
+/* =========================================================
+   ZONES -> VO2MAX  (correlation decalee, tendance neutralisee)
+   ========================================================= */
+function weekKey(dstr){
+  const d=new Date(dstr+'T12:00:00');
+  const t=new Date(d); t.setDate(d.getDate()+3-((d.getDay()+6)%7));
+  const y=t.getFullYear();
+  const w=1+Math.round(((t-new Date(y,0,4))/86400000-3+((new Date(y,0,4).getDay()+6)%7))/7);
+  return y+'-'+String(w).padStart(2,'0');
+}
+
+/* correlation partielle : on retire la tendance temporelle des deux series */
+function partialR(x,y,c){
+  const det=(v)=>{
+    const n=v.length, mc=c.reduce((a,b)=>a+b,0)/n, mv=v.reduce((a,b)=>a+b,0)/n;
+    let num=0, den=0;
+    for(let i=0;i<n;i++){ num+=(c[i]-mc)*(v[i]-mv); den+=(c[i]-mc)**2; }
+    const b=den?num/den:0;
+    return v.map((vi,i)=>vi-(mv+b*(c[i]-mc)));
+  };
+  const a=det(x), b=det(y), n=a.length;
+  const ma=a.reduce((p,q)=>p+q,0)/n, mb=b.reduce((p,q)=>p+q,0)/n;
+  let num=0, da=0, db=0;
+  for(let i=0;i<n;i++){ num+=(a[i]-ma)*(b[i]-mb); da+=(a[i]-ma)**2; db+=(b[i]-mb)**2; }
+  return (da&&db) ? num/Math.sqrt(da*db) : null;
+}
+
+function zoneVo2(S, lag){
+  lag = lag || 4;
+  const wk={};
+  S.forEach(s=>{
+    const k=weekKey(s.d);
+    const e=wk[k]||(wk[k]={z:[0,0,0,0,0,0], vo:[]});
+    if(s.z) s.z.forEach((m,i)=>e.z[i]+=(+m||0));
+    if(s.vo!=null) e.vo.push(s.vo);
+  });
+  const keys=Object.keys(wk).sort();
+  const out=[];
+  for(let zi=1; zi<=5; zi++){
+    const xs=[], ys=[], ts=[];
+    keys.forEach((k,i)=>{
+      const nk=keys[i+lag];
+      const tgt=nk ? wk[nk].vo : null;
+      if(!tgt || !tgt.length) return;
+      if(wk[k].z.every(v=>v===0)) return;
+      xs.push(wk[k].z[zi]);
+      ys.push(tgt.reduce((a,b)=>a+b,0)/tgt.length);
+      ts.push(i);
+    });
+    out.push({zi, n:xs.length, r: xs.length>=10 ? partialR(xs,ys,ts) : null});
+  }
+  return {rows:out, weeks:keys.length};
+}
+
+/* =========================================================
+   TEMPERATURE DE CHAMBRE -> SOMMEIL
+   Variable continue : on la decoupe en tranches plutot qu'en avec/sans.
+   ========================================================= */
+/* Intervalles semi-ouverts [lo, hi[ : la borne basse est incluse, la haute exclue.
+   20,0 va donc dans "20 a 21,9", jamais dans "18 a 19,9". Aucun chevauchement. */
+const TEMP_BANDS = [
+  [-99,18,'moins de 18\u00b0'], [18,20,'18 \u00e0 19,9\u00b0'], [20,22,'20 \u00e0 21,9\u00b0'],
+  [22,24,'22 \u00e0 23,9\u00b0'], [24,27,'24 \u00e0 26,9\u00b0'], [27,30,'27 \u00e0 29,9\u00b0'], [30,99,'30\u00b0 et plus']
+];
+const TEMP_MIN_N = 4;
+
+function tempAnalysis(S){
+  const M=[['ss','Score'],['rem','REM'],['deep','Profond'],['hrv','VFC'],['hrn','FC nuit']];
+  const bands=TEMP_BANDS.map(function(b){
+    const lo=b[0], hi=b[1], lab=b[2];
+    const g=S.filter(s=>s.tmp!=null && s.tmp>=lo && s.tmp<hi);
+    const o={lab:lab, n:g.length, m:{}};
+    M.forEach(function(mm){
+      const v=g.map(s=>s[mm[0]]).filter(x=>x!=null);
+      if(v.length>=TEMP_MIN_N) o.m[mm[0]]=v.reduce((a,c)=>a+c,0)/v.length;
+    });
+    return o;
+  });
+  const withT=S.filter(s=>s.tmp!=null);
+  const corr={};
+  M.forEach(function(mm){
+    const k=mm[0], xs=[], ys=[], ts=[];
+    withT.forEach(function(s,i){ if(s[k]!=null){ xs.push(s.tmp); ys.push(s[k]); ts.push(i); } });
+    if(xs.length>=20){ const r=partialR(xs,ys,ts); if(r!=null) corr[k]=r; }
+  });
+  return {bands:bands, corr:corr, n:withT.length, metrics:M};
+}
+
+function renderTemp(){
+  const el=document.getElementById('tempCard'); if(!el) return;
+  const A=tempAnalysis(series());
+  const usable=A.bands.filter(b=>Object.keys(b.m).length);
+  let body;
+  if(usable.length>=2){
+    body='<table><tr><th>Temp\u00e9rature</th><th class="num">n</th>'
+       + A.metrics.map(m=>'<th class="num">'+m[1]+'</th>').join('') + '</tr>'
+       + A.bands.filter(b=>b.n>0).map(function(b){
+           const cells=A.metrics.map(function(m){
+             const v=b.m[m[0]];
+             const dec=(m[0]==='hrn'||m[0]==='hrv')?1:0;
+             return '<td class="num mono">'+(v!=null? v.toFixed(dec) : '\u00b7')+'</td>';
+           }).join('');
+           return '<tr><td>'+b.lab+'</td><td class="num mono">'+b.n+'</td>'+cells+'</tr>';
+         }).join('') + '</table>';
+    const cs=Object.entries(A.corr);
+    if(cs.length){
+      body+='<div class="rows" style="margin-top:11px">'+cs.map(function(e){
+        const k=e[0], r=e[1];
+        const lab=A.metrics.find(m=>m[0]===k)[1];
+        const good = (k==='hrn') ? r>0 : r<0;
+        const cls = Math.abs(r)<0.2 ? 'na' : (good ? 'bad' : 'ok');
+        return '<div class="row"><div class="n">'+lab+' vs temp\u00e9rature<small>tendance saisonni\u00e8re retir\u00e9e</small></div>'
+          +'<div class="z '+cls+' mono">r = '+(r>0?'+':'')+r.toFixed(2)+'</div></div>';
+      }).join('')+'</div>';
+    }
+  } else {
+    body='<p class="sub">Renseigne la temp\u00e9rature de ta chambre au coucher. Il faut au moins '+TEMP_MIN_N
+       +' nuits dans deux tranches diff\u00e9rentes pour comparer \u2014 tu en as '+A.n+' pour l\'instant.</p>';
+  }
+  el.innerHTML = body
+    + '<p class="note">Bornes basses incluses, bornes hautes exclues : une nuit \u00e0 20,0\u00b0 est compt\u00e9e dans \u00ab 20 \u00e0 21,9\u00b0 \u00bb. Chaque nuit appartient \u00e0 une seule tranche.</p>'
+    + '<p class="note"><b style="color:var(--dim)">Ce que dit la litt\u00e9rature \u2014</b> une revue de r\u00e9f\u00e9rence situe l\'optimum entre 15,6 et 19,4 \u00b0C : dans cette plage, l\'efficacit\u00e9 du sommeil, le sommeil profond et le REM sont \u00e0 leur maximum. Au-del\u00e0 d\'environ 24 \u00b0C, l\'efficacit\u00e9 chute, le REM et le profond diminuent et les r\u00e9veils nocturnes se multiplient. Les deux stades les plus sensibles \u00e0 la chaleur sont justement le REM et le profond, le sommeil l\u00e9ger l\'\u00e9tant beaucoup moins \u2014 or le REM est ton point faible. \u00c0 30-35 \u00b0C tu es bien au-del\u00e0 de la zone \u00e9tudi\u00e9e par la plupart des travaux : attends-toi \u00e0 un effet marqu\u00e9.</p>'
+    + '<p class="note" style="border-top:1px solid var(--line);padding-top:9px">La relation n\'est pas lin\u00e9aire mais en U : le froid d\u00e9grade aussi le sommeil, par d\'autres m\u00e9canismes. Ne lis donc pas \u00ab plus froid = mieux \u00bb \u2014 c\'est une tranche interm\u00e9diaire qui devrait ressortir.</p>'
+    + '<p class="note" style="border-top:1px solid var(--line);padding-top:9px"><b style="color:var(--caution)">Confondant majeur \u2014</b> la temp\u00e9rature de ta chambre est saisonni\u00e8re. En \u00e9t\u00e9 elle monte, mais tes horaires de coucher, ta consommation d\'alcool et ton exposition \u00e0 la lumi\u00e8re changent aussi. Un \u00e9t\u00e9 seul ne peut pas d\u00e9m\u00ealer ces effets : la corr\u00e9lation retire la tendance temporelle, mais \u00e7a ne suffit pas \u00e0 isoler la chaleur. L\'analyse deviendra lisible quand tu auras des nuits chaudes <b>et</b> fra\u00eeches, soit vers l\'automne.</p>';
+}
+
+function renderZoneVo2(){
+  const el=document.getElementById('zoneVo2'); if(!el) return;
+  const S=series();
+  const res=zoneVo2(S);
+  const NAMES={1:'Zone 1 - recuperation',2:'Zone 2 - endurance',3:'Zone 3 - tempo',
+               4:'Zone 4 - seuil',5:'Zone 5 - VO2max'};
+  const usable=res.rows.filter(r=>r.r!=null);
+  let body;
+  if(usable.length){
+    body='<div class="rows">'+res.rows.map(r=>{
+      if(r.r==null) return '<div class="row"><div class="n">'+NAMES[r.zi]+'<small>pas assez de semaines</small></div><div class="z na mono">—</div></div>';
+      const cls = Math.abs(r.r)<0.3 ? 'na' : (r.r>0 ? 'ok' : 'bad');
+      return '<div class="row"><div class="n">'+NAMES[r.zi]+'<small>'+r.n+' semaines comparees</small></div>'
+        +'<div class="z '+cls+' mono">r = '+(r.r>0?'+':'')+r.r.toFixed(2)+'</div></div>';
+    }).join('')+'</div>';
+  } else {
+    body='<p class="sub">Il faut au moins 10 semaines avec du temps en zone et une valeur de VO2max quatre semaines plus tard. Tu en as '+res.weeks+' au total pour l\'instant.</p>';
+  }
+  el.innerHTML = body
+    + '<p class="note">Lecture : correlation entre le temps passe dans une zone une semaine donnee et ton VO2max quatre semaines plus tard, <b>apres avoir retire la tendance generale</b> — sans cette correction tout parait correle, simplement parce que ton volume et ton VO2max montent ensemble depuis fevrier.</p>'
+    + '<p class="note" style="border-top:1px solid var(--line);padding-top:9px">Sur ton historique seul, la Z2 ressort a r = +0,55 et la Z4 a +0,41 — mais avec 18 semaines et 5 zones testees, c\'est trop peu pour conclure : sur cinq tests, un peut passer le seuil par hasard. Le VO2max Garmin bouge par paliers d\'un point et stagne des mois, ce qui limite la finesse atteignable. Compte plutot six mois avant d\'y lire quelque chose de solide.</p>';
+}
+
+function renderRef(){
+  const Z=[['Zone 1','97–115','Récupération, échauffement'],
+    ['Zone 2','116–134','Endurance de base — ton meilleur rapport bénéfice/coût'],
+    ['Zone 3','135–153','Tempo — là où tourne ton rameur'],
+    ['Zone 4','154–173','Seuil — <b>chaque minute ici coûte le lendemain</b>'],
+    ['Zone 5','174–193','VO2max — 15–20 min cumulées max par séance']];
+  document.getElementById('zoneRows').innerHTML = Z.map(([n,r,d])=>
+    `<div class="row"><div class="n">${n}<small>${d}</small></div><div class="v mono">${r}</div></div>`).join('');
+
+  const R=[['Récupération = 1 jour','VFC 47,6 → 42,8 le lendemain, retour à 45,8 à J+2 (34 séances)'],
+    ['Le coût vient de Z4+Z5','15–30 min en Z4+5 → −13 % de VFC le lendemain. Ni les pas ni la durée ne prédisent autant'],
+    ['La marche régénère','Jours de marche seule : meilleure VFC le lendemain qu\'un repos complet'],
+    ['La muscu coûte le plus','−5,5 ms de VFC le lendemain, plus que le HIIT (sur 7 jours seulement — à confirmer)'],
+    ['Le stress compte comme une séance','Stress diurne → Body Battery du lendemain, r = −0,54'],
+    ['Ton jeudi est un creux','VFC 43,0 le jeudi contre 47,7 le dimanche. Place tes séances dures lundi et dimanche'],
+    ['La sieste marche','Tu les prends quand la VFC est basse, et elle remonte le lendemain']];
+  document.getElementById('ruleRows').innerHTML = R.map(([n,d])=>
+    `<div class="row"><div class="n"><b>${n}</b><small>${d}</small></div></div>`).join('');
+
+  document.getElementById('histInfo').textContent =
+    `${SEED.length} jours d'historique Garmin intégrés · ${entries.length} saisie${entries.length>1?'s':''} manuelle${entries.length>1?'s':''}.`;
+
+  let ts=null; try{ ts=localStorage.getItem(KEY+':ts'); }catch(e){}
+  const modeLabel = {local:'Mémoire du téléphone', claude:'Application Claude', aucun:'Indisponible', inconnu:'—'}[STORE.mode];
+  const modeCls = STORE.mode==='aucun' ? 'bad' : 'ok';
+  document.getElementById('storeRows').innerHTML =
+    `<div class="row"><div class="n">Stockage<small>${STORE.mode==='local'?'hors-ligne, sur cet appareil':'via l\'app'}</small></div>
+      <div class="z ${modeCls}" style="min-width:auto;padding:3px 10px">${modeLabel}</div></div>
+     <div class="row"><div class="n">Dernière sauvegarde<small>${ts? 'automatique':'aucune saisie encore'}</small></div>
+      <div class="v mono" style="font-size:12px">${ts? new Date(ts).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—'}</div></div>`;
+}
+
+/* affiche temps au lit et efficacité du sommeil sous les horaires */
+function showTib(e){
+  const el=document.getElementById('tibNote'); if(!el) return;
+  e = e || todayEntry() || {};
+  const b=e.bed, w=e.wake;
+  if(b==null || w==null){ el.textContent=''; return; }
+  const tib=Math.round(((w+24)-b)*60);
+  if(tib<=0 || tib>16*60){ el.innerHTML='<span style="color:var(--caution)">Horaires incohérents — vérifie le coucher et le lever.</span>'; return; }
+  let txt=`Temps au lit : <b>${fmtMin(tib)}</b>`;
+  if(e.sd){
+    const eff=e.sd/tib*100;
+    const c = eff>=88 ? 'var(--jade)' : eff>=80 ? 'var(--caution)' : 'var(--clay)';
+    txt += ` · efficacité du sommeil <b style="color:${c}">${eff.toFixed(0)} %</b>`;
+    txt += eff>=88 ? ' (bon)' : eff>=80 ? ' (correct)' : ' (fragmenté)';
+  } else txt += ' · renseigne ta durée de sommeil pour voir l\'efficacité';
+  el.innerHTML=txt;
+}
+
+/* remplit le formulaire depuis l'entrée du jour (après chargement ou import) */
+function fillForm(){
+  const e = todayEntry(); if(!e) return;
+  const set=(id,v)=>{ if(v!=null) document.getElementById(id).value=v; };
+  const hm=v=>String(Math.floor(v)).padStart(2,'0')+':'+String(Math.round((v%1)*60)).padStart(2,'0');
+  set('i-hrv',e.hrv); set('i-hrn',e.hrn); set('i-ss',e.ss);
+  if(e.sd!=null) document.getElementById('i-sd').value=fmtMin(e.sd).replace('h',':');
+  set('i-bb',e.bb); set('i-rhr',e.rhr); set('i-rr',e.rr); set('i-st',e.st);
+  if(e.plan) document.getElementById('i-plan').value=e.plan;
+  if(e.sym!=null) document.getElementById('i-sym').value=e.sym;
+  if(e.bed!=null)  document.getElementById('i-bed').value=hm(e.bed>=24? e.bed-24 : e.bed);
+  if(e.wake!=null) document.getElementById('i-wake').value=hm(e.wake);
+  if(e.tmp!=null)  document.getElementById('i-tmp').value=e.tmp;
+  if(e.tmpw!=null) document.getElementById('i-tmpw').value=e.tmpw;
+  showTib(e);
+  if(e.wt!=null) document.getElementById('i-wt').value=e.wt;
+  const setSeg=(id,v)=>{ const el=document.getElementById(id); if(!el||v==null) return;
+    [...el.children].forEach(c=>c.classList.toggle('on', +c.dataset.v===v)); };
+  if(e.alc!=null) setSeg('s-alc', e.alc+1);
+  if(e.dint!=null) setSeg('s-din', e.dint);
+  if(e.mload!=null) setSeg('s-load', e.mload);
+  if(e.alch!=null) document.getElementById('i-alch').value=hm(e.alch);
+  if(e.dinh!=null) document.getElementById('i-dinh').value=hm(e.dinh);
+  if(e.eh!=null)   document.getElementById('l-end').value=hm(e.eh);
+  if(e.ty!=null)   document.getElementById('l-type').value=e.ty;
+  if(e.dur!=null)  document.getElementById('l-dur').value=e.dur;
+  if(e.z45!=null)  document.getElementById('l-z45').value=e.z45;
+  if(e.hr!=null)   document.getElementById('l-hr').value=e.hr;
+  if(e.z) for(let i=1;i<=5;i++){ const el=document.getElementById('l-zn'+i); if(el&&e.z[i]) el.value=e.z[i]; }
+  if(e.vo!=null)   document.getElementById('i-vo2').value=e.vo;
+}
+
+/* =========================================================
+   INTERACTIONS
+   ========================================================= */
+function segments(id, labels, def){
+  const el=document.getElementById(id);
+  el.innerHTML = labels.map((l,i)=>`<button data-v="${i+1}" class="${i+1===def?'on':''}">${l}</button>`).join('');
+  el.addEventListener('click',ev=>{
+    const b=ev.target.closest('button'); if(!b) return;
+    [...el.children].forEach(c=>c.classList.remove('on')); b.classList.add('on');
+  });
+}
+const segVal = id => { const on=document.querySelector('#'+id+' .on'); return on? +on.dataset.v : null; };
+
+function parseDur(s){
+  if(!s) return null; s=(''+s).trim();
+  if(s.includes(':')||s.includes('h')){ const [h,m]=s.split(/[:h]/); return (+h||0)*60+(+m||0); }
+  const n=+s; return isNaN(n)? null : (n<20? n*60 : n);
+}
+const num = id => { const v=document.getElementById(id).value; return v===''? null : +v; };
+
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),1900);
+}
+
+async function saveMorning(){
+  const e = todayEntry() || {d:TODAY};
+  e.hrv=num('i-hrv'); e.hrn=num('i-hrn'); e.ss=num('i-ss');
+  e.sd=parseDur(document.getElementById('i-sd').value);
+  e.bb=num('i-bb'); e.rhr=num('i-rhr'); e.rr=num('i-rr'); e.st=num('i-st');
+  e.energy=segVal('s-energy'); e.sore=segVal('s-sore'); e.motiv=segVal('s-motiv');
+  e.plan=document.getElementById('i-plan').value;
+  if(e.hrv==null && e.ss==null && e.bb==null){ toast('Saisis au moins la VFC'); return; }
+  if(!entries.find(x=>x.d===TODAY)) entries.push(e);
+  await persist();
+  renderVerdict(); renderTrends();
+  document.getElementById('savedNote').textContent = 'Enregistré. Modifie et recalcule autant que tu veux.';
+  toast('Readiness calculée');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const parseHour = s => {
+  if(!s) return null; s=(''+s).trim().replace('h',':');
+  const p=s.split(':'); const h=+p[0], m=+(p[1]||0);
+  if(isNaN(h)) return null;
+  return Math.round((h + m/60)*10)/10;
+};
+
+async function saveEvening(){
+  const e = todayEntry() || {d:TODAY};
+  if(!entries.find(x=>x.d===TODAY)) entries.push(e);
+  e.alc   = segVal('s-alc')-1;                 // segment 1 => 0 verre
+  e.alch  = parseHour(document.getElementById('i-alch').value);
+  e.dint  = segVal('s-din');
+  e.mload = segVal('s-load');
+  e.sym   = document.getElementById('i-sym').value;
+  const bedH  = parseHour(document.getElementById('i-bed').value);
+  const wakeH = parseHour(document.getElementById('i-wake').value);
+  if(bedH!=null)  e.bed  = bedH < 12 ? bedH + 24 : bedH;   // 00h30 -> 24.5
+  if(wakeH!=null) e.wake = wakeH;
+  if(e.bed!=null && e.wake!=null){
+    e.tib = Math.round(((e.wake + 24) - e.bed)*60);        // temps au lit, minutes
+    if(e.tib<=0 || e.tib>16*60) delete e.tib;
+  }
+  if(e.tib && e.sd) e.eff = Math.round(e.sd/e.tib*1000)/10;
+  const t1=document.getElementById('i-tmp').value, t2=document.getElementById('i-tmpw').value;
+  if(t1!=='') e.tmp=+t1;
+  if(t2!=='') e.tmpw=+t2;
+  const w = document.getElementById('i-wt').value;
+  if(w!=='') e.wt = +w;
+  const vo = document.getElementById('i-vo2').value;
+  if(vo!=='') e.vo = +vo;
+  const dh = parseHour(document.getElementById('i-dinh').value);
+  if(dh!=null){
+    e.dinh = dh;
+    const ref = e.bed!=null ? e.bed : BEDTIME;             // coucher réel si connu
+    let g = ref - dh; if(g<0) g+=24;
+    e.dind = Math.round(g*10)/10;
+  }
+  await persist();
+  renderVerdict(); renderEffects(); renderTemp(); renderZoneVo2();
+  toast('Soirée enregistrée');
+}
+
+async function logSession(){
+  const t=document.getElementById('l-type').value;
+  const dur=num('l-dur'); let z45=num('l-z45')||0; const hr=num('l-hr'), rpe=num('l-rpe');
+  if(!dur){ toast('Indique au moins la durée'); return; }
+  const targetDate = importedDate || TODAY;
+  let e = entries.find(x=>x.d===targetDate);
+  if(!e){ e={d:targetDate}; entries.push(e); entries.sort((a,b)=>a.d<b.d?-1:1); }
+  const zn=[0,1,2,3,4,5].map(i=> i===0 ? 0 : (num('l-zn'+i)||0));
+  if(zn.some(v=>v>0)){
+    zn[0]=Math.max(0, dur - zn.reduce((a,b)=>a+b,0));   // le reste = sous Z1
+    e.z=zn.map(v=>Math.round(v*10)/10);
+    e.z45=Math.round((zn[4]+zn[5])*10)/10;
+  } else e.z=null;
+  e.ty=t; e.dur=dur; e.hr=hr; e.rpe=rpe;
+  if(!e.z) e.z45=z45;
+  e.ld=loadOf(t,dur,e.z45,e.z);
+  const eh=parseHour(document.getElementById('l-end').value);
+  if(eh!=null) e.eh=eh;
+  await persist();
+  // avertissement horaire
+  const w=document.getElementById('endWarn');
+  if(eh!=null){
+    const gap = BEDTIME - eh;
+    if(gap>=0 && gap<4 && z45>=5)
+      w.innerHTML = `<span style="color:var(--clay)">Séance intense terminée ${gap.toFixed(1)} h avant ton coucher habituel (23h15). Sur tes données, ces nuits-là ta VFC tombe à 42,6 ms contre 47,3 quand tu finis 4 h avant. Couche-toi un peu plus tard ou allège demain.</span>`;
+    else if(gap>=0 && gap<4)
+      w.innerHTML = `<span style="color:var(--caution)">Séance finie ${gap.toFixed(1)} h avant ton coucher. Sans intensité c'est peu gênant, mais garde la marge de 4 h pour les séances dures.</span>`;
+    else w.textContent='';
+  } else w.textContent='';
+  renderSessions(); renderTrends(); renderVerdict(); renderEffects(); renderTemp(); renderZoneVo2();
+  toast(importedDate && importedDate!==TODAY ? 'Séance du '+importedDate.slice(8,10)+'/'+importedDate.slice(5,7)+' enregistrée' : 'Séance enregistrée');
+  importedDate = null;
+}
+
+/* onglets */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById('t-'+b.dataset.t).classList.add('on');
+    window.scrollTo({top:0});
+  });
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+(async function init(){
+  const d=new Date();
+  document.getElementById('today').textContent =
+    d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'}).replace('.','');
+
+  segments('s-energy',['Vidé','Bas','Normal','Bien','Top'],3);
+  segments('s-sore',['Aucune','Légères','Moyennes','Fortes','Très fortes'],1);
+  segments('s-motiv',['Nulle','Basse','Normale','Bonne','Haute'],3);
+  segments('s-alc',['0','1','2','3','4+'],1);
+  segments('s-din',['Léger','Normal','Copieux','Gras/lourd'],2);
+  segments('s-load',['Très calme','Calme','Normale','Chargée','Très lourde'],3);
+
+  await load();
+
+  fillForm();
+
+  document.getElementById('save').addEventListener('click',saveMorning);
+  document.getElementById('saveEve').addEventListener('click',saveEvening);
+  ['i-bed','i-wake','i-sd'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.addEventListener('change',()=>{
+      const b=parseHour(document.getElementById('i-bed').value);
+      const w=parseHour(document.getElementById('i-wake').value);
+      showTib({bed: b==null?null:(b<12?b+24:b), wake:w, sd:parseDur(document.getElementById('i-sd').value)});
+    });
+  });
+
+  document.getElementById('impFile').addEventListener('change',async ev=>{
+    const files=[...ev.target.files]; ev.target.value='';
+    if(!files.length) return;
+    const boxes=[document.getElementById('impResult'),document.getElementById('impResult2')].filter(Boolean);
+    const box={set innerHTML(v){boxes.forEach(b=>b.innerHTML=v);}};
+    box.innerHTML='<p class="note">Lecture en cours…</p>';
+    try{
+      const r=await importFiles(files);
+      let html='';
+      if(r.days.length || r.sess.length){
+        const lines=[];
+        if(r.nCsv) lines.push(`<div class="row"><div class="n">Sommeil détaillé (CSV)<small>VFC, score, FC nuit, FC repos, respiration</small></div><div class="z ok mono">${r.nCsv} j</div></div>`);
+        if(r.nWell) lines.push(`<div class="row"><div class="n">Données de récupération<small>VFC, sommeil, FC nocturne, stress</small></div><div class="z ok mono">${r.days.length} j</div></div>`);
+        r.sess.forEach(s=>lines.push(
+          `<div class="row"><div class="n">${TYPE_LABEL[s.ty]||s.name}<small>${s.d} · ${s.dur} min · ${s.z45} min Z4+5${s.eh!=null?' · fin '+String(Math.floor(s.eh)).padStart(2,'0')+'h'+String(Math.round((s.eh%1)*60)).padStart(2,'0'):''}</small></div><div class="z ok mono">séance</div></div>`));
+        html=`<div class="rows" style="margin-top:12px">${lines.join('')}</div>`;
+        const gap=r.sess.filter(s=>s.eh!=null && s.z45>=5 && (BEDTIME-s.eh)>=0 && (BEDTIME-s.eh)<4);
+        if(gap.length) html+=`<p class="note" style="color:var(--clay)">Séance intense terminée moins de 4 h avant ton coucher habituel — sur tes données, ces nuits-là ta VFC tombe à 42,6 ms contre 47,3.</p>`;
+      } else {
+        html='<p class="note">Rien d\'exploitable trouvé dans ce fichier. Les exports pris en charge sont : activité (.fit d\'une séance), statut VFC, sommeil et bien-être quotidien.</p>';
+      }
+      if(r.errs.length) html+=`<p class="note" style="color:var(--caution)">${r.errs.join('<br>')}</p>`;
+      box.innerHTML=html;
+      importedDate = (r.sess.length===1 && r.sess[0].d!==TODAY) ? r.sess[0].d : null;
+      fillForm(); renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+      if(r.days.length||r.sess.length) toast('Import réussi');
+    }catch(x){
+      box.innerHTML=`<p class="note" style="color:var(--clay)">Import impossible : ${x.message}</p>`;
+    }
+  });
+  document.getElementById('logSess').addEventListener('click',logSession);
+  document.getElementById('export').addEventListener('click',()=>{
+    const blob=new Blob([JSON.stringify(entries,null,1)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='cockpit-'+TODAY+'.json'; a.click(); toast('Sauvegarde exportée');
+  });
+  document.getElementById('importFile').addEventListener('change',ev=>{
+    const f=ev.target.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=async()=>{
+      try{
+        const arr=JSON.parse(r.result);
+        if(!Array.isArray(arr)) throw new Error('format');
+        const map=new Map(entries.map(e=>[e.d,e]));
+        arr.forEach(e=>{ if(e && e.d) map.set(e.d,{...map.get(e.d),...e}); });
+        entries=[...map.values()].sort((a,b)=>a.d<b.d?-1:1);
+        await persist();
+        renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+        toast(arr.length+' jours importés');
+      }catch(err){ toast('Fichier illisible'); }
+    };
+    r.readAsText(f); ev.target.value='';
+  });
+  document.getElementById('reset').addEventListener('click',async()=>{
+    entries=[]; await persist(); renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+    toast('Saisies effacées');
+  });
+
+  renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+})();
+</script>
+</body>
+</html>
