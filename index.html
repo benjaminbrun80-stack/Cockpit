@@ -168,12 +168,12 @@ td.num{text-align:right}
 .calgrid .wd{text-align:center;font-size:9.5px;color:var(--dim2);letter-spacing:.06em;
   height:16px;line-height:16px;grid-row:1}
 .cd{position:relative;width:100%;height:100%;min-width:0;max-height:42px;overflow:hidden;
-  border-radius:8px;border:1.5px solid transparent;background:#162226;
+  grid-column:auto;border-radius:8px;border:1.5px solid transparent;background:#162226;
   color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:12.5px;cursor:pointer;padding:0;
   display:flex;align-items:center;justify-content:center;box-sizing:border-box}
-.cd.none{background:#0E1618;color:#3E5155}
-.cd.part{background:rgba(232,184,75,.15);color:var(--ink)}
-.cd.full{background:rgba(95,191,143,.18);color:var(--ink)}
+.cd.d-none{background:#0E1618;color:#3E5155}
+.cd.d-part{background:rgba(232,184,75,.15);color:var(--ink)}
+.cd.d-full{background:rgba(95,191,143,.18);color:var(--ink)}
 .cd.sel{border-color:var(--amber);color:var(--ink)}
 .cd.today{font-weight:700;text-decoration:underline;text-underline-offset:2px}
 .cd:disabled{opacity:.3;cursor:default}
@@ -2153,7 +2153,9 @@ function renderCal(){
     const d = `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const future = d>TODAY;
     const st = future ? {state:'none',sess:false} : dayState(d);
-    const cls = ['cd', st.state, d===SEL?'sel':'', d===TODAY?'today':''].filter(Boolean).join(' ');
+    // prefixe d- obligatoire : une classe nue « full » entrerait en collision
+    // avec la regle .full{grid-column:1/-1} des formulaires
+    const cls = ['cd', 'd-'+st.state, d===SEL?'sel':'', d===TODAY?'today':''].filter(Boolean).join(' ');
     h += `<button class="${cls}" data-d="${d}"${future?' disabled':''}>${day}${st.sess?'<i></i>':''}</button>`;
   }
   document.getElementById('calGrid').innerHTML=h;
