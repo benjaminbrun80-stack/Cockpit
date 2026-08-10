@@ -5,7 +5,7 @@
    - le cache ne sert que de filet hors-ligne.
    Sans ça, un cache-first classique te servirait indéfiniment l'ancienne
    version du fichier, et tu croirais tes modifications perdues. */
-const VERSION = 'cockpit-v1';
+const VERSION = 'cockpit-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest',
                './icon-192.png', './icon-512.png', './icon-512-maskable.png'];
 
