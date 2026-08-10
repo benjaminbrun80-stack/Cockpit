@@ -1,0 +1,17 @@
+{
+  "name": "Cockpit — pilotage d'entraînement",
+  "short_name": "Cockpit",
+  "description": "Pilotage d'entraînement à partir de tes données de récupération.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A1113",
+  "theme_color": "#0A1113",
+  "lang": "fr",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -146,6 +146,69 @@ td.num{text-align:right}
   padding:12px 20px;border-radius:10px;font-weight:700;font-size:14px;z-index:99;opacity:0;pointer-events:none;
   transition:opacity .25s}
 .toast.on{opacity:1}
+/* ---------- navigation par date ---------- */
+.daynav{display:flex;align-items:center;gap:10px}
+.daynav button{width:40px;height:40px;flex:0 0 40px;border-radius:11px;background:var(--panel2);
+  border:1px solid var(--line);color:var(--ink);font-size:20px;font-family:inherit;cursor:pointer;line-height:1}
+.daynav button:disabled{opacity:.25}
+.dtitle{flex:1;text-align:center;min-width:0}
+.dtitle b{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+.dtitle b::first-letter{text-transform:uppercase}
+.dtitle small{font-size:11px;color:var(--dim2)}
+.hdate{float:right;font-size:10.5px;color:var(--dim2);letter-spacing:.04em;font-weight:600}
+
+/* ---------- calendrier ---------- */
+.cal{margin-top:15px}
+.calgrid{grid-template-rows:16px}
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.calhead b{font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);font-weight:700}
+.calhead button{background:none;border:none;color:var(--dim);font-size:17px;padding:2px 12px;cursor:pointer;font-family:inherit}
+.calhead button:disabled{opacity:.25}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:42px;gap:3px}
+.calgrid .wd{text-align:center;font-size:9.5px;color:var(--dim2);letter-spacing:.06em;
+  height:16px;line-height:16px;grid-row:1}
+.cd{position:relative;width:100%;height:100%;min-width:0;max-height:42px;overflow:hidden;
+  border-radius:8px;border:1.5px solid transparent;background:#162226;
+  color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:12.5px;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.cd.none{background:#0E1618;color:#3E5155}
+.cd.part{background:rgba(232,184,75,.15);color:var(--ink)}
+.cd.full{background:rgba(95,191,143,.18);color:var(--ink)}
+.cd.sel{border-color:var(--amber);color:var(--ink)}
+.cd.today{font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.cd:disabled{opacity:.3;cursor:default}
+.cd i{position:absolute;bottom:3.5px;left:50%;transform:translateX(-50%);width:4px;height:4px;
+  border-radius:50%;background:var(--steel)}
+.callg{display:flex;gap:11px;flex-wrap:wrap;margin-top:10px;font-size:10.5px;color:var(--dim2)}
+.callg s{text-decoration:none;display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.dstat{margin-top:11px;font-size:12px;padding:9px 11px;border-radius:9px;line-height:1.45}
+.dstat.ok{background:rgba(95,191,143,.12);color:var(--jade)}
+.dstat.part{background:rgba(232,184,75,.11);color:var(--caution)}
+.dstat.none{background:#162226;color:var(--dim2)}
+
+/* ---------- séances du jour ---------- */
+.sitem{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;margin-bottom:7px}
+.sitem .si{flex:1;font-size:13.5px;font-weight:600;min-width:0}
+.sitem .si small{display:block;color:var(--dim2);font-size:11px;font-weight:400;
+  font-family:'IBM Plex Mono',monospace}
+.sitem .del{flex:0 0 32px;height:32px;background:none;border:1px solid var(--line);color:var(--dim2);
+  border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit}
+details.add summary{list-style:none;cursor:pointer;font-size:13px;color:var(--amber);font-weight:700;
+  padding:10px 0 2px;letter-spacing:.01em}
+details.add summary::-webkit-details-marker{display:none}
+.sedit{display:flex;gap:5px;margin-top:7px}
+.sedit select{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;
+  color:var(--dim);font-family:inherit;font-size:11.5px;padding:6px 7px;font-weight:500}
+.sedit select:focus{outline:2px solid var(--amber);outline-offset:-1px}
+table.dose{font-size:11.5px}
+table.dose th,table.dose td{padding:7px 3px}
+table.dose td small{display:block;color:var(--dim2);font-size:9.5px;font-weight:400}
+.coef{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:10px;margin-bottom:7px}
+.coef .cn{font-size:12.5px}
+.coef .cn small{display:block;color:var(--dim2);font-size:10.5px}
+.coef .cv{font-size:15px;font-weight:700;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -158,29 +221,45 @@ td.num{text-align:right}
 </header>
 
 <nav>
-  <button class="on" data-t="now">Aujourd'hui</button>
-  <button data-t="trend">Tendances</button>
-  <button data-t="sess">Séances</button>
-  <button data-t="eff">Effets</button>
+  <button class="on" data-t="day">Saisies</button>
+  <button data-t="ready">Readiness</button>
+  <button data-t="stats">Statistiques</button>
   <button data-t="ref">Repères</button>
 </nav>
 
 <main>
 
-<!-- ============ AUJOURD'HUI ============ -->
-<section class="tab on" id="t-now">
-  <div id="verdictBox"></div>
+<!-- ============ SAISIES DU JOUR ============ -->
+<section class="tab on" id="t-day">
 
   <div class="card">
-    <h2>Importer depuis Garmin</h2>
-    <p class="sub" style="margin:-4px 0 12px">Dépose un fichier exporté de Connect (.fit, .zip ou .csv). L'app reconnaît le type toute seule et remplit ce qu'elle peut. Tu peux toujours corriger ou compléter à la main juste en dessous.</p>
-    <input type="file" id="impFile" accept=".fit,.zip,.csv" multiple class="vh">
-    <label class="go" for="impFile" style="margin-top:0;display:block;text-align:center">Choisir un ou plusieurs fichiers</label>
-    <div id="impResult"></div>
+    <div class="daynav">
+      <button id="dPrev" aria-label="Jour précédent">‹</button>
+      <div class="dtitle"><b id="dLabel">—</b><small id="dRel"></small></div>
+      <button id="dNext" aria-label="Jour suivant">›</button>
+    </div>
+
+    <div class="cal">
+      <div class="calhead">
+        <button id="mPrev" aria-label="Mois précédent">‹</button>
+        <b id="mLabel">—</b>
+        <button id="mNext" aria-label="Mois suivant">›</button>
+      </div>
+      <div class="calgrid" id="calGrid"></div>
+    </div>
+    <div class="callg">
+      <span><s style="background:rgba(95,191,143,.45)"></s>journée complète</span>
+      <span><s style="background:rgba(232,184,75,.4)"></s>partielle</span>
+      <span><s style="background:#0E171A;border:1px solid #243438"></s>rien saisi</span>
+      <span><s style="background:var(--steel);border-radius:50%"></s>séance</span>
+    </div>
+    <button class="ghost" id="goToday">Revenir à aujourd'hui</button>
+    <div id="dStatus"></div>
   </div>
 
   <div class="card">
-    <h2>Relevé du matin</h2>
+    <h2>1 · Réveil <span class="hdate" id="hMorning"></span></h2>
+    <p class="sub" style="margin:-4px 0 12px">La nuit qui vient de se terminer et tes chiffres au lever.</p>
     <div class="grid">
       <div class="f"><label>VFC / HRV <u>ms</u></label><input type="number" id="i-hrv" inputmode="decimal" placeholder="47"></div>
       <div class="f"><label>FC nocturne <u>bpm</u></label><input type="number" id="i-hrn" inputmode="decimal" placeholder="55"></div>
@@ -189,46 +268,74 @@ td.num{text-align:right}
       <div class="f"><label>Body Battery <u>réveil</u></label><input type="number" id="i-bb" inputmode="numeric" placeholder="85"></div>
       <div class="f"><label>FC repos <u>bpm</u></label><input type="number" id="i-rhr" inputmode="numeric" placeholder="49"></div>
       <div class="f"><label>Respiration nuit <u>/min</u></label><input type="number" id="i-rr" inputmode="decimal" step="0.1" placeholder="11.3"></div>
-      <div class="f"><label>Stress moyen <u>veille</u></label><input type="number" id="i-st" inputmode="numeric" placeholder="28"></div>
+      <div class="f"><label>Heure de lever</label><input type="text" id="i-wake" inputmode="text" placeholder="07:00"></div>
+      <div class="f"><label>Temp. chambre <u>au lever</u></label><input type="number" id="i-tmpw" inputmode="decimal" step="0.5" placeholder="23"></div>
+      <div class="f"><label>Poids <u>1×/semaine</u></label><input type="number" id="i-wt" inputmode="decimal" step="0.1" placeholder="71.7"></div>
+      <div class="f full"><label>Symptômes</label>
+        <select id="i-sym">
+          <option value="">Aucun</option>
+          <option value="gorge">Gorge / ORL</option>
+          <option value="nez">Nez qui coule</option>
+          <option value="fievre">Fièvre / courbatures</option>
+          <option value="digestif">Digestif</option>
+          <option value="autre">Autre</option>
+        </select></div>
+      <div class="f full"><label>VO2max <u>quand il change</u></label>
+        <input type="number" id="i-vo2" inputmode="decimal" step="0.1" placeholder="52"></div>
     </div>
-
-    <div class="f full" style="margin-top:14px">
-      <label>Énergie ressentie</label>
-      <div class="seg" id="s-energy"></div>
-    </div>
-    <div class="f full" style="margin-top:10px">
-      <label>Courbatures / douleurs</label>
-      <div class="seg" id="s-sore"></div>
-    </div>
-    <div class="f full" style="margin-top:10px">
-      <label>Motivation</label>
-      <div class="seg" id="s-motiv"></div>
-    </div>
-
-    <div class="f full" style="margin-top:14px">
-      <label>Séance prévue aujourd'hui</label>
-      <select id="i-plan">
-        <option value="free">À décider — dis-moi quoi faire</option>
-        <option value="push">PPL — Push (pecs / épaules / triceps)</option>
-        <option value="pull">PPL — Pull (dos / biceps)</option>
-        <option value="legs">PPL — Legs (jambes)</option>
-        <option value="strength">Musculation (générique)</option>
-        <option value="vo2">VO2max / fractionné</option>
-        <option value="z2">Cardio zone 2</option>
-        <option value="crossfit">CrossFit / HIIT</option>
-        <option value="row">Rameur</option>
-        <option value="walk">Marche</option>
-        <option value="rest">Repos prévu</option>
-      </select>
-    </div>
-
-    <button class="go" id="save">Calculer ma readiness</button>
-    <p class="note" id="savedNote"></p>
+    <p class="note" id="tibNote" style="margin-top:9px"></p>
   </div>
 
   <div class="card">
-    <h2>Hier soir</h2>
-    <p class="sub" style="margin:-4px 0 13px">Ces quatre lignes expliqueront la plupart de tes mauvaises nuits. Laisse vide si rien à signaler.</p>
+    <h2>2 · Séances <span class="hdate" id="hSess"></span></h2>
+    <div id="sessDay"></div>
+    <details class="add" id="addBox">
+      <summary>+ Ajouter une séance</summary>
+      <div class="grid" style="margin-top:8px">
+        <div class="f"><label>Modalité</label>
+          <select id="l-mod">
+            <option value="rameur">Rameur</option>
+            <option value="skierg">SkiErg</option>
+            <option value="velo">Vélo / Assault bike</option>
+            <option value="course">Tapis / Course</option>
+            <option value="marche">Marche</option>
+            <option value="natation">Natation</option>
+            <option value="muscu">Musculation</option>
+            <option value="ergo">Autre ergomètre</option>
+            <option value="autre">Autre</option>
+          </select></div>
+        <div class="f"><label>Format</label>
+          <select id="l-fmt">
+            <option value="">Auto — d'après les zones</option>
+            <option value="interval">Intervalles / 4×4</option>
+            <option value="seuil">Seuil / tempo</option>
+            <option value="z2">Zone 2 continu</option>
+            <option value="force">Force</option>
+            <option value="mixte">Mixte / WOD</option>
+            <option value="recup">Récupération</option>
+          </select></div>
+        <div class="f"><label>Durée <u>min</u></label><input type="number" id="l-dur" inputmode="numeric" placeholder="45"></div>
+        <div class="f"><label>Min. en Z4+Z5 <u>&gt;154 bpm</u></label><input type="number" id="l-z45" inputmode="numeric" placeholder="0"></div>
+        <div class="f full" style="margin-top:2px"><label>Détail par zone <u>optionnel — affine la charge et l'analyse VO2max</u></label>
+          <div class="zg">
+            <span><i>Z1</i><input type="number" id="l-zn1" inputmode="numeric" placeholder="0"></span>
+            <span><i>Z2</i><input type="number" id="l-zn2" inputmode="numeric" placeholder="0"></span>
+            <span><i>Z3</i><input type="number" id="l-zn3" inputmode="numeric" placeholder="0"></span>
+            <span><i>Z4</i><input type="number" id="l-zn4" inputmode="numeric" placeholder="0"></span>
+            <span><i>Z5</i><input type="number" id="l-zn5" inputmode="numeric" placeholder="0"></span>
+          </div></div>
+        <div class="f"><label>FC moyenne</label><input type="number" id="l-hr" inputmode="numeric" placeholder="130"></div>
+        <div class="f"><label>RPE <u>1–10</u></label><input type="number" id="l-rpe" inputmode="numeric" min="1" max="10" placeholder="7"></div>
+        <div class="f full"><label>Heure de fin</label><input type="text" id="l-end" inputmode="text" placeholder="18:30"></div>
+      </div>
+      <button class="go" id="logSess">Ajouter cette séance</button>
+    </details>
+    <p class="note" id="endWarn" style="margin-top:4px"></p>
+  </div>
+
+  <div class="card">
+    <h2>3 · Soirée <span class="hdate" id="hEve"></span></h2>
+    <p class="sub" style="margin:-4px 0 13px">Ce qui s'est passé <b>après</b> la séance, et qui pèsera sur la nuit suivante. Laisse vide si tu ne sais pas — mais coche <b>0 verre</b> pour une soirée sans alcool : sans ça, l'analyse n'a pas de groupe de comparaison.</p>
 
     <div class="f full"><label>Alcool <u>nombre de verres</u></label>
       <div class="seg" id="s-alc"></div></div>
@@ -245,40 +352,83 @@ td.num{text-align:right}
       <div class="seg" id="s-load"></div></div>
 
     <div class="grid" style="margin-top:13px">
+      <div class="f"><label>Stress moyen <u>journée, Garmin</u></label><input type="number" id="i-st" inputmode="numeric" placeholder="28"></div>
       <div class="f"><label>Heure de coucher</label><input type="text" id="i-bed" inputmode="text" placeholder="23:15"></div>
-      <div class="f"><label>Heure de lever</label><input type="text" id="i-wake" inputmode="text" placeholder="07:00"></div>
-      <div class="f"><label>Temp. chambre <u>au coucher</u></label><input type="number" id="i-tmp" inputmode="decimal" step="0.5" placeholder="21"></div>
-      <div class="f"><label>Temp. chambre <u>au lever</u></label><input type="number" id="i-tmpw" inputmode="decimal" step="0.5" placeholder="23"></div>
-      <p class="note full" id="tibNote" style="margin:0"></p>
-      <div class="f full"><label>Symptômes</label>
-        <select id="i-sym">
-          <option value="">Aucun</option>
-          <option value="gorge">Gorge / ORL</option>
-          <option value="nez">Nez qui coule</option>
-          <option value="fievre">Fièvre / courbatures</option>
-          <option value="digestif">Digestif</option>
-          <option value="autre">Autre</option>
-        </select></div>
-      <div class="f"><label>Poids <u>1×/semaine</u></label>
-        <input type="number" id="i-wt" inputmode="decimal" step="0.1" placeholder="71.7"></div>
-      <div class="f"><label>VO2max <u>quand il change</u></label>
-        <input type="number" id="i-vo2" inputmode="decimal" step="0.1" placeholder="52"></div>
+      <div class="f full"><label>Temp. chambre <u>au coucher</u></label><input type="number" id="i-tmp" inputmode="decimal" step="0.5" placeholder="21"></div>
     </div>
-
-    <button class="go" id="saveEve">Enregistrer</button>
+    <p class="note" id="eveNote"></p>
   </div>
 
-  <div class="card">
-    <h2>Écarts à ta baseline 28 jours</h2>
-    <div class="rows" id="devRows"></div>
-    <p class="note">La baseline se recalcule en continu sur tes 28 derniers jours. Elle est initialisée avec tes 120 derniers jours Garmin, donc elle est déjà fiable.<br><br>
-    Le score combine ta valeur du jour et ta moyenne 7 jours, pour éviter qu'une nuit atypique déclenche une fausse alerte. C'est un résumé d'état, pas une prédiction validée : ce qui est solidement établi sur tes données, c'est la dose-réponse Z4+Z5 et le retour à la normale en 1 jour. Le score, lui, reste un indicateur à croiser avec ton ressenti.</p>
+  <button class="go" id="saveDay">Enregistrer cette journée</button>
+  <p class="note" id="savedNote"></p>
+
+  <div class="card" style="margin-top:12px">
+    <h2>Importer depuis Garmin</h2>
+    <p class="sub" style="margin:-4px 0 12px">Dépose un fichier exporté de Connect (.fit, .zip ou .csv). L'app lit la date dans le fichier et remplit le bon jour toute seule, même si ce n'est pas aujourd'hui. Pour une séance : activité → menu ⋮ → <b>Exporter l'original</b>.</p>
+    <input type="file" id="impFile" accept=".fit,.zip,.csv" multiple class="vh">
+    <label class="go" for="impFile" style="margin-top:0;display:block;text-align:center">Choisir un ou plusieurs fichiers</label>
+    <div id="impResult"></div>
   </div>
 </section>
 
-<!-- ============ TENDANCES ============ -->
-<section class="tab" id="t-trend">
+<!-- ============ READINESS ============ -->
+<section class="tab" id="t-ready">
+  <div class="card">
+    <div class="daynav">
+      <button id="rPrev" aria-label="Jour précédent">‹</button>
+      <div class="dtitle"><b id="rLabel">—</b><small id="rRel"></small></div>
+      <button id="rNext" aria-label="Jour suivant">›</button>
+    </div>
+  </div>
+
+  <div id="verdictBox"></div>
+
+  <div class="card">
+    <h2>Ton ressenti ce jour-là</h2>
+    <div class="f full">
+      <label>Énergie ressentie</label>
+      <div class="seg" id="s-energy"></div>
+    </div>
+    <div class="f full" style="margin-top:10px">
+      <label>Courbatures / douleurs</label>
+      <div class="seg" id="s-sore"></div>
+    </div>
+    <div class="f full" style="margin-top:10px">
+      <label>Motivation</label>
+      <div class="seg" id="s-motiv"></div>
+    </div>
+    <div class="f full" style="margin-top:14px">
+      <label>Séance prévue</label>
+      <select id="i-plan">
+        <option value="free">À décider — dis-moi quoi faire</option>
+        <option value="push">PPL — Push (pecs / épaules / triceps)</option>
+        <option value="pull">PPL — Pull (dos / biceps)</option>
+        <option value="legs">PPL — Legs (jambes)</option>
+        <option value="strength">Musculation (générique)</option>
+        <option value="vo2">VO2max / fractionné</option>
+        <option value="z2">Cardio zone 2</option>
+        <option value="crossfit">CrossFit / HIIT</option>
+        <option value="row">Rameur</option>
+        <option value="walk">Marche</option>
+        <option value="rest">Repos prévu</option>
+      </select>
+    </div>
+    <button class="go" id="calcReady">Calculer ma readiness</button>
+    <p class="note" id="readyNote">Le ressenti pèse jusqu'à ±4 points sur le score. Il sert de garde-fou : si les chiffres sont bons mais que tu te sens vidé, le score le prend en compte.</p>
+  </div>
+
+</section>
+
+<!-- ============ STATISTIQUES ============ -->
+<section class="tab" id="t-stats">
   <div id="alerts"></div>
+
+  <div class="card">
+    <h2>Écarts à la baseline <span class="hdate" id="devDate"></span></h2>
+    <div class="rows" id="devRows"></div>
+    <p class="note">La baseline se recalcule en continu sur les 28 jours qui précèdent la date affichée. Elle est initialisée avec tes 120 derniers jours Garmin, donc elle est déjà fiable.<br><br>
+    Le σ est un écart normalisé : ta valeur du jour moins la moyenne, divisée par ton écart-type. Une métrique très stable (FC de repos) atteint vite ±2σ pour 1 bpm, une métrique bruyante (VFC) demande plusieurs ms.</p>
+  </div>
 
   <div class="card">
     <h2>VFC et corridor de baseline · 45 jours</h2>
@@ -306,78 +456,40 @@ td.num{text-align:right}
     <h2>Sommeil · 45 jours</h2>
     <div id="c-sleep"></div>
   </div>
-</section>
-
-<!-- ============ SÉANCES ============ -->
-<section class="tab" id="t-sess">
-  <div class="card">
-    <h2>Importer depuis Garmin</h2>
-    <p class="sub" style="margin-bottom:11px">Sur Garmin Connect, ouvre une activité → menu ⋮ → <b>Exporter l'original</b>. Dépose ici le .zip ou le .fit : le type, la durée, les FC et surtout le <b>temps en Z4+Z5</b> sont lus automatiquement. Tu peux en déposer plusieurs d'un coup.</p>
-    <label class="go" for="impFile" style="margin-top:0;display:block;text-align:center">Choisir un ou plusieurs fichiers</label>
-    <div id="impResult2"></div>
-  </div>
 
   <div class="card">
-    <h2>Ou saisir à la main</h2>
-    <div class="grid">
-      <div class="f full"><label>Type</label>
-        <select id="l-type">
-          <option value="push">PPL — Push</option>
-          <option value="pull">PPL — Pull</option>
-          <option value="legs">PPL — Legs</option>
-          <option value="strength">Musculation (générique)</option>
-          <option value="vo2">VO2max / fractionné</option>
-          <option value="crossfit">CrossFit / HIIT</option>
-          <option value="row">Rameur</option>
-          <option value="z2">Cardio zone 2</option>
-          <option value="walk">Marche</option>
-          <option value="other">Autre</option>
-        </select></div>
-      <div class="f"><label>Durée <u>min</u></label><input type="number" id="l-dur" inputmode="numeric" placeholder="45"></div>
-      <div class="f"><label>Min. en Z4+Z5 <u>&gt;154 bpm</u></label><input type="number" id="l-z45" inputmode="numeric" placeholder="0"></div>
-      <div class="f full" style="margin-top:2px"><label>Détail par zone <u>optionnel — affine la charge et l'analyse VO2max</u></label>
-        <div class="zg">
-          <span><i>Z1</i><input type="number" id="l-zn1" inputmode="numeric" placeholder="0"></span>
-          <span><i>Z2</i><input type="number" id="l-zn2" inputmode="numeric" placeholder="0"></span>
-          <span><i>Z3</i><input type="number" id="l-zn3" inputmode="numeric" placeholder="0"></span>
-          <span><i>Z4</i><input type="number" id="l-zn4" inputmode="numeric" placeholder="0"></span>
-          <span><i>Z5</i><input type="number" id="l-zn5" inputmode="numeric" placeholder="0"></span>
-        </div></div>
-      <div class="f"><label>FC moyenne</label><input type="number" id="l-hr" inputmode="numeric" placeholder="130"></div>
-      <div class="f"><label>RPE <u>1–10</u></label><input type="number" id="l-rpe" inputmode="numeric" min="1" max="10" placeholder="7"></div>
-      <div class="f"><label>Heure de fin</label><input type="text" id="l-end" inputmode="text" placeholder="18:30"></div>
-    </div>
-    <p class="note" id="endWarn" style="margin-top:4px"></p>
-    <button class="go" id="logSess">Enregistrer la séance</button>
-  </div>
-
-  <div class="card">
-    <h2>Coût réel par type de séance</h2>
-    <p class="sub" style="margin-bottom:11px">Variation de ta VFC le lendemain, mesurée sur ton historique. Se précise à chaque séance enregistrée.</p>
+    <h2>Coût réel par format de séance</h2>
+    <p class="sub" style="margin-bottom:11px">Variation de ta VFC le lendemain, par rapport à ta baseline du moment. Le regroupement se fait par <b>format</b> et non par machine : un 4×4 au rameur et une sortie zone 2 au rameur n'ont rien à voir, alors qu'un 4×4 au rameur et un 4×4 au SkiErg se ressemblent beaucoup.</p>
     <div id="costTable"></div>
+  </div>
+
+  <div class="card">
+    <h2>Dose-réponse par zone</h2>
+    <p class="sub" style="margin-bottom:11px">Minutes passées dans chaque zone un jour donné, mises en face de l'écart de ta VFC à ta baseline le lendemain matin. Cette analyse ne dépend d'aucune étiquette de séance : elle ne lit que des minutes mesurées.</p>
+    <div id="zoneDose"></div>
   </div>
 
   <div class="card">
     <h2>Séances enregistrées</h2>
     <div class="slist" id="sessList"></div>
   </div>
-</section>
 
-<!-- ============ EFFETS ============ -->
-<section class="tab" id="t-eff">
   <div class="card">
     <h2>Ce qui agit sur toi</h2>
     <p class="sub">Chaque facteur compare tes nuits <b>avec</b> et <b>sans</b>, sur tes données à toi. Tant qu'il n'y a pas assez de jours dans les deux groupes, l'outil affiche ce qu'il manque plutôt qu'un chiffre trompeur.</p>
   </div>
   <div id="effects"></div>
+
   <div class="card">
     <h2>Température de la chambre</h2>
     <div id="tempCard"></div>
   </div>
+
   <div class="card">
     <h2>Temps en zone et VO2max</h2>
     <div id="zoneVo2"></div>
   </div>
+
   <div class="card">
     <p class="note">Ces comparaisons sont observationnelles : elles montrent des associations, pas des causes. Un soir d'alcool est souvent aussi un soir de coucher tardif et de repas copieux — l'outil ne sait pas démêler les trois. Traite-les comme des pistes à tester, pas comme des verdicts.</p>
   </div>
@@ -433,6 +545,7 @@ const SEED = [{"d":"2026-04-12","hrv":55.0,"hrn":55.0,"rhr":50,"ss":98,"sd":480.
 /* ---------- état ---------- */
 let entries = [];   // saisies manuelles
 let ready = false;
+let dataVersion = 0;   // incremente a chaque ecriture : invalide les caches
 const KEY = 'cockpit:entries:v1';
 
 const iso = d => d.toISOString().slice(0,10);
@@ -466,6 +579,7 @@ async function load(){
   ready = true;
 }
 async function persist(){
+  dataVersion++;
   const ok = await STORE.set(KEY, JSON.stringify(entries));
   if(!ok) toast('Sauvegarde impossible — exporte tes données');
   try{ localStorage.setItem(KEY+':ts', new Date().toISOString()); }catch(e){}
@@ -481,17 +595,18 @@ const BEDTIME = 23.25;
 function series(){
   const m = new Map();
   SEED.forEach(s => m.set(s.d, {...s}));
+  /* toute cle non nulle d'une saisie ecrase la valeur Garmin du meme jour ;
+     une cle absente ou nulle laisse la donnee d'origine en place. */
   entries.forEach(e => {
     const p = m.get(e.d) || {d:e.d};
-    m.set(e.d, {...p, hrv:e.hrv??p.hrv, hrn:e.hrn??p.hrn, rhr:e.rhr??p.rhr,
-      ss:e.ss??p.ss, sd:e.sd??p.sd, bb:e.bb??p.bb, st:e.st??p.st, rr:e.rr??p.rr,
-      z45:e.z45??p.z45, ld:e.ld??p.ld, ty:e.ty??p.ty, dur:e.dur??p.dur,
-      alc:e.alc??p.alc, alch:e.alch??p.alch, dind:e.dind??p.dind, dint:e.dint??p.dint,
-      mload:e.mload??p.mload, sym:e.sym??p.sym, wt:e.wt??p.wt,
-      dlt:e.dlt??p.dlt, eh:e.eh??p.eh, z:e.z??p.z, vo:e.vo??p.vo, bed:e.bed??p.bed, wake:e.wake??p.wake,
-      tib:e.tib??p.tib, eff:e.eff??p.eff, tmp:e.tmp??p.tmp, tmpw:e.tmpw??p.tmpw});
+    const own = {};
+    for(const k in e) if(e[k]!==null && e[k]!==undefined) own[k]=e[k];
+    m.set(e.d, {...p, ...own});
   });
   const arr = [...m.values()].sort((a,b)=>a.d<b.d?-1:1);
+  /* jours passes en mode multi-seances : les champs plats sont recalcules
+     depuis le tableau, pour que charge, zones et types restent coherents */
+  arr.forEach(s=>{ if(Array.isArray(s.se)) Object.assign(s, aggOf(s.se)); });
   // le délai séance→coucher concerne la nuit SUIVANTE, donc le jour du réveil
   for(let i=1;i<arr.length;i++){
     if(arr[i].dlt==null && arr[i-1].eh!=null){
@@ -555,7 +670,7 @@ const isHard = s => s && (((+s.z45||0) >= HARD_Z45) || ((+s.ld||0) >= HARD_LOAD)
 
 let _facts=null, _factsKey='';
 function facts(S){
-  const key = S.length+':'+(S[S.length-1]||{}).d;
+  const key = dataVersion+':'+S.length+':'+(S[S.length-1]||{}).d;
   if(_facts && _factsKey===key) return _facts;
 
   const mean = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
@@ -808,7 +923,6 @@ function prescribe(R, plan, day, F){
 /* =========================================================
    IMPORT GARMIN — décodeur FIT + lecteur ZIP
    ========================================================= */
-let importedDate = null;   // date d'une séance importée, pour la journaliser au bon jour
 const FIT_EPOCH = Date.UTC(1989,11,31,0,0,0);
 const fitDate = s => new Date(FIT_EPOCH + s*1000);
 const localISO = d => new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
@@ -1159,29 +1273,187 @@ async function importFiles(fileList){
   sess.forEach(s=>{
     let e=entries.find(x=>x.d===s.d);
     if(!e){ e={d:s.d}; entries.push(e); }
-    e.ty=s.ty; e.dur=s.dur; e.z45=s.z45; e.hr=s.hr; e.eh=s.eh; e.z=s.z;
-    e.ld=loadOf(s.ty, s.dur, s.z45, s.z);
+    if(!Array.isArray(e.se)) e.se = e.ty
+      ? [{ty:e.ty,dur:e.dur,z45:e.z45,z:e.z,hr:e.hr,eh:e.eh,rpe:e.rpe,ld:e.ld,src:'garmin'}]
+      : [];
+    const rec={ty:s.ty, dur:s.dur, z45:s.z45, z:s.z, hr:s.hr, eh:s.eh, src:'garmin'};
+    rec.ld = sessLoadCalc(rec);
+    // un meme fichier depose deux fois ne doit pas doubler la charge du jour
+    const dup = e.se.some(x=>x.ty===rec.ty && Math.abs((+x.dur||0)-(+rec.dur||0))<0.6
+                             && (x.eh==null||rec.eh==null||Math.abs(x.eh-rec.eh)<0.05));
+    if(!dup) e.se.push(rec);
+    Object.assign(e, aggOf(e.se));
     touched.add(s.d);
   });
   entries.sort((a,b)=>a.d<b.d?-1:1);
   await persist();
   return {nAct, nWell, nCsv, days:[...touched].sort(), sess, errs};
 }
-function todayEntry(){
-  return entries.find(e=>e.d===TODAY) || null;
+/* =========================================================
+   DATE SÉLECTIONNÉE — pivot de toute l'application
+   ========================================================= */
+let SEL = TODAY;                 // jour affiché dans Saisies / Readiness
+let calMonth = TODAY.slice(0,7); // mois affiché dans le calendrier
+
+const shift = (d,n) => {
+  const t = new Date(d+'T12:00:00'); t.setDate(t.getDate()+n);
+  return t.toISOString().slice(0,10);
+};
+const longDate = d => new Date(d+'T12:00:00')
+  .toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+const shortDate = d => new Date(d+'T12:00:00')
+  .toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'}).replace(/\./g,'');
+function relLabel(d){
+  const n = daysBetween(d, TODAY);
+  if(n===0) return "aujourd'hui";
+  if(n===1) return 'hier';
+  if(n===-1) return 'demain';
+  if(n>0) return 'il y a '+n+' jours';
+  return 'dans '+(-n)+' jours';
 }
 
+/* ---------- accès à la série fusionnée (seed + saisies) ---------- */
+let _smap=null, _smapV=-1;
+function smap(){
+  if(!_smap || _smapV!==dataVersion){ _smap = new Map(series().map(s=>[s.d,s])); _smapV=dataVersion; }
+  return _smap;
+}
+const recAt = d => smap().get(d) || null;
+
+function entryAt(d){ return entries.find(e=>e.d===d) || null; }
+function ensureEntry(d){
+  let e = entryAt(d);
+  if(!e){ e={d}; entries.push(e); entries.sort((a,b)=>a.d<b.d?-1:1); }
+  return e;
+}
+/* une entrée qui ne contient plus que sa date n'a pas lieu d'exister */
+function pruneEntries(){
+  entries = entries.filter(e=>Object.keys(e).length>1);
+}
+
+/* =========================================================
+   SÉANCES — plusieurs par jour, charges cumulées
+   Le tableau e.se est la source de vérité ; les champs plats
+   (ty, dur, z45, ld, z, eh) en sont dérivés pour que toutes
+   les analyses existantes continuent de fonctionner.
+   ========================================================= */
+const sessLoad = s => s.ld!=null ? +s.ld : loadOf(s.ty, s.dur, s.z45, s.z);
+
+function aggOf(list){
+  const A = {ty:'', dur:0, z45:0, ld:0, z:null, eh:null, hr:null, rpe:null};
+  if(!list || !list.length) return A;
+  const zs=[0,0,0,0,0,0]; let hasZ=false, hrw=0, hrd=0;
+  list.forEach(s=>{
+    A.ty  = A.ty ? A.ty+'|'+(s.ty||'other') : (s.ty||'other');
+    A.dur += (+s.dur||0);
+    A.z45 += (+s.z45||0);
+    A.ld  += sessLoad(s);
+    if(s.z && s.z.some(v=>+v>0)){ hasZ=true; s.z.forEach((v,i)=>zs[i]+=(+v||0)); }
+    if(s.eh!=null) A.eh = A.eh==null ? s.eh : Math.max(A.eh, s.eh);
+    if(s.hr!=null && s.dur){ hrw += s.hr*s.dur; hrd += (+s.dur||0); }
+    if(s.rpe!=null) A.rpe = Math.max(A.rpe||0, s.rpe);
+  });
+  A.dur = Math.round(A.dur*10)/10;
+  A.z45 = Math.round(A.z45*10)/10;
+  A.ld  = Math.round(A.ld);
+  if(hasZ) A.z = zs.map(v=>Math.round(v*10)/10);
+  if(hrd)  A.hr = Math.round(hrw/hrd);
+  return A;
+}
+
+/* ---------- modalité (avec quoi) et format (comment) ----------
+   Garmin ne connaît qu'un sport approximatif : « rameur » couvre aussi bien
+   un 4×4 norvégien qu'une sortie tranquille, et ne distingue pas le SkiErg
+   de l'assault bike. La modalité se corrige à la main, le format se déduit
+   des zones réellement mesurées. */
+const MOD_LABEL = {rameur:'Rameur', skierg:'SkiErg', velo:'Vélo / Assault bike',
+  course:'Tapis / Course', marche:'Marche', natation:'Natation', muscu:'Musculation',
+  ergo:'Autre ergomètre', autre:'Autre'};
+const FMT_LABEL = {interval:'Intervalles / 4×4', seuil:'Seuil / tempo', z2:'Zone 2 continu',
+  force:'Force', mixte:'Mixte / WOD', recup:'Récupération'};
+const MOD_FROM_TY = {row:'rameur', indoor_rowing:'rameur', walk:'marche', walking:'marche',
+  z2:'velo', cycling:'velo', indoor_cardio:'ergo', vo2:'course', running:'course', run:'course',
+  strength:'muscu', strength_training:'muscu', push:'muscu', pull:'muscu', legs:'muscu',
+  lap_swimming:'natation', swim:'natation', crossfit:'autre', hiit:'autre',
+  breathwork:'autre', other:'autre'};
+const TY_FROM_MOD = {rameur:'row', skierg:'row', velo:'z2', course:'vo2', marche:'walk',
+  natation:'other', muscu:'strength', ergo:'z2', autre:'other'};
+/* intensité de fond par format, utilisée seulement quand les zones sont inconnues */
+const FMT_INT = {interval:2.6, seuil:2.4, z2:2.0, force:2.4, mixte:2.6, recup:0.6};
+
+function autoMod(ty){
+  const t = (ty||'').split('|')[0];
+  return MOD_FROM_TY[t] || 'autre';
+}
+function autoFmt(s){
+  const dur = +s.dur||0, z = s.z;
+  const mod = s.mod || autoMod(s.ty);
+  if(mod==='muscu') return 'force';
+  const hard = (z && z.some(v=>+v>0)) ? (+z[4]||0)+(+z[5]||0) : (+s.z45||0);
+  const z3   = (z && z.some(v=>+v>0)) ? (+z[3]||0) : 0;
+  const easy = (z && z.some(v=>+v>0)) ? (+z[1]||0)+(+z[2]||0) : Math.max(0, dur-(+s.z45||0));
+  if(hard >= 10) return 'interval';
+  if(hard >= 3 || z3 >= 0.3*dur) return 'seuil';
+  if(mod==='marche') return 'recup';
+  if(dur >= 20 && easy >= 0.5*dur) return 'z2';
+  return 'recup';
+}
+const sessMod = s => s.mod || autoMod(s.ty);
+const sessFmt = s => s.fmt || autoFmt(s);
+
+/* charge : les zones réelles priment toujours ; le format ne sert que de
+   repli quand elles manquent. La musculation garde son facteur 1,35. */
+function loadOf2(mod, fmt, dur, z45, zones){
+  let L;
+  if(zones && zones.some(v=>+v>0)){
+    L = zones.reduce((a,m,i)=>a + (+m||0)*ZW[i], 0);
+  } else {
+    dur=+dur||0; z45=Math.min(+z45||0, dur);
+    // la marche garde son intensité calibrée sur ton historique (0,4/min :
+    // elle reste sous ta Z1 à 86 bpm), quel que soit le format déclaré
+    const b = (mod==='marche') ? 0.4 : (FMT_INT[fmt] ?? 2.0);
+    L = (dur-z45)*b + z45*4.5;
+  }
+  if(mod==='muscu') L *= 1.35;
+  return Math.round(L);
+}
+const sessLoadCalc = s => loadOf2(sessMod(s), sessFmt(s), s.dur, s.z45, s.z);
+
+/* séances affichables d'un jour : le tableau s'il existe, sinon la séance
+   unique héritée de l'historique Garmin, reconstruite à la volée */
+function sessionsOf(rec){
+  if(!rec) return [];
+  if(Array.isArray(rec.se)) return rec.se;
+  if(rec.ty) return [{ty:rec.ty, dur:rec.dur, z45:rec.z45, z:rec.z, hr:rec.hr,
+                      eh:rec.eh, rpe:rec.rpe, ld:rec.ld, src:'garmin'}];
+  return [];
+}
+/* passe un jour en mode « tableau de séances » sans rien perdre */
+function ensureSe(d){
+  const e = ensureEntry(d);
+  if(!Array.isArray(e.se)) e.se = sessionsOf(recAt(d)).map(s=>({...s}));
+  return e;
+}
+function applySe(e){
+  Object.assign(e, aggOf(e.se));
+  if(!e.se.length){ e.z=null; e.eh=null; e.hr=null; e.rpe=null; }
+}
+
+/* =========================================================
+   RENDU — VERDICT READINESS (jour sélectionné)
+   ========================================================= */
 function renderVerdict(){
   const S = series();
-  const e = todayEntry();
+  const e = recAt(SEL);
   const box = document.getElementById('verdictBox');
+  const hasData = e && (e.hrv!=null || e.ss!=null || e.bb!=null);
 
-  if(!e){
+  if(!hasData){
     box.innerHTML = `<div class="verdict" style="--vc:var(--dim2)">
       <div class="vhead"><div class="vscore">—<small> /100</small></div>
-      <div class="vlabel"><b>En attente</b><span>relevé du matin</span></div></div>
-      <p class="vtext">Saisis tes chiffres du matin ci-dessous. La VFC seule suffit pour un premier verdict, le reste affine.</p></div>`;
-    renderDev(null, S); return;
+      <div class="vlabel"><b>En attente</b><span>${shortDate(SEL)}</span></div></div>
+      <p class="vtext">Aucun relevé du matin pour ce jour. Saisis-le dans l'onglet Saisies — la VFC seule suffit pour un premier verdict, le reste affine.</p></div>`;
+    renderDev(); return;
   }
 
   const R = readiness(e, S);
@@ -1191,29 +1463,33 @@ function renderVerdict(){
   let why = P.why.slice();
   const top = R.parts.slice().sort((a,b)=>Math.abs(b.z)-Math.abs(a.z))[0];
   if(top) why.unshift(`${top.label} ${top.z>0?'au-dessus':'en dessous'} de ta baseline (${top.val} vs ${top.base.toFixed(1)} attendu).`);
-  if(R.gapYest) why.unshift("Aucune donnée pour hier : les règles qui dépendent de la veille (séance dure, jours consécutifs) sont neutralisées aujourd'hui.");
+  if(R.gapYest) why.unshift("Aucune donnée pour la veille : les règles qui en dépendent (séance dure, jours consécutifs) sont neutralisées.");
   if(R.acwr.r>0) why.push(`Charge 7j/28j : ${R.acwr.r.toFixed(2)} — méthode couplée, les 7 jours sont inclus dans les 28, ce qui lisse le ratio.`);
 
+  const hdr = SEL===TODAY ? "Aujourd'hui" : shortDate(SEL);
   box.innerHTML = `<div class="verdict" style="--vc:${P.color}">
     <div class="vhead">
       <div class="vscore">${R.score}<small> /100</small></div>
-      <div class="vlabel"><b>${P.title}</b><span>readiness</span></div>
+      <div class="vlabel"><b>${P.title}</b><span>${SEL===TODAY?'readiness':shortDate(SEL)}</span></div>
     </div>
     <div class="strip">${Array.from({length:20},(_,i)=>`<i class="${i<filled?'f':''}"></i>`).join('')}</div>
     <p class="vtext">${P.text}</p>
-    <div class="rx"><h3>Aujourd'hui</h3><ul>${P.rx.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <div class="rx"><h3>${hdr}</h3><ul>${P.rx.map(x=>`<li>${x}</li>`).join('')}</ul></div>
     <p class="vwhy">${why.join(' ')}</p>
   </div>`;
-  renderDev(e, S);
+  renderDev();
 }
 
-function renderDev(e, S){
+function renderDev(){
+  const S = series(), e = recAt(SEL);
+  const dd = document.getElementById('devDate');
+  if(dd) dd.textContent = shortDate(SEL);
   const defs = [['hrv','VFC','ms',false],['hrn','FC nocturne','bpm',true],['ss','Score sommeil','',false],
     ['sd','Durée sommeil','min',false],['bb','Body Battery','',false],['rr','Respiration','/min',true],
     ['st','Stress veille','',true],['rhr','FC repos','bpm',true]];
   const el = document.getElementById('devRows');
   el.innerHTML = defs.map(([k,lab,u,inv])=>{
-    const b = baseline(S,k,TODAY);
+    const b = baseline(S,k,SEL);
     const v = e ? e[k] : null;
     let cls='na', txt='—';
     if(v!=null && b){
@@ -1227,6 +1503,7 @@ function renderDev(e, S){
       <div class="v mono">${disp}</div><div class="z ${cls} mono">${txt}</div></div>`;
   }).join('');
 }
+
 const fmtMin = m => Math.floor(m/60)+'h'+String(Math.round(m%60)).padStart(2,'0');
 
 /* =========================================================
@@ -1313,14 +1590,14 @@ function renderTrends(){
   lineChart(document.getElementById('c-load'), last.map((s,i)=>({d:s.d,v:acu[i],v2:chr[i]})),
     {color:'var(--clay)', c2:'var(--steel)', v2:true, lw:2, h:130, dec:0});
 
-  const aw = acwr(S,TODAY);
+  const aw = acwr(S,SEL);
   let ac='ok', msg='Charge maîtrisée.';
   if(aw.r>1.5){ ac='bad'; msg='Ta charge des 7 derniers jours dépasse largement ta charge de fond. C\'est la zone où le risque de blessure et de stagnation grimpe. Une semaine plus calme serait rentable.'; }
   else if(aw.r>1.3){ ac='mid'; msg='Charge en montée rapide. Surveille ta VFC les prochains jours et évite d\'empiler une semaine de plus au même rythme.'; }
   else if(aw.r<0.8){ ac='mid'; msg='Charge en baisse. Si c\'est voulu (affûtage, repos), parfait. Sinon tu peux repousser un peu.'; }
   document.getElementById('acwrBox').innerHTML =
     `<div class="rows" style="margin-top:12px"><div class="row">
-      <div class="n">Ratio aigu / chronique<small>${Math.round(aw.a)} sur 7j · ${Math.round(aw.c)} sur 28j</small></div>
+      <div class="n">Ratio aigu / chronique<small>au ${shortDate(SEL)} · ${Math.round(aw.a)} sur 7j · ${Math.round(aw.c)} sur 28j</small></div>
       <div class="z ${ac} mono" style="min-width:60px;font-size:14px">${aw.r.toFixed(2)}</div></div></div>
      <p class="note">${msg}</p>`;
 
@@ -1382,44 +1659,50 @@ const TYPE_LABEL = {push:'PPL Push',pull:'PPL Pull',legs:'PPL Legs',strength:'Mu
 function renderSessions(){
   const S = series();
 
-  // coût réel par type : delta VFC J+1 vs baseline
+  // coût réel par FORMAT : delta VFC J+1 vs baseline
   const agg = {};
   S.forEach((s,i)=>{
-    if(!s.ty || i+1>=S.length) return;
-    const nxt = S[i+1]; if(nxt.hrv==null) return;
+    const list = sessionsOf(s); if(!list.length) return;
+    const nxt = S[i+1];
+    if(!nxt || nxt.hrv==null || daysBetween(s.d, nxt.d)!==1) return;
     const b = baseline(S,'hrv',nxt.d); if(!b) return;
     const dev = nxt.hrv - b.m;
-    s.ty.split('|').forEach(t=>{
-      if(!t) return;
-      (agg[t] = agg[t] || []).push(dev);
-    });
+    // un jour à deux séances compte pour chacun des formats présents
+    new Set(list.map(sessFmt)).forEach(f=>{ (agg[f] = agg[f] || []).push(dev); });
   });
   const rowsA = Object.entries(agg).filter(([,v])=>v.length>=4)
     .map(([t,v])=>({t, n:v.length, d:v.reduce((a,b)=>a+b,0)/v.length}))
     .sort((a,b)=>b.d-a.d);
-  document.getElementById('costTable').innerHTML = rowsA.length ?
-    `<table><tr><th>Type</th><th class="num">n</th><th class="num">VFC J+1</th></tr>` +
-    rowsA.map(r=>`<tr><td>${TYPE_LABEL[r.t]||r.t}</td><td class="num mono">${r.n}</td>
+  const thin = Object.entries(agg).filter(([,v])=>v.length<4).length;
+  document.getElementById('costTable').innerHTML = (rowsA.length ?
+    `<table><tr><th>Format</th><th class="num">n</th><th class="num">VFC J+1</th></tr>` +
+    rowsA.map(r=>`<tr><td>${FMT_LABEL[r.t]||r.t}</td><td class="num mono">${r.n}</td>
       <td class="num mono" style="color:${r.d>=0.5?'var(--jade)':r.d>-1.5?'var(--dim)':'var(--clay)'}">
       ${r.d>0?'+':''}${r.d.toFixed(1)} ms</td></tr>`).join('') + '</table>'
-    : '<p class="empty">Pas assez de séances</p>';
+    : '<p class="empty">Pas assez de séances</p>')
+    + (thin? `<p class="note">${thin} format${thin>1?'s sont':' est'} encore sous les 4 jours nécessaires et n'apparaî${thin>1?'ssent':'t'} pas.</p>` : '')
+    + `<p class="note">Le format est déduit de tes zones : au moins 10 min en Z4+Z5 donne « intervalles », 3 à 10 min donne « seuil ». Tu peux le corriger séance par séance dans l'onglet Saisies.</p>`;
 
-  // liste des séances saisies
-  const logs = entries.filter(e=>e.ty).sort((a,b)=>a.d<b.d?1:-1).slice(0,25);
+  // liste : une ligne par séance, jours les plus récents d'abord
+  const days = entries.filter(e=>sessionsOf(e).length).sort((a,b)=>a.d<b.d?1:-1).slice(0,20);
   const el = document.getElementById('sessList');
-  if(!logs.length){ el.innerHTML='<p class="empty">Aucune séance enregistrée pour l\'instant.<br>Elles apparaîtront ici avec leur coût mesuré le lendemain.</p>'; return; }
-  el.innerHTML = logs.map(e=>{
-    const i = S.findIndex(s=>s.d===e.d);
-    const nxt = i>=0 && i+1<S.length ? S[i+1] : null;
-    let cost = '<span style="color:var(--dim2)">Coût mesuré demain matin</span>';
+  if(!days.length){ el.innerHTML='<p class="empty">Aucune séance enregistrée pour l\'instant.<br>Elles apparaîtront ici avec leur coût mesuré le lendemain.</p>'; return; }
+  el.innerHTML = days.map(e=>{
+    const list = sessionsOf(e);
+    const nxt = recAt(shift(e.d,1));
+    let cost = '<span style="color:var(--dim2)">Coût mesuré le lendemain matin</span>';
     if(nxt && nxt.hrv!=null){
       const b = baseline(S,'hrv',nxt.d);
       if(b){ const dv = nxt.hrv-b.m;
         cost = `VFC lendemain <b class="mono" style="color:${dv>=0?'var(--jade)':dv>-3?'var(--caution)':'var(--clay)'}">${dv>0?'+':''}${dv.toFixed(1)} ms</b> vs ta baseline`; }
     }
-    return `<div class="sess"><div class="top"><span class="t">${TYPE_LABEL[e.ty]||e.ty}</span>
+    const tot = aggOf(list);
+    const lines = list.map(s=>`<div class="meta mono">${MOD_LABEL[sessMod(s)]} · ${FMT_LABEL[sessFmt(s)]} · ${s.dur||0} min · ${s.z45||0} min Z4+5 · charge ${Math.round(sessLoad(s))}${s.rpe?' · RPE '+s.rpe:''}</div>`).join('');
+    return `<div class="sess"><div class="top">
+      <span class="t">${list.length>1? list.length+' séances' : MOD_LABEL[sessMod(list[0])]}</span>
       <span class="d mono">${e.d.slice(8,10)}/${e.d.slice(5,7)}</span></div>
-      <div class="meta mono">${e.dur||0} min · ${e.z45||0} min Z4+5 · charge ${e.ld||0}${e.rpe?' · RPE '+e.rpe:''}</div>
+      ${lines}
+      ${list.length>1?`<div class="meta mono" style="color:var(--dim2)">total ${tot.dur} min · ${tot.z45} min Z4+5 · charge ${tot.ld}</div>`:''}
       <div class="cost">${cost}</div></div>`;
   }).join('');
 }
@@ -1649,6 +1932,114 @@ function renderZoneVo2(){
     + '<p class="note" style="border-top:1px solid var(--line);padding-top:9px">Sur ton historique seul, la Z2 ressort a r = +0,55 et la Z4 a +0,41 — mais avec 18 semaines et 5 zones testees, c\'est trop peu pour conclure : sur cinq tests, un peut passer le seuil par hasard. Le VO2max Garmin bouge par paliers d\'un point et stagne des mois, ce qui limite la finesse atteignable. Compte plutot six mois avant d\'y lire quelque chose de solide.</p>';
 }
 
+
+/* =========================================================
+   DOSE-RÉPONSE PAR ZONE
+   Minutes passées en zone le jour J -> écart de VFC à la baseline en J+1.
+   Ne dépend d'aucune étiquette de séance : uniquement des minutes mesurées.
+   ========================================================= */
+function zoneDose(S, opts){
+  opts = opts || {};
+  const out=[];
+  for(let i=0;i<S.length-1;i++){
+    const s=S[i], n=S[i+1];
+    if(!n || n.hrv==null || daysBetween(s.d, n.d)!==1) continue;
+    const b=baseline(S,'hrv',n.d); if(!b) continue;
+    if(opts.sober && (n.alc||0)>=1) continue;      // n.alc = la soirée de s.d
+    const dur=+s.dur||0;
+    let zs=null, hard, easy;
+    if(s.z && s.z.some(v=>+v>0)){
+      zs=s.z.map(v=>+v||0);
+      hard=zs[4]+zs[5]; easy=zs[1]+zs[2]+zs[3];
+    } else {
+      hard=+s.z45||0; easy=Math.max(0, dur-hard);
+    }
+    out.push({d:s.d, zs, hard, easy, y:n.hrv-b.m});
+  }
+  return out;
+}
+
+/* moindres carrés à deux prédicteurs : y = a + b1·(Z4+Z5) + b2·(Z1..Z3) */
+function ols2(rows){
+  const n=rows.length; if(n<15) return null;
+  let S1=0,S2=0,Sy=0,S11=0,S22=0,S12=0,S1y=0,S2y=0,Syy=0;
+  rows.forEach(r=>{ const x1=r.hard, x2=r.easy, y=r.y;
+    S1+=x1; S2+=x2; Sy+=y; S11+=x1*x1; S22+=x2*x2; S12+=x1*x2;
+    S1y+=x1*y; S2y+=x2*y; Syy+=y*y; });
+  const m1=S1/n, m2=S2/n, my=Sy/n;
+  const c11=S11-n*m1*m1, c22=S22-n*m2*m2, c12=S12-n*m1*m2;
+  const c1y=S1y-n*m1*my, c2y=S2y-n*m2*my, cyy=Syy-n*my*my;
+  const det=c11*c22-c12*c12;
+  if(!det || !cyy) return null;
+  const b1=(c22*c1y-c12*c2y)/det, b2=(c11*c2y-c12*c1y)/det;
+  const ssr=b1*c1y+b2*c2y, sse=cyy-ssr, df=n-3;
+  const s2 = df>0 ? sse/df : null;
+  const se1 = s2!=null ? Math.sqrt(Math.max(0,s2*c22/det)) : null;
+  const se2 = s2!=null ? Math.sqrt(Math.max(0,s2*c11/det)) : null;
+  // colinéarité entre les deux prédicteurs, pour prévenir si elle est forte
+  const rx = (c11&&c22) ? c12/Math.sqrt(c11*c22) : 0;
+  return {n, b1, b2, r2:ssr/cyy, se1, se2, rx};
+}
+
+const DOSE_BINS=[[0,0.01,'0 min'],[0.01,10,'1–10'],[10,20,'10–20'],[20,1e9,'20 +']];
+
+function renderZoneDose(){
+  const el=document.getElementById('zoneDose'); if(!el) return;
+  const S=series();
+  const all=zoneDose(S,{}), sober=zoneDose(S,{sober:true});
+  const withZ=all.filter(r=>r.zs);
+
+  let html='';
+
+  // --- tableau par tranches ---
+  if(withZ.length>=20){
+    html += '<table class="dose"><tr><th>Zone</th>'
+          + DOSE_BINS.map(b=>`<th class="num">${b[2]}</th>`).join('') + '</tr>';
+    for(let k=1;k<=5;k++){
+      html += `<tr><td>Z${k}</td>`;
+      DOSE_BINS.forEach(([lo,hi])=>{
+        const g=withZ.filter(r=>r.zs[k]>=lo && r.zs[k]<hi);
+        if(g.length<4){ html+='<td class="num mono" style="color:var(--dim2)">·<small>n='+g.length+'</small></td>'; return; }
+        const m=g.reduce((a,r)=>a+r.y,0)/g.length;
+        const c = m>=0.5?'var(--jade)': m>-1.5?'var(--dim)':'var(--clay)';
+        html += `<td class="num mono" style="color:${c}">${m>0?'+':''}${m.toFixed(1)}<small>n=${g.length}</small></td>`;
+      });
+      html += '</tr>';
+    }
+    html += '</table><p class="note">Écart moyen de ta VFC à ta baseline le lendemain matin, en ms, selon les minutes passées dans la zone la veille. Les cases sous 4 jours ne sont pas affichées.</p>';
+  } else {
+    html += `<p class="sub">Il faut au moins 20 jours avec le détail par zone suivi d'un relevé de VFC. Tu en as ${withZ.length}.</p>`;
+  }
+
+  // --- régression à deux prédicteurs ---
+  const R=ols2(all), Rs=ols2(sober);
+  if(R){
+    const line=(lab,sub,b,se)=>{
+      const v=b*10, ci=se!=null? 1.96*se*10 : null;
+      const c = v<=-1 ? 'var(--clay)' : v>=1 ? 'var(--jade)' : 'var(--dim)';
+      return `<div class="coef"><div class="cn">${lab}<small>${sub}</small></div>
+        <div class="cv mono" style="color:${c}">${v>0?'+':''}${v.toFixed(1)} ms${ci!=null?` <span style="font-size:11px;color:var(--dim2)">± ${ci.toFixed(1)}</span>`:''}</div></div>`;
+    };
+    html += '<div style="margin-top:14px">'
+      + line('10 min en Z4+Z5','effet sur la VFC du lendemain', R.b1, R.se1)
+      + line('10 min en Z1 à Z3','à volume intense égal', R.b2, R.se2)
+      + '</div>';
+    html += `<p class="note">Régression sur ${R.n} paires jour → lendemain · R² = ${R.r2.toFixed(2)} · fourchette à 95 %.`;
+    if(Rs && Rs.n>=15 && Rs.n<R.n)
+      html += ` Hors ${R.n-Rs.n} lendemain${R.n-Rs.n>1?'s':''} de soirée alcoolisée : ${(Rs.b1*10>0?'+':'')}${(Rs.b1*10).toFixed(1)} ms pour la Z4+Z5.`;
+    html += '</p>';
+    if(Math.abs(R.rx)>0.6)
+      html += `<p class="note" style="color:var(--caution)">Tes deux prédicteurs sont corrélés à r = ${R.rx.toFixed(2)} : tes séances intenses sont aussi tes séances longues, donc l'outil sépare mal les deux effets. Lis les coefficients comme un ordre de grandeur, pas comme une mesure.</p>`;
+  } else {
+    html += '<p class="note">Pas encore assez de jours pour estimer les coefficients (il en faut 15).</p>';
+  }
+
+  html += `<p class="note" style="border-top:1px solid var(--line);padding-top:9px">Deux prédicteurs seulement, et non cinq : tes zones montent ensemble puisqu'une séance longue empile mécaniquement Z1, Z2 et Z3. Une régression à cinq variables sur ton volume de données produirait des coefficients instables qui changeraient de signe à chaque nouvelle séance. Le tableau par tranches, lui, montre chaque zone séparément — mais sans corriger de ce que les autres zones font en même temps.</p>
+    <p class="note" style="border-top:1px solid var(--line);padding-top:9px">C'est observationnel : le jour où tu fais 30 min de Z5 est aussi souvent un jour de coucher tardif et de charge mentale élevée. L'écart mesuré ici agrège tout ça.</p>`;
+
+  el.innerHTML=html;
+}
+
 function renderRef(){
   const Z=[['Zone 1','97–115','Récupération, échauffement'],
     ['Zone 2','116–134','Endurance de base — ton meilleur rapport bénéfice/coût'],
@@ -1702,54 +2093,168 @@ function renderRef(){
       <div class="v mono" style="font-size:12px">${ts? new Date(ts).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—'}</div></div>`;
 }
 
-/* affiche temps au lit et efficacité du sommeil sous les horaires */
+/* temps au lit et efficacité du sommeil, sous les champs du réveil */
 function showTib(e){
   const el=document.getElementById('tibNote'); if(!el) return;
-  e = e || todayEntry() || {};
+  e = e || {};
   const b=e.bed, w=e.wake;
-  if(b==null || w==null){ el.textContent=''; return; }
+  if(b==null || w==null){
+    el.innerHTML = '<span style="color:var(--dim2)">L\'heure de coucher se saisit sur la journée précédente, dans le bloc Soirée — l\'app en déduit ton temps au lit et ton efficacité de sommeil.</span>';
+    return;
+  }
   const tib=Math.round(((w+24)-b)*60);
   if(tib<=0 || tib>16*60){ el.innerHTML='<span style="color:var(--caution)">Horaires incohérents — vérifie le coucher et le lever.</span>'; return; }
-  let txt=`Temps au lit : <b>${fmtMin(tib)}</b>`;
+  let txt=`Couché à ${hm(b)}, levé à ${hm(w)} · temps au lit <b>${fmtMin(tib)}</b>`;
   if(e.sd){
     const eff=e.sd/tib*100;
     const c = eff>=88 ? 'var(--jade)' : eff>=80 ? 'var(--caution)' : 'var(--clay)';
-    txt += ` · efficacité du sommeil <b style="color:${c}">${eff.toFixed(0)} %</b>`;
+    txt += ` · efficacité <b style="color:${c}">${eff.toFixed(0)} %</b>`;
     txt += eff>=88 ? ' (bon)' : eff>=80 ? ' (correct)' : ' (fragmenté)';
   } else txt += ' · renseigne ta durée de sommeil pour voir l\'efficacité';
   el.innerHTML=txt;
 }
 
-/* remplit le formulaire depuis l'entrée du jour (après chargement ou import) */
-function fillForm(){
-  const e = todayEntry(); if(!e) return;
-  const set=(id,v)=>{ if(v!=null) document.getElementById(id).value=v; };
-  const hm=v=>String(Math.floor(v)).padStart(2,'0')+':'+String(Math.round((v%1)*60)).padStart(2,'0');
-  set('i-hrv',e.hrv); set('i-hrn',e.hrn); set('i-ss',e.ss);
-  if(e.sd!=null) document.getElementById('i-sd').value=fmtMin(e.sd).replace('h',':');
-  set('i-bb',e.bb); set('i-rhr',e.rhr); set('i-rr',e.rr); set('i-st',e.st);
-  if(e.plan) document.getElementById('i-plan').value=e.plan;
-  if(e.sym!=null) document.getElementById('i-sym').value=e.sym;
-  if(e.bed!=null)  document.getElementById('i-bed').value=hm(e.bed>=24? e.bed-24 : e.bed);
-  if(e.wake!=null) document.getElementById('i-wake').value=hm(e.wake);
-  if(e.tmp!=null)  document.getElementById('i-tmp').value=e.tmp;
-  if(e.tmpw!=null) document.getElementById('i-tmpw').value=e.tmpw;
-  showTib(e);
-  if(e.wt!=null) document.getElementById('i-wt').value=e.wt;
-  const setSeg=(id,v)=>{ const el=document.getElementById(id); if(!el||v==null) return;
-    [...el.children].forEach(c=>c.classList.toggle('on', +c.dataset.v===v)); };
-  if(e.alc!=null) setSeg('s-alc', e.alc+1);
-  if(e.dint!=null) setSeg('s-din', e.dint);
-  if(e.mload!=null) setSeg('s-load', e.mload);
-  if(e.alch!=null) document.getElementById('i-alch').value=hm(e.alch);
-  if(e.dinh!=null) document.getElementById('i-dinh').value=hm(e.dinh);
-  if(e.eh!=null)   document.getElementById('l-end').value=hm(e.eh);
-  if(e.ty!=null)   document.getElementById('l-type').value=e.ty;
-  if(e.dur!=null)  document.getElementById('l-dur').value=e.dur;
-  if(e.z45!=null)  document.getElementById('l-z45').value=e.z45;
-  if(e.hr!=null)   document.getElementById('l-hr').value=e.hr;
-  if(e.z) for(let i=1;i<=5;i++){ const el=document.getElementById('l-zn'+i); if(el&&e.z[i]) el.value=e.z[i]; }
-  if(e.vo!=null)   document.getElementById('i-vo2').value=e.vo;
+/* =========================================================
+   RENDU — SAISIES DU JOUR
+   ========================================================= */
+const setV = (id,v) => { const el=document.getElementById(id); if(el) el.value = (v==null?'':v); };
+const hm = v => {
+  let h=v>=24 ? v-24 : v;
+  let mm=Math.round((h%1)*60), hh=Math.floor(h);
+  if(mm===60){ mm=0; hh+=1; }
+  return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');
+};
+function setSeg(id,v){
+  const el=document.getElementById(id); if(!el) return;
+  [...el.children].forEach(c=>c.classList.toggle('on', v!=null && +c.dataset.v===v));
+}
+
+/* état d'une journée, pour le calendrier et le bandeau de complétude */
+function dayState(d){
+  const r=recAt(d), nx=recAt(shift(d,1));
+  const morning = !!(r && (r.hrv!=null || r.ss!=null || r.bb!=null || r.hrn!=null));
+  const evening = !!(nx && (nx.alc!=null || nx.bed!=null || nx.mload!=null || nx.dint!=null));
+  const sess    = !!(r && sessionsOf(r).length);
+  const any = morning || evening || sess;
+  return {morning, evening, sess, state: !any ? 'none' : (morning&&evening) ? 'full' : 'part'};
+}
+
+function renderCal(){
+  const y=+calMonth.slice(0,4), m=+calMonth.slice(5,7);
+  const first=new Date(y,m-1,1);
+  const startDow=(first.getDay()+6)%7;              // semaine commençant le lundi
+  const nDays=new Date(y,m,0).getDate();
+  const lbl=first.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+  document.getElementById('mLabel').textContent = lbl.charAt(0).toUpperCase()+lbl.slice(1);
+
+  let h='<div class="wd">L</div><div class="wd">M</div><div class="wd">M</div><div class="wd">J</div><div class="wd">V</div><div class="wd">S</div><div class="wd">D</div>';
+  for(let i=0;i<startDow;i++) h+='<div></div>';
+  for(let day=1;day<=nDays;day++){
+    const d = `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const future = d>TODAY;
+    const st = future ? {state:'none',sess:false} : dayState(d);
+    const cls = ['cd', st.state, d===SEL?'sel':'', d===TODAY?'today':''].filter(Boolean).join(' ');
+    h += `<button class="${cls}" data-d="${d}"${future?' disabled':''}>${day}${st.sess?'<i></i>':''}</button>`;
+  }
+  document.getElementById('calGrid').innerHTML=h;
+  document.getElementById('mNext').disabled = calMonth >= TODAY.slice(0,7);
+}
+
+function renderDayStatus(){
+  const st = dayState(SEL);
+  const miss=[];
+  if(!st.morning) miss.push('le relevé du matin');
+  if(!st.sess)    miss.push('les séances (ou rien si jour de repos)');
+  if(!st.evening) miss.push('la soirée');
+  const el=document.getElementById('dStatus');
+  if(!miss.length){
+    el.innerHTML=`<div class="dstat ok">Journée complète.</div>`;
+  } else if(st.state==='none'){
+    el.innerHTML=`<div class="dstat none">Rien de saisi pour ce jour.</div>`;
+  } else {
+    el.innerHTML=`<div class="dstat part">Il manque ${miss.join(', ')}.</div>`;
+  }
+}
+
+/* liste des séances du jour affiché, avec correction modalité / format */
+function optsFor(map, cur){
+  return Object.entries(map).map(([k,v])=>`<option value="${k}"${k===cur?' selected':''}>${v}</option>`).join('');
+}
+function renderDaySessions(){
+  const list = sessionsOf(recAt(SEL));
+  const el=document.getElementById('sessDay');
+  if(!list.length){ el.innerHTML='<p class="empty" style="padding:16px 8px">Aucune séance ce jour-là.</p>'; return; }
+  el.innerHTML = list.map((s,i)=>`<div class="sitem">
+    <div class="si">${MOD_LABEL[sessMod(s)]} · ${FMT_LABEL[sessFmt(s)]}
+      <small>${s.dur||0} min · ${s.z45||0} min Z4+5 · charge ${Math.round(sessLoad(s))}${s.eh!=null?' · fin '+hm(s.eh):''}${s.rpe?' · RPE '+s.rpe:''}${s.src==='garmin'?' · importée':''}</small>
+      <div class="sedit">
+        <select data-i="${i}" data-k="mod">${optsFor(MOD_LABEL, sessMod(s))}</select>
+        <select data-i="${i}" data-k="fmt"><option value=""${!s.fmt?' selected':''}>Auto — ${FMT_LABEL[autoFmt(s)]}</option>${optsFor(FMT_LABEL, s.fmt||'')}</select>
+      </div></div>
+    <button class="del" data-i="${i}" aria-label="Supprimer">✕</button></div>`).join('');
+  el.querySelectorAll('.del').forEach(b=>b.addEventListener('click',()=>removeSession(+b.dataset.i)));
+  el.querySelectorAll('.sedit select').forEach(sel=>sel.addEventListener('change',
+    ()=>editSession(+sel.dataset.i, sel.dataset.k, sel.value)));
+}
+
+/* remplit les trois blocs depuis les données réelles */
+function fillDay(){
+  const r = recAt(SEL) || {};
+  const n = recAt(shift(SEL,1)) || {};
+
+  document.getElementById('dLabel').textContent = longDate(SEL);
+  document.getElementById('dRel').textContent = relLabel(SEL);
+  document.getElementById('rLabel').textContent = longDate(SEL);
+  document.getElementById('rRel').textContent = relLabel(SEL);
+  const dm = new Date(SEL+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short'}).replace('.','');
+  document.getElementById('hMorning').textContent = dm;
+  document.getElementById('hSess').textContent = dm;
+  document.getElementById('hEve').textContent = dm;
+  document.getElementById('dPrev').disabled = false;
+  document.getElementById('dNext').disabled = SEL>=TODAY;
+  document.getElementById('rNext').disabled = SEL>=TODAY;
+
+  // 1 · réveil  -> entrée du jour
+  setV('i-hrv', r.hrv); setV('i-hrn', r.hrn); setV('i-ss', r.ss);
+  setV('i-sd', r.sd!=null ? fmtMin(r.sd).replace('h',':') : null);
+  setV('i-bb', r.bb); setV('i-rhr', r.rhr); setV('i-rr', r.rr);
+  setV('i-wake', r.wake!=null ? hm(r.wake) : null);
+  setV('i-tmpw', r.tmpw); setV('i-wt', r.wt); setV('i-vo2', r.vo);
+  document.getElementById('i-sym').value = r.sym || '';
+  showTib(r);
+
+  // 2 · séances -> entrée du jour
+  renderDaySessions();
+
+  // 3 · soirée -> entrée du LENDEMAIN (la nuit qu'elle influence)
+  setSeg('s-alc',  n.alc!=null ? n.alc+1 : null);
+  setSeg('s-din',  n.dint!=null ? n.dint : null);
+  setSeg('s-load', n.mload!=null ? n.mload : null);
+  setV('i-alch', n.alch!=null ? hm(n.alch) : null);
+  setV('i-dinh', n.dinh!=null ? hm(n.dinh) : null);
+  setV('i-st',   n.st);
+  setV('i-bed',  n.bed!=null ? hm(n.bed) : null);
+  setV('i-tmp',  n.tmp);
+  const nx = new Date(shift(SEL,1)+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}).replace('.','');
+  document.getElementById('eveNote').innerHTML =
+    `Ces champs décrivent la nuit du ${dm} au ${nx} : ils sont rattachés à ton réveil du <b>${nx}</b>, c'est ce qui permet aux analyses de les mettre en face des bons chiffres.`;
+
+  // ressenti du jour -> entrée du jour
+  setSeg('s-energy', r.energy!=null ? r.energy : 3);
+  setSeg('s-sore',   r.sore!=null   ? r.sore   : 1);
+  setSeg('s-motiv',  r.motiv!=null  ? r.motiv  : 3);
+  document.getElementById('i-plan').value = r.plan || 'free';
+
+  renderDayStatus();
+  renderCal();
+}
+
+function gotoDay(d){
+  if(d>TODAY) d=TODAY;
+  SEL=d; calMonth=d.slice(0,7);
+  fillDay(); renderVerdict(); renderTrends();
+  document.getElementById('savedNote').textContent='';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 /* =========================================================
@@ -1777,21 +2282,12 @@ function toast(msg){
   setTimeout(()=>t.classList.remove('on'),1900);
 }
 
-async function saveMorning(){
-  const e = todayEntry() || {d:TODAY};
-  e.hrv=num('i-hrv'); e.hrn=num('i-hrn'); e.ss=num('i-ss');
-  e.sd=parseDur(document.getElementById('i-sd').value);
-  e.bb=num('i-bb'); e.rhr=num('i-rhr'); e.rr=num('i-rr'); e.st=num('i-st');
-  e.energy=segVal('s-energy'); e.sore=segVal('s-sore'); e.motiv=segVal('s-motiv');
-  e.plan=document.getElementById('i-plan').value;
-  if(e.hrv==null && e.ss==null && e.bb==null){ toast('Saisis au moins la VFC'); return; }
-  if(!entries.find(x=>x.d===TODAY)) entries.push(e);
-  await persist();
-  renderVerdict(); renderTrends();
-  document.getElementById('savedNote').textContent = 'Enregistré. Modifie et recalcule autant que tu veux.';
-  toast('Readiness calculée');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+/* champ vide = pas de valeur manuelle : on efface la clé pour que la donnée
+   Garmin d'origine reprenne la main plutôt que d'écrire un null */
+const put = (o,k,v) => {
+  if(v==null || v==='' || (typeof v==='number' && isNaN(v))) delete o[k];
+  else o[k]=v;
+};
 
 const parseHour = s => {
   if(!s) return null; s=(''+s).trim().replace('h',':');
@@ -1800,74 +2296,150 @@ const parseHour = s => {
   return Math.round((h + m/60)*10)/10;
 };
 
-async function saveEvening(){
-  const e = todayEntry() || {d:TODAY};
-  if(!entries.find(x=>x.d===TODAY)) entries.push(e);
-  e.alc   = segVal('s-alc')-1;                 // segment 1 => 0 verre
-  e.alch  = parseHour(document.getElementById('i-alch').value);
-  e.dint  = segVal('s-din');
-  e.mload = segVal('s-load');
-  e.sym   = document.getElementById('i-sym').value;
-  const bedH  = parseHour(document.getElementById('i-bed').value);
-  const wakeH = parseHour(document.getElementById('i-wake').value);
-  if(bedH!=null)  e.bed  = bedH < 12 ? bedH + 24 : bedH;   // 00h30 -> 24.5
-  if(wakeH!=null) e.wake = wakeH;
-  if(e.bed!=null && e.wake!=null){
-    e.tib = Math.round(((e.wake + 24) - e.bed)*60);        // temps au lit, minutes
-    if(e.tib<=0 || e.tib>16*60) delete e.tib;
-  }
-  if(e.tib && e.sd) e.eff = Math.round(e.sd/e.tib*1000)/10;
-  const t1=document.getElementById('i-tmp').value, t2=document.getElementById('i-tmpw').value;
-  if(t1!=='') e.tmp=+t1;
-  if(t2!=='') e.tmpw=+t2;
-  const w = document.getElementById('i-wt').value;
-  if(w!=='') e.wt = +w;
-  const vo = document.getElementById('i-vo2').value;
-  if(vo!=='') e.vo = +vo;
-  const dh = parseHour(document.getElementById('i-dinh').value);
-  if(dh!=null){
-    e.dinh = dh;
-    const ref = e.bed!=null ? e.bed : BEDTIME;             // coucher réel si connu
-    let g = ref - dh; if(g<0) g+=24;
-    e.dind = Math.round(g*10)/10;
-  }
-  await persist();
-  renderVerdict(); renderEffects(); renderTemp(); renderZoneVo2();
-  toast('Soirée enregistrée');
+/* temps au lit + efficacité : coucher et lever vivent sur la même entrée,
+   celle du matin où la nuit se termine */
+function recomputeNight(x){
+  if(x.bed!=null && x.wake!=null){
+    const t=Math.round(((x.wake+24)-x.bed)*60);
+    if(t>0 && t<=16*60) x.tib=t; else delete x.tib;
+  } else delete x.tib;
+  if(x.tib && x.sd) x.eff=Math.round(x.sd/x.tib*1000)/10; else delete x.eff;
 }
 
-async function logSession(){
-  const t=document.getElementById('l-type').value;
-  const dur=num('l-dur'); let z45=num('l-z45')||0; const hr=num('l-hr'), rpe=num('l-rpe');
-  if(!dur){ toast('Indique au moins la durée'); return; }
-  const targetDate = importedDate || TODAY;
-  let e = entries.find(x=>x.d===targetDate);
-  if(!e){ e={d:targetDate}; entries.push(e); entries.sort((a,b)=>a.d<b.d?-1:1); }
-  const zn=[0,1,2,3,4,5].map(i=> i===0 ? 0 : (num('l-zn'+i)||0));
-  if(zn.some(v=>v>0)){
-    zn[0]=Math.max(0, dur - zn.reduce((a,b)=>a+b,0));   // le reste = sous Z1
-    e.z=zn.map(v=>Math.round(v*10)/10);
-    e.z45=Math.round((zn[4]+zn[5])*10)/10;
-  } else e.z=null;
-  e.ty=t; e.dur=dur; e.hr=hr; e.rpe=rpe;
-  if(!e.z) e.z45=z45;
-  e.ld=loadOf(t,dur,e.z45,e.z);
-  const eh=parseHour(document.getElementById('l-end').value);
-  if(eh!=null) e.eh=eh;
+async function saveDay(){
+  const D=SEL, N=shift(D,1);
+  const e = ensureEntry(D), ev = ensureEntry(N);
+
+  // --- 1 · réveil : nuit terminée ce matin-là ---
+  put(e,'hrv', num('i-hrv'));  put(e,'hrn', num('i-hrn'));  put(e,'ss', num('i-ss'));
+  put(e,'sd',  parseDur(document.getElementById('i-sd').value));
+  put(e,'bb',  num('i-bb'));   put(e,'rhr', num('i-rhr'));  put(e,'rr', num('i-rr'));
+  put(e,'wake',parseHour(document.getElementById('i-wake').value));
+  put(e,'tmpw',num('i-tmpw')); put(e,'wt', num('i-wt'));    put(e,'vo', num('i-vo2'));
+  put(e,'sym', document.getElementById('i-sym').value || null);
+  recomputeNight(e);
+
+  // --- 3 · soirée : rattachée au matin suivant ---
+  const a = segVal('s-alc');
+  put(ev,'alc',   a==null ? null : a-1);
+  put(ev,'dint',  segVal('s-din'));
+  put(ev,'mload', segVal('s-load'));
+  put(ev,'st',    num('i-st'));
+  put(ev,'alch',  parseHour(document.getElementById('i-alch').value));
+  put(ev,'tmp',   num('i-tmp'));
+  const bedH = parseHour(document.getElementById('i-bed').value);
+  put(ev,'bed',  bedH==null ? null : (bedH < 12 ? bedH + 24 : bedH));   // 00h30 -> 24,5
+  const dh = parseHour(document.getElementById('i-dinh').value);
+  if(dh==null){ delete ev.dinh; delete ev.dind; }
+  else{
+    ev.dinh = dh;
+    const ref = ev.bed!=null ? ev.bed : BEDTIME;
+    let g = ref - dh; if(g<0) g += 24;
+    ev.dind = Math.round(g*10)/10;
+  }
+  recomputeNight(ev);
+
+  pruneEntries();
   await persist();
-  // avertissement horaire
-  const w=document.getElementById('endWarn');
+  fillDay(); renderAll();
+  document.getElementById('savedNote').textContent =
+    'Enregistré. Le bloc Soirée a été rattaché au ' + shortDate(N) + '.';
+  toast('Journée enregistrée');
+}
+
+/* ---------- séances ---------- */
+async function addSession(){
+  const mod = document.getElementById('l-mod').value;
+  const fmt = document.getElementById('l-fmt').value;
+  const dur = num('l-dur');
+  if(!dur){ toast('Indique au moins la durée'); return; }
+  const hr = num('l-hr'), rpe = num('l-rpe');
+  const zn = [0,1,2,3,4,5].map(i => i===0 ? 0 : (num('l-zn'+i)||0));
+  const s  = {ty:TY_FROM_MOD[mod]||'other', mod:mod, dur:dur};
+  if(fmt) s.fmt = fmt;
+  if(zn.some(v=>v>0)){
+    zn[0] = Math.max(0, dur - zn.reduce((a,b)=>a+b,0));   // le reste = sous Z1
+    s.z   = zn.map(v=>Math.round(v*10)/10);
+    s.z45 = Math.round((zn[4]+zn[5])*10)/10;
+  } else s.z45 = num('l-z45') || 0;
+  if(hr!=null)  s.hr  = hr;
+  if(rpe!=null) s.rpe = rpe;
+  const eh = parseHour(document.getElementById('l-end').value);
+  if(eh!=null) s.eh = eh;
+  s.ld = sessLoadCalc(s);
+
+  const e = ensureSe(SEL);
+  e.se.push(s); applySe(e);
+  await persist();
+
+  // avertissement horaire — le coucher réel du soir même si on le connaît
+  const w = document.getElementById('endWarn');
+  const bedRef = (recAt(shift(SEL,1))||{}).bed ?? BEDTIME;
   if(eh!=null){
-    const gap = BEDTIME - eh;
-    if(gap>=0 && gap<4 && z45>=5)
-      w.innerHTML = `<span style="color:var(--clay)">Séance intense terminée ${gap.toFixed(1)} h avant ton coucher habituel (23h15). Sur tes données, ces nuits-là ta VFC est plus basse — le détail est dans l'onglet Repères. Couche-toi un peu plus tard ou allège demain.</span>`;
+    const gap = bedRef - eh;
+    if(gap>=0 && gap<4 && s.z45>=5)
+      w.innerHTML = `<span style="color:var(--clay)">Séance intense terminée ${gap.toFixed(1)} h avant le coucher. Sur tes données, ces nuits-là ta VFC est plus basse — le détail est dans l'onglet Repères.</span>`;
     else if(gap>=0 && gap<4)
-      w.innerHTML = `<span style="color:var(--caution)">Séance finie ${gap.toFixed(1)} h avant ton coucher. Sans intensité c'est peu gênant, mais garde la marge de 4 h pour les séances dures.</span>`;
+      w.innerHTML = `<span style="color:var(--caution)">Séance finie ${gap.toFixed(1)} h avant le coucher. Sans intensité c'est peu gênant, mais garde la marge de 4 h pour les séances dures.</span>`;
     else w.textContent='';
   } else w.textContent='';
-  renderSessions(); renderTrends(); renderVerdict(); renderEffects(); renderTemp(); renderZoneVo2();
-  toast(importedDate && importedDate!==TODAY ? 'Séance du '+importedDate.slice(8,10)+'/'+importedDate.slice(5,7)+' enregistrée' : 'Séance enregistrée');
-  importedDate = null;
+
+  ['l-dur','l-z45','l-hr','l-rpe','l-end','l-zn1','l-zn2','l-zn3','l-zn4','l-zn5']
+    .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('addBox').open = false;
+  renderAll();
+  toast('Séance ajoutée');
+}
+
+/* correction de la modalité ou du format : la charge est recalculée,
+   puisque le facteur musculation en dépend */
+async function editSession(i, key, val){
+  const e = ensureSe(SEL);
+  const s = e.se[i]; if(!s) return;
+  if(val) s[key] = val; else delete s[key];
+  s.ld = sessLoadCalc(s);
+  applySe(e);
+  await persist();
+  renderAll();
+}
+
+async function removeSession(i){
+  const e = ensureSe(SEL);
+  e.se.splice(i,1); applySe(e);
+  pruneEntries();
+  await persist();
+  renderAll();
+  toast('Séance supprimée');
+}
+
+/* ---------- readiness ---------- */
+async function calcReady(){
+  const e = ensureEntry(SEL);
+  e.energy = segVal('s-energy');
+  e.sore   = segVal('s-sore');
+  e.motiv  = segVal('s-motiv');
+  e.plan   = document.getElementById('i-plan').value;
+  const r = recAt(SEL);
+  if(!r || (r.hrv==null && r.ss==null && r.bb==null)){
+    toast('Saisis au moins la VFC de ce jour');
+  }
+  pruneEntries();
+  await persist();
+  renderAll();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- rafraîchissement global ---------- */
+function refreshDay(){
+  document.getElementById('dLabel').textContent = longDate(SEL);
+  document.getElementById('dRel').textContent = relLabel(SEL);
+  document.getElementById('rLabel').textContent = longDate(SEL);
+  document.getElementById('rRel').textContent = relLabel(SEL);
+  renderDaySessions(); renderDayStatus(); renderCal();
+}
+function renderAll(){
+  refreshDay(); renderVerdict(); renderTrends(); renderSessions();
+  renderZoneDose(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
 }
 
 /* onglets */
@@ -1892,30 +2464,64 @@ document.querySelectorAll('nav button').forEach(b=>{
   segments('s-energy',['Vidé','Bas','Normal','Bien','Top'],3);
   segments('s-sore',['Aucune','Légères','Moyennes','Fortes','Très fortes'],1);
   segments('s-motiv',['Nulle','Basse','Normale','Bonne','Haute'],3);
-  segments('s-alc',['0','1','2','3','4+'],1);
-  segments('s-din',['Léger','Normal','Copieux','Gras/lourd'],2);
-  segments('s-load',['Très calme','Calme','Normale','Chargée','Très lourde'],3);
+  segments('s-alc',['0','1','2','3','4+'],null);
+  segments('s-din',['Léger','Normal','Copieux','Gras/lourd'],null);
+  segments('s-load',['Très calme','Calme','Normale','Chargée','Très lourde'],null);
 
   await load();
 
-  fillForm();
+  /* migration : les anciennes saisies avaient une seule séance à plat */
+  let migrated=false;
+  entries.forEach(e=>{
+    if(!Array.isArray(e.se) && e.ty){
+      e.se=[{ty:e.ty, dur:e.dur, z45:e.z45, z:e.z, hr:e.hr, eh:e.eh, rpe:e.rpe,
+             ld:e.ld, src:e.src||'garmin'}];
+      migrated=true;
+    }
+  });
+  if(migrated) await persist();
 
-  document.getElementById('save').addEventListener('click',saveMorning);
-  document.getElementById('saveEve').addEventListener('click',saveEvening);
-  ['i-bed','i-wake','i-sd'].forEach(id=>{
+  fillDay();
+
+  /* navigation par date */
+  document.getElementById('dPrev').addEventListener('click',()=>gotoDay(shift(SEL,-1)));
+  document.getElementById('dNext').addEventListener('click',()=>gotoDay(shift(SEL, 1)));
+  document.getElementById('rPrev').addEventListener('click',()=>gotoDay(shift(SEL,-1)));
+  document.getElementById('rNext').addEventListener('click',()=>gotoDay(shift(SEL, 1)));
+  document.getElementById('goToday').addEventListener('click',()=>gotoDay(TODAY));
+  document.getElementById('mPrev').addEventListener('click',()=>{
+    const y=+calMonth.slice(0,4), m=+calMonth.slice(5,7);
+    const t=new Date(y, m-2, 1);
+    calMonth=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0'); renderCal();
+  });
+  document.getElementById('mNext').addEventListener('click',()=>{
+    const y=+calMonth.slice(0,4), m=+calMonth.slice(5,7);
+    const t=new Date(y, m, 1);
+    const nm=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0');
+    if(nm<=TODAY.slice(0,7)){ calMonth=nm; renderCal(); }
+  });
+  document.getElementById('calGrid').addEventListener('click',ev=>{
+    const b=ev.target.closest('.cd'); if(!b || b.disabled) return;
+    gotoDay(b.dataset.d);
+  });
+
+  document.getElementById('saveDay').addEventListener('click',saveDay);
+  document.getElementById('logSess').addEventListener('click',addSession);
+  document.getElementById('calcReady').addEventListener('click',calcReady);
+
+  ['i-wake','i-sd'].forEach(id=>{
     const el=document.getElementById(id); if(!el) return;
     el.addEventListener('change',()=>{
-      const b=parseHour(document.getElementById('i-bed').value);
-      const w=parseHour(document.getElementById('i-wake').value);
-      showTib({bed: b==null?null:(b<12?b+24:b), wake:w, sd:parseDur(document.getElementById('i-sd').value)});
+      const r = recAt(SEL) || {};
+      showTib({bed:r.bed, wake:parseHour(document.getElementById('i-wake').value),
+               sd:parseDur(document.getElementById('i-sd').value)});
     });
   });
 
   document.getElementById('impFile').addEventListener('change',async ev=>{
     const files=[...ev.target.files]; ev.target.value='';
     if(!files.length) return;
-    const boxes=[document.getElementById('impResult'),document.getElementById('impResult2')].filter(Boolean);
-    const box={set innerHTML(v){boxes.forEach(b=>b.innerHTML=v);}};
+    const box=document.getElementById('impResult');
     box.innerHTML='<p class="note">Lecture en cours…</p>';
     try{
       const r=await importFiles(files);
@@ -1925,7 +2531,7 @@ document.querySelectorAll('nav button').forEach(b=>{
         if(r.nCsv) lines.push(`<div class="row"><div class="n">Sommeil détaillé (CSV)<small>VFC, score, FC nuit, FC repos, respiration</small></div><div class="z ok mono">${r.nCsv} j</div></div>`);
         if(r.nWell) lines.push(`<div class="row"><div class="n">Données de récupération<small>VFC, sommeil, FC nocturne, stress</small></div><div class="z ok mono">${r.days.length} j</div></div>`);
         r.sess.forEach(s=>lines.push(
-          `<div class="row"><div class="n">${TYPE_LABEL[s.ty]||s.name}<small>${s.d} · ${s.dur} min · ${s.z45} min Z4+5${s.eh!=null?' · fin '+String(Math.floor(s.eh)).padStart(2,'0')+'h'+String(Math.round((s.eh%1)*60)).padStart(2,'0'):''}</small></div><div class="z ok mono">séance</div></div>`));
+          `<div class="row"><div class="n">${TYPE_LABEL[s.ty]||s.name}<small>${s.d} · ${s.dur} min · ${s.z45} min Z4+5${s.eh!=null?' · fin '+hm(s.eh):''}</small></div><div class="z ok mono">séance</div></div>`));
         html=`<div class="rows" style="margin-top:12px">${lines.join('')}</div>`;
         const gap=r.sess.filter(s=>s.eh!=null && s.z45>=5 && (BEDTIME-s.eh)>=0 && (BEDTIME-s.eh)<4);
         if(gap.length) html+=`<p class="note" style="color:var(--clay)">Séance intense terminée moins de 4 h avant ton coucher habituel — sur tes données, ces nuits-là ta VFC est plus basse (onglet Repères).</p>`;
@@ -1934,14 +2540,17 @@ document.querySelectorAll('nav button').forEach(b=>{
       }
       if(r.errs.length) html+=`<p class="note" style="color:var(--caution)">${r.errs.join('<br>')}</p>`;
       box.innerHTML=html;
-      importedDate = (r.sess.length===1 && r.sess[0].d!==TODAY) ? r.sess[0].d : null;
-      fillForm(); renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+      // un seul jour concerné : on s'y rend directement
+      const touched=[...new Set([...r.days, ...r.sess.map(s=>s.d)])].filter(x=>x<=TODAY).sort();
+      if(touched.length===1 && touched[0]!==SEL) gotoDay(touched[0]);
+      else { fillDay(); renderAll(); }
+      if(touched.length>1) box.innerHTML += `<p class="note">${touched.length} jours mis à jour, du ${touched[0]} au ${touched[touched.length-1]}. Ouvre-les dans le calendrier pour compléter ce qui manque.</p>`;
       if(r.days.length||r.sess.length) toast('Import réussi');
     }catch(x){
       box.innerHTML=`<p class="note" style="color:var(--clay)">Import impossible : ${x.message}</p>`;
     }
   });
-  document.getElementById('logSess').addEventListener('click',logSession);
+
   document.getElementById('export').addEventListener('click',()=>{
     const blob=new Blob([JSON.stringify(entries,null,1)],{type:'application/json'});
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
@@ -1957,20 +2566,23 @@ document.querySelectorAll('nav button').forEach(b=>{
         const map=new Map(entries.map(e=>[e.d,e]));
         arr.forEach(e=>{ if(e && e.d) map.set(e.d,{...map.get(e.d),...e}); });
         entries=[...map.values()].sort((a,b)=>a.d<b.d?-1:1);
+        entries.forEach(e=>{ if(!Array.isArray(e.se) && e.ty)
+          e.se=[{ty:e.ty,dur:e.dur,z45:e.z45,z:e.z,hr:e.hr,eh:e.eh,rpe:e.rpe,ld:e.ld,src:e.src||'garmin'}]; });
         await persist();
-        renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+        fillDay(); renderAll();
         toast(arr.length+' jours importés');
       }catch(err){ toast('Fichier illisible'); }
     };
     r.readAsText(f); ev.target.value='';
   });
   document.getElementById('reset').addEventListener('click',async()=>{
-    entries=[]; await persist(); renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+    entries=[]; await persist(); fillDay(); renderAll();
     toast('Saisies effacées');
   });
 
-  renderVerdict(); renderTrends(); renderSessions(); renderEffects(); renderTemp(); renderZoneVo2(); renderRef();
+  renderAll();
 })();
+
 </script>
 </body>
 </html>
